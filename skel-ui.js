@@ -1,6 +1,6 @@
 /* skel-ui.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
-skel.registerPlugin('ui', {
+(function() { var _ = {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Properties
@@ -99,8 +99,6 @@ skel.registerPlugin('ui', {
 			},
 
 			parseInit: function(x) {
-				var _p = this;
-				
 				var a,b;
 				
 				var	o = x.get(0),
@@ -122,7 +120,7 @@ skel.registerPlugin('ui', {
 								e.preventDefault();
 								e.stopPropagation();
 							
-								var t = jQuery(this), panel = _p.cache.panels[t.attr('data-target')];
+								var t = jQuery(this), panel = _.cache.panels[t.attr('data-target')];
 								
 								if (panel.is(':visible'))
 									panel.close_skel();
@@ -132,10 +130,10 @@ skel.registerPlugin('ui', {
 
 							// Workaround: Android doesn't seem to register touch events on fixed elements properly,
 							// so if this panelToggle is on a bar it needs to be a click.
-							if (_p.deviceType == 'android')
+							if (_.deviceType == 'android')
 								x.bind('click', a);
 							else
-								x.bind(_p.eventType, a);
+								x.bind(_.eventType, a);
 						
 							break;
 				
@@ -234,72 +232,68 @@ skel.registerPlugin('ui', {
 		/* View */
 		
 			lockView: function(a) {
-				var _p = this;
-			
-				_p.cache.window.scrollPos_skel = _p.cache.window.scrollTop();
+				_.cache.window.scrollPos_skel = _.cache.window.scrollTop();
 			
 				// Lock overflow
-					_p.cache.body.css('overflow-' + a, 'hidden');
+					_.cache.body.css('overflow-' + a, 'hidden');
 				
 				// Lock events
-					_p.cache.pageWrapper.bind('touchstart.lock', function(e) {
+					_.cache.pageWrapper.bind('touchstart.lock', function(e) {
 						e.preventDefault();
 						e.stopPropagation();
 						
-						if (_p.cache.activePanel)
-							_p.cache.activePanel.close_skel();
+						if (_.cache.activePanel)
+							_.cache.activePanel.close_skel();
 					});
 
-					_p.cache.pageWrapper.bind('click.lock', function(e) {
+					_.cache.pageWrapper.bind('click.lock', function(e) {
 						e.preventDefault();
 						e.stopPropagation();
 						
-						if (_p.cache.activePanel)
-							_p.cache.activePanel.close_skel();
+						if (_.cache.activePanel)
+							_.cache.activePanel.close_skel();
 					});
 
-					_p.cache.pageWrapper.bind('scroll.lock', function(e) {
+					_.cache.pageWrapper.bind('scroll.lock', function(e) {
 						e.preventDefault();
 						e.stopPropagation();
 
-						if (_p.cache.activePanel)
-							_p.cache.activePanel.close_skel();
+						if (_.cache.activePanel)
+							_.cache.activePanel.close_skel();
 					});
 						
-					_p.cache.window.bind('orientationchange.lock', function(e) {
-						if (_p.cache.activePanel)
-							_p.cache.activePanel.close_skel();
+					_.cache.window.bind('orientationchange.lock', function(e) {
+						if (_.cache.activePanel)
+							_.cache.activePanel.close_skel();
 					});
 
-					if (!_p.isTouch)
+					if (!_.isTouch)
 					{
-						_p.cache.window.bind('resize.lock', function(e) {
-							if (_p.cache.activePanel)
-								_p.cache.activePanel.close_skel();
+						_.cache.window.bind('resize.lock', function(e) {
+							if (_.cache.activePanel)
+								_.cache.activePanel.close_skel();
 						});
-						_p.cache.window.bind('scroll.lock', function(e) {
-							if (_p.cache.activePanel)
-								_p.cache.activePanel.close_skel();
+						_.cache.window.bind('scroll.lock', function(e) {
+							if (_.cache.activePanel)
+								_.cache.activePanel.close_skel();
 						});
 					}
 			},
 			
 			unlockView: function(a) {
-				var _p = this;
-			
 				// Unlock overflow
-					_p.cache.body.css('overflow-' + a, 'visible');
+					_.cache.body.css('overflow-' + a, 'visible');
 				
 				// Unlock events
-					_p.cache.pageWrapper.unbind('touchstart.lock');
-					_p.cache.pageWrapper.unbind('click.lock');
-					_p.cache.pageWrapper.unbind('scroll.lock');
-					_p.cache.window.unbind('orientationchange.lock');
+					_.cache.pageWrapper.unbind('touchstart.lock');
+					_.cache.pageWrapper.unbind('click.lock');
+					_.cache.pageWrapper.unbind('scroll.lock');
+					_.cache.window.unbind('orientationchange.lock');
 					
-					if (!_p.isTouch)
+					if (!_.isTouch)
 					{
-						_p.cache.window.unbind('resize.lock');
-						_p.cache.window.unbind('scroll.lock');
+						_.cache.window.unbind('resize.lock');
+						_.cache.window.unbind('scroll.lock');
 					}
 
 			},
@@ -307,39 +301,36 @@ skel.registerPlugin('ui', {
 		/* Component */
 		
 			resumeComponent: function(o) {
-				var	_p = this;
-			
+
 				// Get object from cache
-					var t = _p.cache[o.type + 's'][o.id];
+					var t = _.cache[o.type + 's'][o.id];
 			
 				// Parse (resume)
-					t.find('*').each(function() { _p.parseResume(jQuery(this)); });				
+					t.find('*').each(function() { _.parseResume(jQuery(this)); });				
 				
 				console.log(o.id + ': ' + o.type + ' resumed');
 			},
 		
 			suspendComponent: function(o) {
-				var	_p = this;
 			
 				// Get object from cache
-					var t = _p.cache[o.type + 's'][o.id];
+					var t = _.cache[o.type + 's'][o.id];
 
 				// Reset translate
 					t.css('transform', 'translate(0,0)');
 
 				// Parse (suspend)
-					t.find('*').each(function() { _p.parseSuspend(jQuery(this)); });				
+					t.find('*').each(function() { _.parseSuspend(jQuery(this)); });				
 				
 				console.log(o.id + ': ' + o.type + ' suspended');
 			},
 	
 			initComponent: function(o) {
-				var	_p = this;
 
 				var	config = o.config, t = jQuery(o.object);
 
 				// Cache object
-					_p.cache[o.type + 's'][o.id] = t;
+					_.cache[o.type + 's'][o.id] = t;
 				
 				// Basic stuff
 					t
@@ -347,7 +338,7 @@ skel.registerPlugin('ui', {
 						.accelerate_skel();
 						
 				// Parse (init)
-					t.find('*').each(function() { _p.parseInit(jQuery(this)); });
+					t.find('*').each(function() { _.parseInit(jQuery(this)); });
 
 				// Configure
 					switch (o.type)
@@ -357,7 +348,7 @@ skel.registerPlugin('ui', {
 							// Basic stuff
 								t
 									.addClass('skel-ui-panel')
-									.css('z-index', this.config.baseZIndex)
+									.css('z-index', _.config.baseZIndex)
 									.css('position', 'fixed')
 									.hide();
 									
@@ -372,15 +363,15 @@ skel.registerPlugin('ui', {
 											
 											var href = jQuery(this).attr('href');
 											
-											_p.cache.activePanel.close_skel();
+											_.cache.activePanel.close_skel();
 											
 											window.setTimeout(function() {
 												window.location.href = href;
-											}, _p.config.speed + 10);
+											}, _.config.speed + 10);
 										});
 
 								// Workaround: iOS zooms + scrolls on focus. Messes up panel stuff. This fix isn't perfect but it works.
-									if (_p.deviceType == 'ios')
+									if (_.deviceType == 'ios')
 									{
 										t.find('input,select,textarea').focus(function(e) {
 											var i = jQuery(this);
@@ -389,14 +380,14 @@ skel.registerPlugin('ui', {
 											e.stopPropagation();
 											
 											window.setTimeout(function() {
-												var scrollPos = _p.cache.window.scrollPos_skel;
-												var diff = _p.cache.window.scrollTop() - scrollPos;
+												var scrollPos = _.cache.window.scrollPos_skel;
+												var diff = _.cache.window.scrollTop() - scrollPos;
 												
 												// Reset window scroll to what it was when the view was locked
-													_p.cache.window.scrollTop(scrollPos);
+													_.cache.window.scrollTop(scrollPos);
 												
 												// Scroll the panel by what the browser tried to scroll the window
-													_p.cache.activePanel.scrollTop(_p.cache.activePanel.scrollTop() + diff);
+													_.cache.activePanel.scrollTop(_.cache.activePanel.scrollTop() + diff);
 												
 												// Hide/show the field to reset the position of the cursor (fixes a Safari bug)
 													i.hide();
@@ -419,7 +410,7 @@ skel.registerPlugin('ui', {
 												.css('width', config.size)
 												.scrollTop(0);
 												
-											if (_p.isTouch)
+											if (_.isTouch)
 											{
 												t
 													.css('overflow-y', 'scroll')
@@ -482,7 +473,7 @@ skel.registerPlugin('ui', {
 																	t.resetForms_skel();
 															
 															// Lock view
-																_p.lockView('x');
+																_.lockView('x');
 															
 															// Move stuff
 																window.setTimeout(function() {
@@ -491,13 +482,13 @@ skel.registerPlugin('ui', {
 																		t.css('transform', 'translate(' + sign + '100%,0)');
 																		
 																	// Page
-																		_p.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
+																		_.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
 																	
 																	// Fixed page elemnents
-																		_p.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
+																		_.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
 															
 																	// Set active
-																		_p.cache.activePanel = t;
+																		_.cache.activePanel = t;
 																
 																}, 100);
 														};
@@ -514,16 +505,16 @@ skel.registerPlugin('ui', {
 																	t.css('transform', 'translate(0,0)');
 															
 																// Page
-																	_p.cache.pageWrapper.css('transform', 'translate(0,0)');
+																	_.cache.pageWrapper.css('transform', 'translate(0,0)');
 															
 																// Fixed page elements
-																	_p.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
+																	_.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
 
 															// Cleanup
 																window.setTimeout(function() { 
 																	
 																	// Unlock view
-																		_p.unlockView('x');
+																		_.unlockView('x');
 																		
 																	// Hide and demote panel
 																		t
@@ -531,9 +522,9 @@ skel.registerPlugin('ui', {
 																			.hide();
 																			
 																	// Clear active
-																		_p.cache.activePanel = null;
+																		_.cache.activePanel = null;
 																
-																}, _p.config.speed + 50);
+																}, _.config.speed + 50);
 														};
 													
 													break;
@@ -544,8 +535,8 @@ skel.registerPlugin('ui', {
 														t.open_skel = function() {
 															
 															// Promote page and fixedWrapper
-																_p.cache.fixedWrapper.promote_skel(2);
-																_p.cache.pageWrapper.promote_skel(1);
+																_.cache.fixedWrapper.promote_skel(2);
+																_.cache.pageWrapper.promote_skel(1);
 															
 															// Place panel
 																t
@@ -564,19 +555,19 @@ skel.registerPlugin('ui', {
 																	t.resetForms_skel();
 
 															// Lock view
-																_p.lockView('x');
+																_.lockView('x');
 															
 															// Move stuff
 																window.setTimeout(function() {
 																
 																	// Page
-																		_p.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
+																		_.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
 																	
 																	// Fixed page elements
-																		_p.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
+																		_.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
 
 																	// Set active
-																		_p.cache.activePanel = t;
+																		_.cache.activePanel = t;
 																
 																}, 100);
 														};
@@ -593,28 +584,28 @@ skel.registerPlugin('ui', {
 																	t.css('transform', 'translate(0,0)');
 															
 																// Page
-																	_p.cache.pageWrapper.css('transform', 'translate(0,0)');
+																	_.cache.pageWrapper.css('transform', 'translate(0,0)');
 															
 																// Fixed page elements
-																	_p.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
+																	_.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
 
 															// Cleanup
 																window.setTimeout(function() { 
 																	
 																	// Unlock view
-																		_p.unlockView('x');
+																		_.unlockView('x');
 																		
 																	// Hide panel
 																		t.hide();
 																		
 																	// Demote page
-																		_p.cache.pageWrapper.demote_skel();
-																		_p.cache.pageWrapper.demote_skel();
+																		_.cache.pageWrapper.demote_skel();
+																		_.cache.pageWrapper.demote_skel();
 
 																	// Clear active
-																		_p.cache.activePanel = null;
+																		_.cache.activePanel = null;
 																
-																}, _p.config.speed + 50);
+																}, _.config.speed + 50);
 														};
 													
 													break;
@@ -635,7 +626,7 @@ skel.registerPlugin('ui', {
 							
 							// Basic stuff
 								t
-									.css('z-index', this.config.baseZIndex)
+									.css('z-index', _.config.baseZIndex)
 									.addClass('skel-ui-bar');
 
 							// Style
@@ -713,20 +704,18 @@ skel.registerPlugin('ui', {
 		/* Init */
 		
 			initComponents: function(type) {
-				var _p = this;
-
 				var c, k, o, a, i;
 				
-				for (k in this.config[type + 's'])
+				for (k in _.config[type + 's'])
 				{
 					// Extend with defaults
 						c = {};
-						_p.parent.extend(c, _p.defaults.config[type]);
-						_p.parent.extend(c, _p.config[type + 's'][k]);
-						_p.config[type + 's'][k] = c;
+						_._.extend(c, _.defaults.config[type]);
+						_._.extend(c, _.config[type + 's'][k]);
+						_.config[type + 's'][k] = c;
 
 					// Build element
-						o = this.parent.newDiv(c.html);
+						o = _._.newDiv(c.html);
 							o.id = k;
 							o.className = 'skel-ui-' + type;
 
@@ -735,21 +724,21 @@ skel.registerPlugin('ui', {
 						
 						for (i in a)
 						{
-							z = this.parent.cacheBreakpointElement(a[i], k, o, (type == 'bar' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
+							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'bar' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
 								z.config = c;
 								z.initialized = false;
 								z.type = type;
 								z.onAttach = function() {
 									if (!this.initialized)
 									{
-										_p.initComponent(this);
+										_.initComponent(this);
 										this.initialized = true;
 									}
 									else
-										_p.resumeComponent(this);
+										_.resumeComponent(this);
 								};
 								z.onDetach = function() {
-									_p.suspendComponent(this);
+									_.suspendComponent(this);
 								};
 						}
 				}
@@ -757,11 +746,9 @@ skel.registerPlugin('ui', {
 			},
 			
 			initHelpers: function() {
-				var _p = this;
-
 				jQuery.fn.promote_skel = function(n) {
 					this._zIndex = this.css('z-index');
-					this.css('z-index', _p.config.baseZIndex + (n ? n : 1));
+					this.css('z-index', _.config.baseZIndex + (n ? n : 1));
 					return this;
 				};
 				
@@ -809,7 +796,7 @@ skel.registerPlugin('ui', {
 				};
 
 				jQuery.fn.applyTransition_skel = function() {
-					return jQuery(this).xcss_skel('transition', 'transform ' + (_p.config.speed / 1000.00) + 's ease-in-out');
+					return jQuery(this).xcss_skel('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 				};
 
 				jQuery.fn.clearTransition_skel = function() {
@@ -829,25 +816,24 @@ skel.registerPlugin('ui', {
 			},
 
 			initObjects: function() {
-				var _p = this;
-
+				
 				// window
-					_p.cache.window = jQuery(window);
+					_.cache.window = jQuery(window);
 
-						_p.cache.window.load(function() {
-							if (_p.cache.window.scrollTop() == 0)
+						_.cache.window.load(function() {
+							if (_.cache.window.scrollTop() == 0)
 								window.scrollTo(0, 1);
 						});
 
-				this.parent.DOMReady(function() {
+				_._.DOMReady(function() {
 
 				// body
-					_p.cache.body = jQuery('body');
+					_.cache.body = jQuery('body');
 				
 				// pageWrapper
-					_p.cache.body.wrapInner('<div id="skel-ui-pageWrapper" />');
-					_p.cache.pageWrapper = jQuery('#skel-ui-pageWrapper');
-					_p.cache.pageWrapper
+					_.cache.body.wrapInner('<div id="skel-ui-pageWrapper" />');
+					_.cache.pageWrapper = jQuery('#skel-ui-pageWrapper');
+					_.cache.pageWrapper
 						.css('position', 'relative')
 						.css('left', '0')
 						.css('right', '0')
@@ -857,30 +843,28 @@ skel.registerPlugin('ui', {
 						.accelerate_skel();
 						
 				// defaultWrapper
-					_p.cache.defaultWrapper = jQuery('<div id="skel-ui-defaultWrapper" />').appendTo(_p.cache.body);
-					_p.cache.defaultWrapper
+					_.cache.defaultWrapper = jQuery('<div id="skel-ui-defaultWrapper" />').appendTo(_.cache.body);
+					_.cache.defaultWrapper
 						.css('height', '100%');
 
 				// fixedWrapper
-					_p.cache.fixedWrapper = jQuery('<div id="skel-ui-fixedWrapper" />').appendTo(_p.cache.body);
-					_p.cache.fixedWrapper
+					_.cache.fixedWrapper = jQuery('<div id="skel-ui-fixedWrapper" />').appendTo(_.cache.body);
+					_.cache.fixedWrapper
 						.css('position', 'relative');
 				
 					// Move elements with the "skel-ui-fixed" class to fixedWrapper
-						jQuery('.skel-ui-fixed').appendTo(_p.cache.fixedWrapper);
+						jQuery('.skel-ui-fixed').appendTo(_.cache.fixedWrapper);
 				
 				// Register locations
-					_p.parent.registerLocation('skel_ui_defaultWrapper', _p.cache.defaultWrapper[0]);
-					_p.parent.registerLocation('skel_ui_fixedWrapper', _p.cache.fixedWrapper[0]);
-					_p.parent.registerLocation('skel_ui_pageWrapper', _p.cache.pageWrapper[0]);
+					_._.registerLocation('skel_ui_defaultWrapper', _.cache.defaultWrapper[0]);
+					_._.registerLocation('skel_ui_fixedWrapper', _.cache.fixedWrapper[0]);
+					_._.registerLocation('skel_ui_pageWrapper', _.cache.pageWrapper[0]);
 
 				});
 
 			},
 		
 			initDeviceType: function() {
-				var _p = this;
-
 				var k, a = {
 					ios: '(iPad|iPhone|iPod)',
 					android: 'Android'
@@ -890,37 +874,41 @@ skel.registerPlugin('ui', {
 				{
 					if (navigator.userAgent.match(new RegExp(a[k], 'g')))
 					{
-						_p.deviceType = k;
+						_.deviceType = k;
 						break;
 					}
 				}
 				
-				if (!_p.deviceType)
-					_p.deviceType = 'other';
+				if (!_.deviceType)
+					_.deviceType = 'other';
 
-				_p.isTouch = !!('ontouchstart' in window);
-				_p.eventType = (_p.isTouch ? 'touchend' : 'click');
+				_.isTouch = !!('ontouchstart' in window);
+				_.eventType = (_.isTouch ? 'touchend' : 'click');
 			},
 		
 			init: function() {
-				var _p = this;
-				
+
 				// Device Type
-					_p.initDeviceType();
+					_.initDeviceType();
 
 				// Helpers
-					_p.initHelpers();
+					_.initHelpers();
 
 				// Objects
-					_p.initObjects();
+					_.initObjects();
 
 				// Components
-					_p.initComponents('bar');
-					_p.initComponents('panel');
+					_.initComponents('bar');
+					_.initComponents('panel');
 
 				// Update state
-					_p.parent.updateState();
+					_._.updateState();
 			
 			}
 
-});
+	}
+
+	// Register plugin
+		skel.registerPlugin('ui', _);
+
+})();

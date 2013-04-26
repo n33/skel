@@ -653,7 +653,7 @@ var skel;
 
 			registerPlugin: function(id, o) {
 				_.plugins[id] = o;
-				o.parent = this;
+				o._ = this;
 				
 				_.initPluginConfig(id, o);
 				
