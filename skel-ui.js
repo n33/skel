@@ -1,0 +1,926 @@
+/* skel-ui.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+
+skel.registerPlugin('ui', {
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Properties
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		config: {
+			baseZIndex: 10000,
+			speed: 250,
+			panels: {},
+			bars: {}
+		},
+
+		cache: {
+			panels: {},
+			bars: {},
+			body: null,
+			window: null,
+			pageWrapper: null,
+			defaultWrapper: null,
+			fixedWrapper: null,
+			activePanel: null
+		},
+
+		deviceType: null,
+		eventType: 'click',
+		isTouch: false,
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Data
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		presets: {
+			legacy: {
+				panels: {
+					navPanel: {
+						breakpoints: 'mobile',
+						position: 'left',
+						style: 'push',
+						size: '80%',
+						html: '<div data-action="navList" data-target="nav"></div>'
+					}
+				},
+				bars: {
+					titleBar: {
+						breakpoints: 'mobile',
+						position: 'top',
+						size: 44,
+						style: 'floating',
+						html: '<span class="toggle" data-action="panelToggle" data-target="navPanel"></span>' +
+							  '<span class="title" data-action="copyHTML" data-target="logo"></span>'
+					}
+				}
+			}
+		},
+		defaults: {
+			config: {
+				panel: {
+					breakpoints: null,
+					position: null,
+					style: null,
+					size: '80%',
+					html: '',
+					resetScroll: true,
+					resetForms: true,
+					swipeToClose: true
+				},
+				bar: {
+					breakpoints: null,
+					position: null,
+					style: null,
+					size: 44,
+					style: 'floating',
+					html: ''
+				}
+			}
+		},
+		
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Methods
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		/* Parse */
+
+			parseSuspend: function(x) {
+				var o = x.get(0);
+				
+				if (o.suspend_skel)
+					o.suspend_skel();
+			},
+
+			parseResume: function(x) {
+				var o = x.get(0);
+				
+				if (o.resume_skel)
+					o.resume_skel();
+			},
+
+			parseInit: function(x) {
+				var _p = this;
+				
+				var a,b;
+				
+				var	o = x.get(0),
+					action = x.attr('data-action'),
+					target = (x.attr('data-target') ? jQuery('#' + x.attr('data-target')) : null),
+					targetHide = (x.attr('data-target-hide') == 1);
+				
+				switch (action)
+				{
+					// panelToggle (Opens/closes a panel)
+					// target = panel
+						case 'panelToggle':
+						
+							x
+								.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)')
+								.css('cursor', 'pointer');
+
+							a = function(e) {
+								e.preventDefault();
+								e.stopPropagation();
+							
+								var t = jQuery(this), panel = _p.cache.panels[t.attr('data-target')];
+								
+								if (panel.is(':visible'))
+									panel.close_skel();
+								else
+									panel.open_skel();
+							};
+
+							// Workaround: Android doesn't seem to register touch events on fixed elements properly,
+							// so if this panelToggle is on a bar it needs to be a click.
+							if (_p.deviceType == 'android')
+								x.bind('click', a);
+							else
+								x.bind(_p.eventType, a);
+						
+							break;
+				
+					// navList (Builds a nav list using links from an existing nav)
+					// target = existing nav
+						case 'navList':
+							a = target.find('a');
+							b = [];
+							
+							a.each(function() {
+								var t = jQuery(this), indent;
+								indent = Math.max(0,t.parents('li').length - 1);
+								b.push(
+									'<a class="link depth-' + indent + '" href="' + t.attr('href') + '"><span class="indent-' + indent + '"></span>' + t.text() + '</a>'
+								);
+							});
+							
+							if (b.length > 0)
+								x.html('<nav>' + b.join('') + '</nav>');
+						
+							x.find('.link')
+								.css('cursor', 'pointer')
+								.css('display', 'block');
+						
+							break;
+
+					// copyText (Copies text using jQuery.text() from an element)
+					// target = the element
+						case 'copyText':
+							x.html(target.text());
+							break;
+
+					// copyHTML (Copies HTML using jQuery.html() from an element)
+					// target = the element
+						case 'copyHTML':
+							x.html(target.html());
+							break;
+						
+					// moveHTML (Moves an element's (inner) HTML to this one)
+					// target = the element
+						case 'moveHTML':
+						
+							o.resume_skel = function() {
+								console.log('moving HTML');
+								target.children().each(function() {
+									x.append(jQuery(this));
+								});
+								if (targetHide)
+									target.hide();
+							};
+							
+							o.suspend_skel = function() {
+								console.log('returning HTML');
+								x.children().each(function() {
+									target.append(jQuery(this));
+								});
+								if (targetHide)
+									target.show();
+							};
+							
+							o.resume_skel();
+						
+							break;
+						
+					// moveElement (Moves an element to this one)
+					// target = the element
+						case 'moveElement':
+						
+							o.resume_skel = function() {
+								console.log('moving element');
+								
+								// Insert placeholder before target
+									jQuery('<div id="skel-ui-tmp-' + target.attr('id') + '" />').insertBefore(target);
+								
+								// Move target
+									x.append(target);
+							};
+							
+							o.suspend_skel = function() {
+								console.log('returning HTML');
+								
+								// Replace placeholder with target
+									jQuery('#skel-ui-tmp-' + target.attr('id')).replaceWith(target);
+							};
+							
+							o.resume_skel();
+						
+							break;
+						
+					default:
+						break;
+				}
+				
+			},
+		
+		/* View */
+		
+			lockView: function(a) {
+				var _p = this;
+			
+				_p.cache.window.scrollPos_skel = _p.cache.window.scrollTop();
+			
+				// Lock overflow
+					_p.cache.body.css('overflow-' + a, 'hidden');
+				
+				// Lock events
+					_p.cache.pageWrapper.bind('touchstart.lock', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						
+						if (_p.cache.activePanel)
+							_p.cache.activePanel.close_skel();
+					});
+
+					_p.cache.pageWrapper.bind('click.lock', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						
+						if (_p.cache.activePanel)
+							_p.cache.activePanel.close_skel();
+					});
+
+					_p.cache.pageWrapper.bind('scroll.lock', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+
+						if (_p.cache.activePanel)
+							_p.cache.activePanel.close_skel();
+					});
+						
+					_p.cache.window.bind('orientationchange.lock', function(e) {
+						if (_p.cache.activePanel)
+							_p.cache.activePanel.close_skel();
+					});
+
+					if (!_p.isTouch)
+					{
+						_p.cache.window.bind('resize.lock', function(e) {
+							if (_p.cache.activePanel)
+								_p.cache.activePanel.close_skel();
+						});
+						_p.cache.window.bind('scroll.lock', function(e) {
+							if (_p.cache.activePanel)
+								_p.cache.activePanel.close_skel();
+						});
+					}
+			},
+			
+			unlockView: function(a) {
+				var _p = this;
+			
+				// Unlock overflow
+					_p.cache.body.css('overflow-' + a, 'visible');
+				
+				// Unlock events
+					_p.cache.pageWrapper.unbind('touchstart.lock');
+					_p.cache.pageWrapper.unbind('click.lock');
+					_p.cache.pageWrapper.unbind('scroll.lock');
+					_p.cache.window.unbind('orientationchange.lock');
+					
+					if (!_p.isTouch)
+					{
+						_p.cache.window.unbind('resize.lock');
+						_p.cache.window.unbind('scroll.lock');
+					}
+
+			},
+		
+		/* Component */
+		
+			resumeComponent: function(o) {
+				var	_p = this;
+			
+				// Get object from cache
+					var t = _p.cache[o.type + 's'][o.id];
+			
+				// Parse (resume)
+					t.find('*').each(function() { _p.parseResume(jQuery(this)); });				
+				
+				console.log(o.id + ': ' + o.type + ' resumed');
+			},
+		
+			suspendComponent: function(o) {
+				var	_p = this;
+			
+				// Get object from cache
+					var t = _p.cache[o.type + 's'][o.id];
+
+				// Reset translate
+					t.css('transform', 'translate(0,0)');
+
+				// Parse (suspend)
+					t.find('*').each(function() { _p.parseSuspend(jQuery(this)); });				
+				
+				console.log(o.id + ': ' + o.type + ' suspended');
+			},
+	
+			initComponent: function(o) {
+				var	_p = this;
+
+				var	config = o.config, t = jQuery(o.object);
+
+				// Cache object
+					_p.cache[o.type + 's'][o.id] = t;
+				
+				// Basic stuff
+					t
+						.applyTransition_skel()
+						.accelerate_skel();
+						
+				// Parse (init)
+					t.find('*').each(function() { _p.parseInit(jQuery(this)); });
+
+				// Configure
+					switch (o.type)
+					{
+						case 'panel':
+
+							// Basic stuff
+								t
+									.addClass('skel-ui-panel')
+									.css('z-index', this.config.baseZIndex)
+									.css('position', 'fixed')
+									.hide();
+									
+							// Change how child elements behave
+							
+								// Links
+									t.find('a')
+										.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)')
+										.click(function(e) {
+											e.preventDefault();
+											e.stopPropagation();
+											
+											var href = jQuery(this).attr('href');
+											
+											_p.cache.activePanel.close_skel();
+											
+											window.setTimeout(function() {
+												window.location.href = href;
+											}, _p.config.speed + 10);
+										});
+
+								// Workaround: iOS zooms + scrolls on focus. Messes up panel stuff. This fix isn't perfect but it works.
+									if (_p.deviceType == 'ios')
+									{
+										t.find('input,select,textarea').focus(function(e) {
+											var i = jQuery(this);
+											
+											e.preventDefault();
+											e.stopPropagation();
+											
+											window.setTimeout(function() {
+												var scrollPos = _p.cache.window.scrollPos_skel;
+												var diff = _p.cache.window.scrollTop() - scrollPos;
+												
+												// Reset window scroll to what it was when the view was locked
+													_p.cache.window.scrollTop(scrollPos);
+												
+												// Scroll the panel by what the browser tried to scroll the window
+													_p.cache.activePanel.scrollTop(_p.cache.activePanel.scrollTop() + diff);
+												
+												// Hide/show the field to reset the position of the cursor (fixes a Safari bug)
+													i.hide();
+													window.setTimeout(function() { i.show(); }, 0);
+											}, 100);
+										});
+									}
+								
+							// Position
+								switch (config.position)
+								{
+									case 'left':
+									case 'right':
+									
+										var sign = (config.position == 'right' ? '-' : '');
+									
+										// Basic stuff
+											t
+												.addClass('skel-ui-panel-' + config.position)
+												.css('width', config.size)
+												.scrollTop(0);
+												
+											if (_p.isTouch)
+											{
+												t
+													.css('overflow-y', 'scroll')
+													.css('-webkit-overflow-scrolling', 'touch')
+													.bind('touchstart', function(e) {
+														t._posY = e.originalEvent.touches[0].pageY;
+														t._posX = e.originalEvent.touches[0].pageX;
+													})
+													.bind('touchmove', function(e) {
+														var	diffX = t._posX - e.originalEvent.touches[0].pageX,
+															diffY = t._posY - e.originalEvent.touches[0].pageY,
+															th = t.outerHeight(),
+															ts = (t.get(0).scrollHeight - t.scrollTop());
+														
+														// Swipe to close?
+															if (config.swipeToClose
+															&&	diffY < 20
+															&&	diffY > -20
+															&&	((config.position == 'left' && diffX > 50)
+															||	(config.position == 'right' && diffX < -50)))
+															{
+																t.close_skel();
+																return false;
+															}
+														
+														// Prevent vertical scrolling past the top or bottom
+															if (	(t.scrollTop() == 0 && diffY < 0)
+															||		(ts > (th - 2) && ts < (th + 2) && diffY > 0)	)
+															{
+																return false;
+															}
+													});
+											}
+											else
+												t.css('overflow-y', 'auto');
+												
+										// Style
+											switch (config.style)
+											{
+												case 'push':
+													
+													// Open
+														t.open_skel = function() {
+															
+															// Place panel
+																t
+																	.promote_skel()
+																	.scrollTop(0)
+																	.css('top', 0)
+																	.css(config.position, '-' + config.size)															
+																	.css('height', '100%')
+																	.show();
+
+															// Reset scroll
+																if (config.resetScroll)
+																	t.scrollTop(0);
+															
+															// Reset fields
+																if (config.resetForms)
+																	t.resetForms_skel();
+															
+															// Lock view
+																_p.lockView('x');
+															
+															// Move stuff
+																window.setTimeout(function() {
+																
+																	// Panel
+																		t.css('transform', 'translate(' + sign + '100%,0)');
+																		
+																	// Page
+																		_p.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
+																	
+																	// Fixed page elemnents
+																		_p.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
+															
+																	// Set active
+																		_p.cache.activePanel = t;
+																
+																}, 100);
+														};
+													
+													// Close
+														t.close_skel = function() {
+														
+															// Defocus panel
+																t.find('*').blur();
+														
+															// Move stuff back
+															
+																// Panel
+																	t.css('transform', 'translate(0,0)');
+															
+																// Page
+																	_p.cache.pageWrapper.css('transform', 'translate(0,0)');
+															
+																// Fixed page elements
+																	_p.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
+
+															// Cleanup
+																window.setTimeout(function() { 
+																	
+																	// Unlock view
+																		_p.unlockView('x');
+																		
+																	// Hide and demote panel
+																		t
+																			.demote_skel()
+																			.hide();
+																			
+																	// Clear active
+																		_p.cache.activePanel = null;
+																
+																}, _p.config.speed + 50);
+														};
+													
+													break;
+													
+												case 'reveal':
+													
+													// Open
+														t.open_skel = function() {
+															
+															// Promote page and fixedWrapper
+																_p.cache.fixedWrapper.promote_skel(2);
+																_p.cache.pageWrapper.promote_skel(1);
+															
+															// Place panel
+																t
+																	.scrollTop(0)
+																	.css('top', 0)
+																	.css(config.position, 0)
+																	.css('height', '100%')
+																	.show();
+															
+															// Reset scroll
+																if (config.resetScroll)
+																	t.scrollTop(0);
+
+															// Reset fields
+																if (config.resetForms)
+																	t.resetForms_skel();
+
+															// Lock view
+																_p.lockView('x');
+															
+															// Move stuff
+																window.setTimeout(function() {
+																
+																	// Page
+																		_p.cache.pageWrapper.css('transform', 'translate(' + sign + config.size + ',0)');
+																	
+																	// Fixed page elements
+																		_p.cache.fixedWrapper.children().css('transform', 'translate(' + sign + config.size + ',0)');
+
+																	// Set active
+																		_p.cache.activePanel = t;
+																
+																}, 100);
+														};
+													
+													// Close
+														t.close_skel = function() {
+														
+															// Defocus panel
+																t.find('*').blur();
+
+															// Move stuff back
+															
+																// Panel
+																	t.css('transform', 'translate(0,0)');
+															
+																// Page
+																	_p.cache.pageWrapper.css('transform', 'translate(0,0)');
+															
+																// Fixed page elements
+																	_p.cache.fixedWrapper.children().css('transform', 'translate(0,0)');
+
+															// Cleanup
+																window.setTimeout(function() { 
+																	
+																	// Unlock view
+																		_p.unlockView('x');
+																		
+																	// Hide panel
+																		t.hide();
+																		
+																	// Demote page
+																		_p.cache.pageWrapper.demote_skel();
+																		_p.cache.pageWrapper.demote_skel();
+
+																	// Clear active
+																		_p.cache.activePanel = null;
+																
+																}, _p.config.speed + 50);
+														};
+													
+													break;
+													
+												default:
+													break;
+											}
+
+										break;
+										
+									default:
+										break;
+								}
+							
+							break;
+					
+						case 'bar':
+							
+							// Basic stuff
+								t
+									.css('z-index', this.config.baseZIndex)
+									.addClass('skel-ui-bar');
+
+							// Style
+								switch (config.style)
+								{
+									case 'floating':
+										t.css('position', 'fixed');
+										break;
+								
+									case 'fixed':
+										t.css('position', 'absolute');
+										break;
+								
+									default:
+										break;
+								}
+							
+							// Position
+								switch (config.position)
+								{
+									case 'top':
+										t
+											.addClass('skel-ui-bar-top')
+											.css('top', 0)
+											.css('left', 0)
+											.css('width', '100%')
+											.css('height', config.size);
+
+										break;
+
+									case 'bottom':
+										
+											t
+												.addClass('skel-ui-bar-bottom')
+												.css('bottom', 0)
+												.css('left', 0)
+												.css('width', '100%')
+												.css('height', config.size);
+										
+										break;
+
+									case 'left':
+										
+											t
+												.addClass('skel-ui-bar-left')
+												.css('top', 0)
+												.css('left', 0)
+												.css('width', config.size)
+												.css('height', '100%');
+										
+										break;
+
+									case 'right':
+										
+											t
+												.addClass('skel-ui-bar-right')
+												.css('top', 0)
+												.css('right', 0)
+												.css('width', config.size)
+												.css('height', '100%');
+										
+										break;
+								}
+							
+							break;
+							
+						default:
+							break;
+					}
+
+				console.log(o.id + ': ' + o.type + ' initialized!');
+
+			},
+			
+		/* Init */
+		
+			initComponents: function(type) {
+				var _p = this;
+
+				var c, k, o, a, i;
+				
+				for (k in this.config[type + 's'])
+				{
+					// Extend with defaults
+						c = {};
+						_p.parent.extend(c, _p.defaults.config[type]);
+						_p.parent.extend(c, _p.config[type + 's'][k]);
+						_p.config[type + 's'][k] = c;
+
+					// Build element
+						o = this.parent.newDiv(c.html);
+							o.id = k;
+							o.className = 'skel-ui-' + type;
+
+					// Cache it
+						a = c.breakpoints.split(',');
+						
+						for (i in a)
+						{
+							z = this.parent.cacheBreakpointElement(a[i], k, o, (type == 'bar' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
+								z.config = c;
+								z.initialized = false;
+								z.type = type;
+								z.onAttach = function() {
+									if (!this.initialized)
+									{
+										_p.initComponent(this);
+										this.initialized = true;
+									}
+									else
+										_p.resumeComponent(this);
+								};
+								z.onDetach = function() {
+									_p.suspendComponent(this);
+								};
+						}
+				}
+
+			},
+			
+			initHelpers: function() {
+				var _p = this;
+
+				jQuery.fn.promote_skel = function(n) {
+					this._zIndex = this.css('z-index');
+					this.css('z-index', _p.config.baseZIndex + (n ? n : 1));
+					return this;
+				};
+				
+				jQuery.fn.demote_skel = function() {
+					if (this._zIndex)
+					{
+						this.css('z-index', this._zIndex);
+						this._zIndex = null;
+					}
+					return this;
+				};
+
+				jQuery.fn.accelerate_skel = function() {
+					return jQuery(this)
+							//.css('transform', 'translateZ(0)')
+							.css('backface-visibility', 'hidden')
+							.css('perspective', '500'); 
+				};
+
+				jQuery.fn.xcssValue_skel = function(p,v) {
+					return jQuery(this)
+							.css(p, '-moz-' + v)
+							.css(p, '-webkit-' + v)
+							.css(p, '-o-' + v)
+							.css(p, '-ms-' + v)
+							.css(p, v);
+				};
+
+				jQuery.fn.xcssProperty_skel = function(p,v) {
+					return jQuery(this)
+							.css('-moz-' + p, v)
+							.css('-webkit-' + p, v)
+							.css('-o-' + p, v)
+							.css('-ms-' + p, v)
+							.css(p, v);
+				};
+
+				jQuery.fn.xcss_skel = function(p,v) {
+					return jQuery(this)
+							.css('-moz-' + p, '-moz-' + v)
+							.css('-webkit-' + p, '-webkit-' + v)
+							.css('-o-' + p, '-o-' + v)
+							.css('-ms-' + p, '-ms-' + v)
+							.css(p, v);
+				};
+
+				jQuery.fn.applyTransition_skel = function() {
+					return jQuery(this).xcss_skel('transition', 'transform ' + (_p.config.speed / 1000.00) + 's ease-in-out');
+				};
+
+				jQuery.fn.clearTransition_skel = function() {
+					return jQuery(this).xcss_skel('transition', 'none');
+				};
+				
+				jQuery.fn.resetForms_skel = function() {
+					var t = jQuery(this);
+					
+					jQuery(this).find('form').each(function() {
+						this.reset();
+					});
+					
+					return t;
+				};
+
+			},
+
+			initObjects: function() {
+				var _p = this;
+
+				// window
+					_p.cache.window = jQuery(window);
+
+						_p.cache.window.load(function() {
+							if (_p.cache.window.scrollTop() == 0)
+								window.scrollTo(0, 1);
+						});
+
+				this.parent.DOMReady(function() {
+
+				// body
+					_p.cache.body = jQuery('body');
+				
+				// pageWrapper
+					_p.cache.body.wrapInner('<div id="skel-ui-pageWrapper" />');
+					_p.cache.pageWrapper = jQuery('#skel-ui-pageWrapper');
+					_p.cache.pageWrapper
+						.css('position', 'relative')
+						.css('left', '0')
+						.css('right', '0')
+						.css('top', '0')
+						.css('bottom', '0')
+						.applyTransition_skel()
+						.accelerate_skel();
+						
+				// defaultWrapper
+					_p.cache.defaultWrapper = jQuery('<div id="skel-ui-defaultWrapper" />').appendTo(_p.cache.body);
+					_p.cache.defaultWrapper
+						.css('height', '100%');
+
+				// fixedWrapper
+					_p.cache.fixedWrapper = jQuery('<div id="skel-ui-fixedWrapper" />').appendTo(_p.cache.body);
+					_p.cache.fixedWrapper
+						.css('position', 'relative');
+				
+					// Move elements with the "skel-ui-fixed" class to fixedWrapper
+						jQuery('.skel-ui-fixed').appendTo(_p.cache.fixedWrapper);
+				
+				// Register locations
+					_p.parent.registerLocation('skel_ui_defaultWrapper', _p.cache.defaultWrapper[0]);
+					_p.parent.registerLocation('skel_ui_fixedWrapper', _p.cache.fixedWrapper[0]);
+					_p.parent.registerLocation('skel_ui_pageWrapper', _p.cache.pageWrapper[0]);
+
+				});
+
+			},
+		
+			initDeviceType: function() {
+				var _p = this;
+
+				var k, a = {
+					ios: '(iPad|iPhone|iPod)',
+					android: 'Android'
+				};
+				
+				for (k in a)
+				{
+					if (navigator.userAgent.match(new RegExp(a[k], 'g')))
+					{
+						_p.deviceType = k;
+						break;
+					}
+				}
+				
+				if (!_p.deviceType)
+					_p.deviceType = 'other';
+
+				_p.isTouch = !!('ontouchstart' in window);
+				_p.eventType = (_p.isTouch ? 'touchend' : 'click');
+			},
+		
+			init: function() {
+				var _p = this;
+				
+				// Device Type
+					_p.initDeviceType();
+
+				// Helpers
+					_p.initHelpers();
+
+				// Objects
+					_p.initObjects();
+
+				// Components
+					_p.initComponents('bar');
+					_p.initComponents('panel');
+
+				// Update state
+					_p.parent.updateState();
+			
+			}
+
+});
