@@ -1,6 +1,6 @@
 /* skel-ui.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
-(function() { var _ = {
+skel.registerPlugin('ui', (function() { var _ = {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Properties
@@ -908,7 +908,6 @@
 
 	}
 
-	// Register plugin
-		skel.registerPlugin('ui', _);
+	return _;
 
-})();
+})());
