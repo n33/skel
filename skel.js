@@ -13,6 +13,8 @@ var skel = (function() { var _ = {
 			resetCSS: false,
 			normalizeCSS: false,
 			useOrientation: false,
+			noConflict: false,
+			noConflictPrefix: 'skel',
 			grid: {
 				containers: 960,
 				collapse: false,
@@ -53,16 +55,17 @@ var skel = (function() { var _ = {
 			g2: '.\\31 2u{width:100%}.\\31 1u{width:91.5%}.\\31 0u{width:83%}.\\39 u{width:74.5%}.\\38 u{width:66%}.\\37 u{width:57.5%}.\\36 u{width:49%}.\\35 u{width:40.5%}.\\34 u{width:32%}.\\33 u{width:23.5%}.\\32 u{width:15%}.\\31 u{width:6.5%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{margin:1% 0 1% 2%;float:left}',
 			g4: '.\\31 2u{width:100%}.\\31 1u{width:91.3333333333%}.\\31 0u{width:82.6666666667%}.\\39 u{width:74%}.\\38 u{width:65.3333333333%}.\\37 u{width:56.6666666667%}.\\36 u{width:48%}.\\35 u{width:39.3333333333%}.\\34 u{width:30.6666666667%}.\\33 u{width:22%}.\\32 u{width:13.3333333333%}.\\31 u{width:4.6666666667%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{margin:2% 0 2% 4%;float:left}',
 			g6: '.\\31 2u{width:100%}.\\31 1u{width:91.1666666667%}.\\31 0u{width:82.3333333333%}.\\39 u{width:73.5%}.\\38 u{width:64.6666666667%}.\\37 u{width:55.8333333333%}.\\36 u{width:47%}.\\35 u{width:38.1666666667%}.\\34 u{width:29.3333333333%}.\\33 u{width:20.5%}.\\32 u{width:11.6666666667%}.\\31 u{width:2.8333333333%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{margin:3% 0 3% 6%;float:left}',
-			gF: '.grid-flush>.row>.\\31 2u{width:100%!important}.grid-flush>.row>.\\31 1u{width:91.6666666667%!important}.grid-flush>.row>.\\31 0u{width:83.3333333333%!important}.grid-flush>.row>.\\39 u{width:75%!important}.grid-flush>.row>.\\38 u{width:66.6666666667%!important}.grid-flush>.row>.\\37 u{width:58.3333333333%!important}.grid-flush>.row>.\\36 u{width:50%!important}.grid-flush>.row>.\\35 u{width:41.6666666667%!important}.grid-flush>.row>.\\34 u{width:33.3333333333%!important}.grid-flush>.row>.\\33 u{width:25%!important}.grid-flush>.row>.\\32 u{width:16.6666666667%!important}.grid-flush>.row>.\\31 u{width:8.3333333333%!important}.grid-flush>.row>.\\31 u,.grid-flush>.row>.\\32 u,.grid-flush>.row>.\\33 u,.grid-flush>.row>.\\34 u,.grid-flush>.row>.\\35 u,.grid-flush>.row>.\\36 u,.grid-flush>.row>.\\37 u,.grid-flush>.row>.\\38 u,.grid-flush>.row>.\\39 u,.grid-flush>.row>.\\31 0u,.grid-flush>.row>.\\31 1u,.grid-flush>.row>.\\31 2u{margin:0!important}',
+			gF: '.grid.flush>.row>.\\31 2u{width:100%!important}.grid.flush>.row>.\\31 1u{width:91.6666666667%!important}.grid.flush>.row>.\\31 0u{width:83.3333333333%!important}.grid.flush>.row>.\\39 u{width:75%!important}.grid.flush>.row>.\\38 u{width:66.6666666667%!important}.grid.flush>.row>.\\37 u{width:58.3333333333%!important}.grid.flush>.row>.\\36 u{width:50%!important}.grid.flush>.row>.\\35 u{width:41.6666666667%!important}.grid.flush>.row>.\\34 u{width:33.3333333333%!important}.grid.flush>.row>.\\33 u{width:25%!important}.grid.flush>.row>.\\32 u{width:16.6666666667%!important}.grid.flush>.row>.\\31 u{width:8.3333333333%!important}.grid.flush>.row>.\\31 u,.grid.flush>.row>.\\32 u,.grid.flush>.row>.\\33 u,.grid.flush>.row>.\\34 u,.grid.flush>.row>.\\35 u,.grid.flush>.row>.\\36 u,.grid.flush>.row>.\\37 u,.grid.flush>.row>.\\38 u,.grid.flush>.row>.\\39 u,.grid.flush>.row>.\\31 0u,.grid.flush>.row>.\\31 1u,.grid.flush>.row>.\\31 2u{margin:0!important}',
 			gR: '.grid .row:after{content:\'\';display:block;clear:both;height:0}.grid .row>:first-child{margin-left:0}.grid .row:first-child>*{margin-top:0}.grid .row:last-child>*{margin-bottom:0}',
-			gCo: '.grid:not(.grid-persistent){width:100%;margin:0}.grid:not(.grid-persistent)>.row{overflow-x:hidden}.grid:not(.grid-persistent)>.row>.\\31 u,.grid:not(.grid-persistent)>.row>.\\32 u,.grid:not(.grid-persistent)>.row>.\\33 u,.grid:not(.grid-persistent)>.row>.\\34 u,.grid:not(.grid-persistent)>.row>.\\35 u,.grid:not(.grid-persistent)>.row>.\\36 u,.grid:not(.grid-persistent)>.row>.\\37 u,.grid:not(.grid-persistent)>.row>.\\38 u,.grid:not(.grid-persistent)>.row>.\\39 u,.grid:not(.grid-persistent)>.row>.\\31 0u,.grid:not(.grid-persistent)>.row>.\\31 1u,.grid:not(.grid-persistent)>.row>.\\31 2u{float:none!important;width:100%!important;margin:1% 0 1% 0!important}.grid:not(.grid-persistent)>.row:first-child>:first-child{margin-top:0}.grid:not(.grid-persistent)>.row:last-child>:last-child{margin-bottom:0}'
+			gCo: '.grid:not(.persistent){width:100%;margin:0}.grid:not(.persistent)>.row{overflow-x:hidden}.grid:not(.persistent)>.row>.\\31 u,.grid:not(.persistent)>.row>.\\32 u,.grid:not(.persistent)>.row>.\\33 u,.grid:not(.persistent)>.row>.\\34 u,.grid:not(.persistent)>.row>.\\35 u,.grid:not(.persistent)>.row>.\\36 u,.grid:not(.persistent)>.row>.\\37 u,.grid:not(.persistent)>.row>.\\38 u,.grid:not(.persistent)>.row>.\\39 u,.grid:not(.persistent)>.row>.\\31 0u,.grid:not(.persistent)>.row>.\\31 1u,.grid:not(.persistent)>.row>.\\31 2u{float:none!important;width:100%!important;margin:1% 0 1% 0!important}.grid:not(.persistent)>.row:first-child>:first-child{margin-top:0}.grid:not(.persistent)>.row:last-child>:last-child{margin-bottom:0}'
 		},
 		presets: {
-			legacy: {
+			'5grid': {
 				prefix: 'style',
 				resetCSS: true,
 				normalizeCSS: false,
 				useOrientation: false,
+				noConflict: true,
 				grid: {
 					containers: 1200
 				},
@@ -491,7 +494,7 @@ var skel = (function() { var _ = {
 									}
 
 								if (!(x = _.getCachedElement('iGC' + w + u)))
-									x = _.cacheElement('iGC' + w + u, _.newInline('.grid-container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
+									x = _.cacheElement('iGC' + w + u, _.newInline('.' + (_.config.noConflict ? _.config.noConflictPrefix + '-' : '') + 'container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
 								
 								console.log('- added inlineGridContainer' + w + u);
 								state.elements.push(x);						
@@ -834,6 +837,12 @@ var skel = (function() { var _ = {
 				}
 			},
 			
+			initNoConflict: function() {
+				_.css.gF = _.css.gF.replace(/\.grid\.flush/g, '.' + _.config.noConflictPrefix +  '-grid.' + _.config.noConflictPrefix + '-flush');
+				_.css.gR = _.css.gR.replace(/\.grid/g, '.' + _.config.noConflictPrefix +  '-grid');
+				_.css.gCo = _.css.gCo.replace(/\.grid:not\(\.persistent\)/g, '.' + _.config.noConflictPrefix +  '-grid:not(.' + _.config.noConflictPrefix + '-persistent)');
+			},
+			
 			init: function() {
 
 				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
@@ -846,6 +855,10 @@ var skel = (function() { var _ = {
 				
 				// Initialize config
 					_.initConfig();
+
+				// No conflict?
+					if (_.config.noConflict)
+						_.initNoConflict();
 
 				// Register locations
 					_.registerLocation('head', document.getElementsByTagName('head')[0]);

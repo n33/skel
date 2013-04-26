@@ -42,6 +42,10 @@
 	article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{background:#fff;color:#000;font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}
 */
 
+/* Container */
+
+	.container { width: 960px; margin: 0 auto; }
+
 /* Grid */
 
 	/* 0% Gutter */
@@ -145,29 +149,25 @@
 
 /* Grid (Flush) */
 
-	.grid-flush > .row > .\31 2u { width: 100% !important; } 
-	.grid-flush > .row > .\31 1u { width: 91.6666666667% !important; } 
-	.grid-flush > .row > .\31 0u { width: 83.3333333333% !important; } 
-	.grid-flush > .row > .\39 u { width: 75% !important; } 
-	.grid-flush > .row > .\38 u { width: 66.6666666667% !important; } 
-	.grid-flush > .row > .\37 u { width: 58.3333333333% !important; } 
-	.grid-flush > .row > .\36 u { width: 50% !important; } 
-	.grid-flush > .row > .\35 u { width: 41.6666666667% !important; } 
-	.grid-flush > .row > .\34 u { width: 33.3333333333% !important; } 
-	.grid-flush > .row > .\33 u { width: 25% !important; } 
-	.grid-flush > .row > .\32 u { width: 16.6666666667% !important; } 
-	.grid-flush > .row > .\31 u { width: 8.3333333333% !important; }
-	.grid-flush > .row > .\31 u, .grid-flush > .row > .\32 u, .grid-flush > .row > .\33 u, .grid-flush > .row > .\34 u, .grid-flush > .row > .\35 u, .grid-flush > .row > .\36 u, .grid-flush > .row > .\37 u, .grid-flush > .row > .\38 u, .grid-flush > .row > .\39 u, .grid-flush > .row > .\31 0u, .grid-flush > .row > .\31 1u, .grid-flush > .row > .\31 2u {
+	.grid.flush > .row > .\31 2u { width: 100% !important; } 
+	.grid.flush > .row > .\31 1u { width: 91.6666666667% !important; } 
+	.grid.flush > .row > .\31 0u { width: 83.3333333333% !important; } 
+	.grid.flush > .row > .\39 u { width: 75% !important; } 
+	.grid.flush > .row > .\38 u { width: 66.6666666667% !important; } 
+	.grid.flush > .row > .\37 u { width: 58.3333333333% !important; } 
+	.grid.flush > .row > .\36 u { width: 50% !important; } 
+	.grid.flush > .row > .\35 u { width: 41.6666666667% !important; } 
+	.grid.flush > .row > .\34 u { width: 33.3333333333% !important; } 
+	.grid.flush > .row > .\33 u { width: 25% !important; } 
+	.grid.flush > .row > .\32 u { width: 16.6666666667% !important; } 
+	.grid.flush > .row > .\31 u { width: 8.3333333333% !important; }
+	.grid.flush > .row > .\31 u, .grid.flush > .row > .\32 u, .grid.flush > .row > .\33 u, .grid.flush > .row > .\34 u, .grid.flush > .row > .\35 u, .grid.flush > .row > .\36 u, .grid.flush > .row > .\37 u, .grid.flush > .row > .\38 u, .grid.flush > .row > .\39 u, .grid.flush > .row > .\31 0u, .grid.flush > .row > .\31 1u, .grid.flush > .row > .\31 2u {
 		margin: 0 !important;
 	}
 
 /* Grid (Persistent) */
 
-	.grid-persistent { }
-
-/* Grid (Container) */
-
-	.grid-container { width: 960px; margin: 0 auto; }
+	.grid.persistent { }
 
 /* Grid (Row) */
 
@@ -192,37 +192,37 @@
 
 /* Grid (Collapse) */
 /*
-	.grid:not(.grid-persistent) {
+	.grid:not(.grid.persistent) {
 		width: 100%;
 		margin: 0;
 	}
 
-	.grid:not(.grid-persistent) > .row {
+	.grid:not(.grid.persistent) > .row {
 		overflow-x: hidden;
 	}
 
-	.grid:not(.grid-persistent) > .row > .\31 u, 
-	.grid:not(.grid-persistent) > .row > .\32 u, 
-	.grid:not(.grid-persistent) > .row > .\33 u, 
-	.grid:not(.grid-persistent) > .row > .\34 u, 
-	.grid:not(.grid-persistent) > .row > .\35 u, 
-	.grid:not(.grid-persistent) > .row > .\36 u, 
-	.grid:not(.grid-persistent) > .row > .\37 u, 
-	.grid:not(.grid-persistent) > .row > .\38 u, 
-	.grid:not(.grid-persistent) > .row > .\39 u, 
-	.grid:not(.grid-persistent) > .row > .\31 0u, 
-	.grid:not(.grid-persistent) > .row > .\31 1u, 
-	.grid:not(.grid-persistent) > .row > .\31 2u {
+	.grid:not(.grid.persistent) > .row > .\31 u, 
+	.grid:not(.grid.persistent) > .row > .\32 u, 
+	.grid:not(.grid.persistent) > .row > .\33 u, 
+	.grid:not(.grid.persistent) > .row > .\34 u, 
+	.grid:not(.grid.persistent) > .row > .\35 u, 
+	.grid:not(.grid.persistent) > .row > .\36 u, 
+	.grid:not(.grid.persistent) > .row > .\37 u, 
+	.grid:not(.grid.persistent) > .row > .\38 u, 
+	.grid:not(.grid.persistent) > .row > .\39 u, 
+	.grid:not(.grid.persistent) > .row > .\31 0u, 
+	.grid:not(.grid.persistent) > .row > .\31 1u, 
+	.grid:not(.grid.persistent) > .row > .\31 2u {
 		float: none !important;
 		width: 100% !important;
 		margin: 1% 0 1% 0 !important;
 	}
 
-	.grid:not(.grid-persistent) > .row:first-child > :first-child {
+	.grid:not(.grid.persistent) > .row:first-child > :first-child {
 		margin-top: 0;
 	}
 
-	.grid:not(.grid-persistent) > .row:last-child > :last-child {
+	.grid:not(.grid.persistent) > .row:last-child > :last-child {
 		margin-bottom: 0;
 	}
 */
