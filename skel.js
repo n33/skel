@@ -70,9 +70,7 @@ var skel = (function() { var _ = {
 			gCo: ':not(.persistent)>.row{overflow-x:hidden}:not(.persistent)>.row>.\\31 u,:not(.persistent)>.row>.\\32 u,:not(.persistent)>.row>.\\33 u,:not(.persistent)>.row>.\\34 u,:not(.persistent)>.row>.\\35 u,:not(.persistent)>.row>.\\36 u,:not(.persistent)>.row>.\\37 u,:not(.persistent)>.row>.\\38 u,:not(.persistent)>.row>.\\39 u,:not(.persistent)>.row>.\\31 0u,:not(.persistent)>.row>.\\31 1u,:not(.persistent)>.row>.\\31 2u{float:none!important;width:100%!important;margin:5px 0 5px 0!important}:not(.persistent)>.row>:first-child{margin-top:0!important}:not(.persistent)>.row:last-child>:last-child{margin-bottom:0!important}'
 		},
 		presets: {
-			'5grid': {
-				prefix: 'style',
-				resetCSS: true,
+			'standard': {
 				breakpoints: {
 					'mobile': {
 						range: '-480',
