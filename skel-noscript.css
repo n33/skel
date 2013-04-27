@@ -218,11 +218,11 @@
 		margin: 1% 0 1% 0 !important;
 	}
 
-	.grid:not(.grid.persistent) > .row:first-child > :first-child {
-		margin-top: 0;
+	.grid:not(.grid.persistent) > .row > :first-child {
+		margin-top: 0 !important;
 	}
 
 	.grid:not(.grid.persistent) > .row:last-child > :last-child {
-		margin-bottom: 0;
+		margin-bottom: 0 !important;
 	}
 */
