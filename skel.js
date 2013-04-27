@@ -1,5 +1,15 @@
 /* skel.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
+/*
+	This is for development purposes only. Use the minified version instead.
+
+	Credits:
+		
+		CSS Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain))
+		Normalize (normalize.css v2.1.1 | MIT License | git.io/normalize) 
+		DOMReady method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
+*/
+
 var skel = (function() { var _ = {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,8 +25,8 @@ var skel = (function() { var _ = {
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
 			noConflict: false,						// If true, (almost) all skel.js classes will be prefixed
 			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
+			containers: 960,						// Width of container elements (px, %, or 'fluid')
 			grid: {
-				containers: 960,					// Width of container elements (px, %, or 'fluid')
 				collapse: false,					// If true, collapse grid structures and force all cells to occupy a full row
 				gutters: 2							// Size of gutters (1, 2, 4, 6, or 0 for no gutters)
 			},
@@ -63,29 +73,22 @@ var skel = (function() { var _ = {
 			'5grid': {
 				prefix: 'style',
 				resetCSS: true,
-				grid: {
-					containers: 1200
-				},
 				breakpoints: {
 					'mobile': {
 						range: '-480',
 						lockViewport: true,
+						containers: 'fluid',
 						grid: {
-							containers: 'fluid',
 							collapse: true
 						}
 					},
 					'desktop': {
 						range: '481-',
-						grid: {
-							containers: 1200
-						}
+						containers: 1200
 					},
 					'1000px': {
 						range: '481-1200',
-						grid: {
-							containers: 960
-						}
+						containers: 960
 					}
 				}
 			}
@@ -434,6 +437,46 @@ var skel = (function() { var _ = {
 									state.elements.push(x);
 								}
 									
+							// inlineContainer*
+								w = parseInt(state.config.containers);
+								
+								// Figure out units
+									if (typeof state.config.containers == 'string'
+									&&	state.config.containers != w)
+									{
+										if (state.config.containers.charAt(state.config.containers.length - 1) == '%')
+										{
+											u ='%';
+											w = Math.min(100, w);
+										}
+										else if (state.config.containers.substring(state.config.containers.length - 2) == 'px')
+										{
+											u = 'px';
+										}
+										else if (state.config.containers == 'fluid')
+										{
+											u = '%';
+											w = 100;
+										}
+										else
+											w = 0;
+									}
+									else
+										u = 'px';
+								
+								// Invalid? Default to 960px
+									if (w == 0)
+									{
+										w = 960;
+										u = 'px';
+									}
+
+								if (!(x = _.getCachedElement('iC' + w + u)))
+									x = _.cacheElement('iC' + w + u, _.newInline('.' + (_.config.noConflict ? _.config.noConflictPrefix + '-' : '') + 'container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
+								
+								console.log('- added inlineContainer' + w + u);
+								state.elements.push(x);						
+
 							// inlineGrid*
 								switch (state.config.grid.gutters)
 								{
@@ -479,46 +522,6 @@ var skel = (function() { var _ = {
 										break;
 								}
 								
-							// inlineGridContainer*
-								w = parseInt(state.config.grid.containers);
-								
-								// Figure out units
-									if (typeof state.config.grid.containers == 'string'
-									&&	state.config.grid.containers != w)
-									{
-										if (state.config.grid.containers.charAt(state.config.grid.containers.length - 1) == '%')
-										{
-											u ='%';
-											w = Math.min(100, w);
-										}
-										else if (state.config.grid.containers.substring(state.config.grid.containers.length - 2) == 'px')
-										{
-											u = 'px';
-										}
-										else if (state.config.grid.containers == 'fluid')
-										{
-											u = '%';
-											w = 100;
-										}
-										else
-											w = 0;
-									}
-									else
-										u = 'px';
-								
-								// Invalid? Default to 960px
-									if (w == 0)
-									{
-										w = 960;
-										u = 'px';
-									}
-
-								if (!(x = _.getCachedElement('iGC' + w + u)))
-									x = _.cacheElement('iGC' + w + u, _.newInline('.' + (_.config.noConflict ? _.config.noConflictPrefix + '-' : '') + 'container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
-								
-								console.log('- added inlineGridContainer' + w + u);
-								state.elements.push(x);						
-
 							// inlineGridCollapse
 								if (state.config.grid.collapse)
 								{

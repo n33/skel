@@ -8,9 +8,9 @@
 	as a fallback in those situations. To use it:
 	
 	1. Decide which breakpoint will be the fallback for non-JS clients, then
-	   make note of its a) container grid width, and b) required stylesheets.
+	   make note of its a) container width, and b) required stylesheets.
 	
-	2. Set the container grid width ("grid-container" class) if yours differs 
+	2. Set the container width ("container" class) if yours differs 
 	   from the default (960px).
 	
 	3. (Optional) Customize other stuff. Do this by uncommenting/commenting out 
@@ -46,7 +46,7 @@
 
 	.container { width: 960px; margin: 0 auto; }
 
-/* Grid */
+/* Grids */
 
 	/* 0% Gutter */
 	/*
@@ -147,82 +147,79 @@
 		}
 	*/
 
-/* Grid (Flush) */
+	/* Modifiers */
 
-	.grid.flush > .row > .\31 2u { width: 100% !important; } 
-	.grid.flush > .row > .\31 1u { width: 91.6666666667% !important; } 
-	.grid.flush > .row > .\31 0u { width: 83.3333333333% !important; } 
-	.grid.flush > .row > .\39 u { width: 75% !important; } 
-	.grid.flush > .row > .\38 u { width: 66.6666666667% !important; } 
-	.grid.flush > .row > .\37 u { width: 58.3333333333% !important; } 
-	.grid.flush > .row > .\36 u { width: 50% !important; } 
-	.grid.flush > .row > .\35 u { width: 41.6666666667% !important; } 
-	.grid.flush > .row > .\34 u { width: 33.3333333333% !important; } 
-	.grid.flush > .row > .\33 u { width: 25% !important; } 
-	.grid.flush > .row > .\32 u { width: 16.6666666667% !important; } 
-	.grid.flush > .row > .\31 u { width: 8.3333333333% !important; }
-	.grid.flush > .row > .\31 u, .grid.flush > .row > .\32 u, .grid.flush > .row > .\33 u, .grid.flush > .row > .\34 u, .grid.flush > .row > .\35 u, .grid.flush > .row > .\36 u, .grid.flush > .row > .\37 u, .grid.flush > .row > .\38 u, .grid.flush > .row > .\39 u, .grid.flush > .row > .\31 0u, .grid.flush > .row > .\31 1u, .grid.flush > .row > .\31 2u {
-		margin: 0 !important;
-	}
+		/* Flush */
 
-/* Grid (Persistent) */
+			.flush > .row > .\31 2u { width: 100% !important; } 
+			.flush > .row > .\31 1u { width: 91.6666666667% !important; } 
+			.flush > .row > .\31 0u { width: 83.3333333333% !important; } 
+			.flush > .row > .\39 u { width: 75% !important; } 
+			.flush > .row > .\38 u { width: 66.6666666667% !important; } 
+			.flush > .row > .\37 u { width: 58.3333333333% !important; } 
+			.flush > .row > .\36 u { width: 50% !important; } 
+			.flush > .row > .\35 u { width: 41.6666666667% !important; } 
+			.flush > .row > .\34 u { width: 33.3333333333% !important; } 
+			.flush > .row > .\33 u { width: 25% !important; } 
+			.flush > .row > .\32 u { width: 16.6666666667% !important; } 
+			.flush > .row > .\31 u { width: 8.3333333333% !important; }
+			.flush > .row > .\31 u, .flush > .row > .\32 u, .flush > .row > .\33 u, .flush > .row > .\34 u, .flush > .row > .\35 u, .flush > .row > .\36 u, .flush > .row > .\37 u, .flush > .row > .\38 u, .flush > .row > .\39 u, .flush > .row > .\31 0u, .flush > .row > .\31 1u, .flush > .row > .\31 2u {
+				margin: 0 !important;
+			}
 
-	.grid.persistent { }
+		/* Persistent */
 
-/* Grid (Row) */
+			.persistent { }
 
-	.grid .row:after {
-		content: '';
-		display: block;
-		clear: both;
-		height: 0;
-	}
+	/* Row */
 
-	.grid .row > :first-child {
-		margin-left: 0;
-	}
+		.row:after {
+			content: '';
+			display: block;
+			clear: both;
+			height: 0;
+		}
 
-	.grid .row:first-child > * {
-		margin-top: 0;
-	}
+		.row > :first-child {
+			margin-left: 0;
+		}
 
-	.grid .row:last-child > * {
-		margin-bottom: 0;
-	}
+		.row:first-child > * {
+			margin-top: 0;
+		}
 
-/* Grid (Collapse) */
-/*
-	.grid:not(.grid.persistent) {
-		width: 100%;
-		margin: 0;
-	}
+		.row:last-child > * {
+			margin-bottom: 0;
+		}
 
-	.grid:not(.grid.persistent) > .row {
-		overflow-x: hidden;
-	}
+	/* Collapsed */
+	/*
+		:not(.persistent) > .row {
+			overflow-x: hidden;
+		}
 
-	.grid:not(.grid.persistent) > .row > .\31 u, 
-	.grid:not(.grid.persistent) > .row > .\32 u, 
-	.grid:not(.grid.persistent) > .row > .\33 u, 
-	.grid:not(.grid.persistent) > .row > .\34 u, 
-	.grid:not(.grid.persistent) > .row > .\35 u, 
-	.grid:not(.grid.persistent) > .row > .\36 u, 
-	.grid:not(.grid.persistent) > .row > .\37 u, 
-	.grid:not(.grid.persistent) > .row > .\38 u, 
-	.grid:not(.grid.persistent) > .row > .\39 u, 
-	.grid:not(.grid.persistent) > .row > .\31 0u, 
-	.grid:not(.grid.persistent) > .row > .\31 1u, 
-	.grid:not(.grid.persistent) > .row > .\31 2u {
-		float: none !important;
-		width: 100% !important;
-		margin: 1% 0 1% 0 !important;
-	}
+		:not(.persistent) > .row > .\31 u, 
+		:not(.persistent) > .row > .\32 u, 
+		:not(.persistent) > .row > .\33 u, 
+		:not(.persistent) > .row > .\34 u, 
+		:not(.persistent) > .row > .\35 u, 
+		:not(.persistent) > .row > .\36 u, 
+		:not(.persistent) > .row > .\37 u, 
+		:not(.persistent) > .row > .\38 u, 
+		:not(.persistent) > .row > .\39 u, 
+		:not(.persistent) > .row > .\31 0u, 
+		:not(.persistent) > .row > .\31 1u, 
+		:not(.persistent) > .row > .\31 2u {
+			float: none !important;
+			width: 100% !important;
+			margin: 1% 0 1% 0 !important;
+		}
 
-	.grid:not(.grid.persistent) > .row > :first-child {
-		margin-top: 0 !important;
-	}
+		:not(.persistent) > .row > :first-child {
+			margin-top: 0 !important;
+		}
 
-	.grid:not(.grid.persistent) > .row:last-child > :last-child {
-		margin-bottom: 0 !important;
-	}
-*/
+		:not(.persistent) > .row:last-child > :last-child {
+			margin-bottom: 0 !important;
+		}
+	*/
