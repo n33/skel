@@ -7,10 +7,10 @@ skel.registerPlugin('ui', (function() { var _ = {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		config: {
-			baseZIndex: 10000,
-			speed: 250,
-			panels: {},
-			bars: {}
+			baseZIndex: 10000,						// Base z-index (should be well above anything else on the page)
+			speed: 250,								// Animation speed (in ms)
+			panels: {},								// Panels
+			bars: {}								// Bars
 		},
 
 		cache: {
@@ -85,20 +85,25 @@ skel.registerPlugin('ui', (function() { var _ = {
 		/* Parse */
 
 			parseSuspend: function(x) {
+				
 				var o = x.get(0);
 				
 				if (o.suspend_skel)
 					o.suspend_skel();
+
 			},
 
 			parseResume: function(x) {
+
 				var o = x.get(0);
 				
 				if (o.resume_skel)
 					o.resume_skel();
+
 			},
 
 			parseInit: function(x) {
+
 				var a,b;
 				
 				var	o = x.get(0),
@@ -232,6 +237,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 		/* View */
 		
 			lockView: function(a) {
+
 				_.cache.window.scrollPos_skel = _.cache.window.scrollTop();
 			
 				// Lock overflow
@@ -278,9 +284,11 @@ skel.registerPlugin('ui', (function() { var _ = {
 								_.cache.activePanel.close_skel();
 						});
 					}
+
 			},
 			
 			unlockView: function(a) {
+				
 				// Unlock overflow
 					_.cache.body.css('overflow-' + a, 'visible');
 				
@@ -309,6 +317,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 					t.find('*').each(function() { _.parseResume(jQuery(this)); });				
 				
 				console.log(o.id + ': ' + o.type + ' resumed');
+
 			},
 		
 			suspendComponent: function(o) {
@@ -323,6 +332,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 					t.find('*').each(function() { _.parseSuspend(jQuery(this)); });				
 				
 				console.log(o.id + ': ' + o.type + ' suspended');
+
 			},
 	
 			initComponent: function(o) {
@@ -704,6 +714,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 		/* Init */
 		
 			initComponents: function(type) {
+
 				var c, k, o, a, i;
 				
 				for (k in _.config[type + 's'])
@@ -746,6 +757,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 			},
 			
 			initHelpers: function() {
+				
 				jQuery.fn.promote_skel = function(n) {
 					this._zIndex = this.css('z-index');
 					this.css('z-index', _.config.baseZIndex + (n ? n : 1));
@@ -865,6 +877,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 			},
 		
 			initDeviceType: function() {
+				
 				var k, a = {
 					ios: '(iPad|iPhone|iPod)',
 					android: 'Android'
@@ -884,6 +897,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 				_.isTouch = !!('ontouchstart' in window);
 				_.eventType = (_.isTouch ? 'touchend' : 'click');
+
 			},
 		
 			init: function() {

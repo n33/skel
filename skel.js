@@ -7,26 +7,26 @@ var skel = (function() { var _ = {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		config: {
-			prefix: null,
-			preloadStyleSheets: false,
-			pollOnce: false,
-			resetCSS: false,
-			normalizeCSS: false,
-			useOrientation: false,
-			noConflict: false,
-			noConflictPrefix: 'skel',
+			prefix: null,							// Stylesheet prefix (null = disable stylesheet management)
+			preloadStyleSheets: false,				// If true, preloads all breakpoint stylesheets ahead of time
+			pollOnce: false,						// If true, only polls the viewport width on load (like 5grid)
+			resetCSS: false,						// If true, inlines Erik Meyer's CSS resets
+			normalizeCSS: false,					// If true, inlines Nicolas Gallagher's normalize.css
+			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
+			noConflict: false,						// If true, (almost) all skel.js classes will be prefixed
+			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
 			grid: {
-				containers: 960,
-				collapse: false,
-				gutters: 2
+				containers: 960,					// Width of container elements (px, %, or 'fluid')
+				collapse: false,					// If true, collapse grid structures and force all cells to occupy a full row
+				gutters: 2							// Size of gutters (1, 2, 4, 6, or 0 for no gutters)
 			},
 			breakpoints: {
-				'all': {
-					range: null,
-					hasStyleSheet: false
+				'all': {							// Breakpoint name
+					range: null,					// Range (x-y, x-, -x, *)
+					hasStyleSheet: false			// If true, skel.js will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
 				}
 			},
-			events: {}
+			events: {}								// Events (eventName: function() { })
 		},
 		
 		isLegacyIE: false,
@@ -116,6 +116,7 @@ var skel = (function() { var _ = {
 			DOMReady: null,
 
 			extend: function(x,y) {
+				
 				var k;
 				
 				for (k in y)
@@ -130,9 +131,11 @@ var skel = (function() { var _ = {
 					else
 						x[k] = y[k];
 				}
+			
 			},
 
 			getViewportWidth: function() {
+			
 				var w, o, r;
 				
 				w = window.innerWidth || document.documentElement.clientWidth;
@@ -165,19 +168,24 @@ var skel = (function() { var _ = {
 					}
 				
 				return w;
+
 			},
 			
 			isActive: function(k) {
+
 				return (_.stateId.indexOf('#' + k) !== -1);
+
 			},
 
 		/* Events */
 
 			bind: function(name, f) {
+
 				if (!_.events[name])
 					_.events[name] = [];
 					
 				_.events[name].push(f);
+
 			},
 			
 			trigger: function(name) {
@@ -195,22 +203,28 @@ var skel = (function() { var _ = {
 		/* Locations */
 		
 			registerLocation: function(id,object) {
+				
 				_.locations[id] = object;
+			
 			},
 
 		/* Elements */
 
 			cacheElement: function(id,object,location,priority) {
+
 				console.log('(cached element ' + id + ')');
+
 				return (_.cache.elements[id] = {
 					'id': id,
 					'object': object,
 					'location': location,
 					'priority': priority
 				});
+
 			},
 
 			cacheBreakpointElement: function(breakpointName,id,object,location,priority) {
+				
 				var o = _.getCachedElement(id);
 				
 				if (!o)
@@ -221,17 +235,22 @@ var skel = (function() { var _ = {
 					console.log('- linked element ' + id + ' to breakpoint ' + breakpointName);
 					_.breakpoints[breakpointName].elements.push(o);
 				}
+
 				return o;
+
 			},
 		
 			getCachedElement: function(id) {
+
 				if (_.cache.elements[id])
 					return _.cache.elements[id];
 					
 				return null;
+
 			},
 		
 			detachAllElements: function() {
+
 				var k, x;
 				
 				for (k in _.cache.elements)
@@ -249,9 +268,11 @@ var skel = (function() { var _ = {
 					if (_.cache.elements[k].onDetach)
 						(_.cache.elements[k].onDetach)();
 				}
+
 			},
 		
 			attachElements: function(list) {
+
 				var a = [], w = [], k, l, x;
 				
 				for (k in list)
@@ -298,6 +319,7 @@ var skel = (function() { var _ = {
 						}
 					});
 				}
+
 			},
 
 		/* Main */
@@ -353,6 +375,7 @@ var skel = (function() { var _ = {
 			},
 		
 			changeState: function(newStateId) {
+
 				var a, k, x, w;
 				var location, state;
 				
@@ -603,64 +626,74 @@ var skel = (function() { var _ = {
 					
 				// 5. Trigger stateChange event
 					_.trigger('stateChange');
+
 			},
 		
 		/* New */
 
 			newMeta: function(name, content) {
+
 				var o = document.createElement('meta');
-				o.name = name;
-				o.content = content;
+					o.name = name;
+					o.content = content;
+
 				return o;
+
 			},
 			
 			newStyleSheet: function(f) {
+				
 				var o = document.createElement('link');
-				o.rel = 'stylesheet';
-				o.type = 'text/css';
-				o.href = f;
+					o.rel = 'stylesheet';
+					o.type = 'text/css';
+					o.href = f;
+				
 				return o;
+
 			},
 			
 			newInline: function(s) {
+
 				var o;
 
 				if (_.isLegacyIE)
 				{
 					o = document.createElement('span');
-					o.innerHTML = '&nbsp;<style type="text/css">' + s + '</style>';
+						o.innerHTML = '&nbsp;<style type="text/css">' + s + '</style>';
 				}
 				else
 				{
 					o = document.createElement('style');
-					o.type = 'text/css';
-					o.innerHTML = s;
+						o.type = 'text/css';
+						o.innerHTML = s;
 				}
 				
 				return o;
+
 			},
 
 			newDiv: function(s) {
-				var o;
 
-				o = document.createElement('div');
-				o.innerHTML = s;
+				var o = document.createElement('div');
+					o.innerHTML = s;
 				
 				return o;
+
 			},
 
 		/* Plugins */
 
 			registerPlugin: function(id, o) {
+				
 				_.plugins[id] = o;
 				o._ = this;
-				
 				_.initPluginConfig(id, o);
-				
 				o.init();
+
 			},
 			
 			initPluginConfig: function(id, o) {
+
 				var s, k = '_skel_' + id + '_config';
 				
 				// Get user config
@@ -685,6 +718,7 @@ var skel = (function() { var _ = {
 						else
 							_.extend(o.config, s);
 					}
+
 			},
 
 		/* Init */
@@ -693,36 +727,37 @@ var skel = (function() { var _ = {
 
 				var c, b, s, f, fArgs = [], preloads = [];
 				
-				function buildTest(k, s)
-				{
-					var f;
+				// Define the test building function
+					function buildTest(k, s)
+					{
+						var f;
 
-					if (typeof s != 'string')
-						f = function(v) { return true; };
-					else if (s.charAt(0) == '-')
-					{
-						fArgs[k] = parseInt(s.substring(1));
-						f = function(v) { return (v <= fArgs[k]); };
+						if (typeof s != 'string')
+							f = function(v) { return true; };
+						else if (s.charAt(0) == '-')
+						{
+							fArgs[k] = parseInt(s.substring(1));
+							f = function(v) { return (v <= fArgs[k]); };
+						}
+						else if (s.charAt(s.length - 1) == '-')
+						{
+							fArgs[k] = parseInt(s.substring(0, s.length - 1));
+							f = function(v) { return (v >= fArgs[k]); };
+						}
+						else if (s.indexOf('-') != -1)
+						{
+							s = s.split('-');
+							fArgs[k] = [parseInt(s[0]), parseInt(s[1])];
+							f = function(v) { return (v >= fArgs[k][0] && v <= fArgs[k][1]); };
+						}
+						else
+						{
+							fArgs[k] = parseInt(s);
+							f = function(v) { return (v == fArgs[k]); };
+						}
+						
+						return f;
 					}
-					else if (s.charAt(s.length - 1) == '-')
-					{
-						fArgs[k] = parseInt(s.substring(0, s.length - 1));
-						f = function(v) { return (v >= fArgs[k]); };
-					}
-					else if (s.indexOf('-') != -1)
-					{
-						s = s.split('-');
-						fArgs[k] = [parseInt(s[0]), parseInt(s[1])];
-						f = function(v) { return (v >= fArgs[k][0] && v <= fArgs[k][1]); };
-					}
-					else
-					{
-						fArgs[k] = parseInt(s);
-						f = function(v) { return (v == fArgs[k]); };
-					}
-					
-					return f;
-				}
 
 				// Get user config
 					if (window._skel_config)
@@ -835,6 +870,7 @@ var skel = (function() { var _ = {
 							};
 						}
 				}
+
 			},
 			
 			initNoConflict: function() {
