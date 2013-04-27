@@ -1,5 +1,9 @@
 /* skel-ui.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
+/*
+	This is for development purposes only. Use the minified version instead.
+*/
+
 skel.registerPlugin('ui', (function() { var _ = {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
