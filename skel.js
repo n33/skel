@@ -584,7 +584,7 @@ var skel = (function() { var _ = {
 						var x, m, p;
 						
 						// mainContent
-							m = 'skel-cell-mainContent';
+							m = (_.config.noConflict ? _.config.noConflictPrefix + '-' : '') + 'cell-mainContent';
 							x = document.getElementsByClassName(m);
 
 							if (x && x.length > 0)
