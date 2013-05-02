@@ -374,7 +374,7 @@ var skel = (function() { var _ = {
 		
 			changeState: function(newStateId) {
 
-				var a, k, x, w;
+				var a, i, k, x, w, aX, aY;
 				var location, state;
 				
 				_.stateId = newStateId;
@@ -537,6 +537,30 @@ var skel = (function() { var _ = {
 									console.log('- added inlineGridNoCollapse');
 									state.elements.push(x);
 								}
+								
+							// Conditionals
+								if (!(x = _.getCachedElement('iCd' + _.stateId)))
+								{
+									aX = [];
+									aY = [];
+									
+									for (k in _.breakpoints)
+									{
+										if (a.indexOf(k) !== -1)
+											aX.push('.not-' + k);
+										else
+											aY.push('.only-' + k);
+									}
+									
+									var s = (aX.length > 0 ? aX.join(',') + '{display:none}' : '') + (aY.length > 0 ? aY.join(',') + '{display:none}' : '');
+									
+									x = _.cacheElement('icD' + _.stateId, _.newInline(
+										s.replace(/\.([0-9])/, '.\\3$1 ')
+									), 'head', 3);
+									
+									console.log('- added inlineConditionals' + _.stateId);
+									state.elements.push(x);
+								}
 
 							// Breakpoint-specific stuff
 								for (k in a)
@@ -550,7 +574,7 @@ var skel = (function() { var _ = {
 											console.log('- added styleSheet' + a[k]);
 											state.elements.push(x);
 										}
-										
+									
 									// Elements
 										if (_.breakpoints[a[k]].elements.length > 0)
 										{
