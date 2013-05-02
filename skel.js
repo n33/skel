@@ -32,7 +32,7 @@ var skel = (function() { var _ = {
 			},
 			breakpoints: {
 				'all': {							// Breakpoint name
-					range: null,					// Range (x-y, x-, -x, *)
+					range: '*',						// Range (x-y, x-, -x, *)
 					hasStyleSheet: false			// If true, skel.js will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
 				}
 			},
@@ -98,7 +98,7 @@ var skel = (function() { var _ = {
 				elements: null
 			},
 			config_breakpoint: {
-				range: null,
+				range: '',
 				lockViewport: false,
 				hasStyleSheet: true,
 				grid: {}
@@ -731,6 +731,9 @@ var skel = (function() { var _ = {
 						var f;
 
 						if (typeof s != 'string')
+							f = function(v) { return false; };
+						
+						if (s == '*')
 							f = function(v) { return true; };
 						else if (s.charAt(0) == '-')
 						{
