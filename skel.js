@@ -803,6 +803,9 @@ var skel = (function() { var _ = {
 
 					// Extend base breakpoint config's grid by config's grid
 						_.extend(_.defaults.config_breakpoint.grid, _.config.grid);
+						
+					// Set base breakpoint config's containers to config's containers
+						_.defaults.config_breakpoint.containers = _.config.containers;
 				
 				// Process breakpoints config
 					for (k in _.config.breakpoints)
