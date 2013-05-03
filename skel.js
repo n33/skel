@@ -22,6 +22,7 @@ var skel = (function() { var _ = {
 			pollOnce: false,						// If true, only polls the viewport width on load (like 5grid)
 			resetCSS: false,						// If true, inlines Erik Meyer's CSS resets
 			normalizeCSS: false,					// If true, inlines Nicolas Gallagher's normalize.css
+			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
 			noConflict: false,						// If true, (almost) all skel.js classes will be prefixed
 			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
@@ -395,6 +396,15 @@ var skel = (function() { var _ = {
 							_.extend(state.config, _.defaults.config_breakpoint);
 							for (k in a)
 								_.extend(state.config, _.breakpoints[a[k]].config);
+
+							// inlineBoxModel
+								if (_.config.boxModel)
+								{
+									if (!(x = _.getCachedElement('iBM')))
+										x = _.cacheElement('iBM', _.newInline(('*{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')), 'head', 2);
+									console.log('- added inlineBoxModel');
+									state.elements.push(x);
+								}
 
 							// inlineReset
 								if (_.config.resetCSS)
