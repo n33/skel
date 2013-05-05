@@ -1,0 +1,55 @@
+body {
+	font-size: 14pt;
+	letter-spacing: 0.035em;
+	line-height: 1.5em;
+}
+
+h1 {
+	font-size: 1.25em;
+}
+
+h2 {
+	font-size: 1.1em;
+	margin-bottom: 0.5em;
+}
+
+.container {
+	padding: 0 2em 0 2em;
+}
+
+.button {
+	font-size: 1.25em;
+	padding: 0.75em 2em 0.75em 2em;
+}
+
+#header {
+	margin-top: 3em;
+}
+
+#nav {
+	text-align: right;
+}
+
+#nav a {
+	margin-left: 2em;
+}
+
+#hero {
+	border-radius: 0.5em;
+	margin: 2em 0 2em 0;
+	padding: 3em 0 3em 0;
+}
+
+#hero h2 {
+	font-size: 2.5em;
+	margin-bottom: 0.75em;
+}
+
+#hero p {
+	font-size: 1.25em;
+	margin-bottom: 1.5em;
+}
+
+#footer {
+	margin: 3em 0 3em 0;
+}

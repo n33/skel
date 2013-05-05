@@ -1,0 +1,57 @@
+body {
+	font-size: 12.5pt;
+	line-height: 1.5em;
+}
+
+h1 {
+	font-size: 1.5em;
+	margin-bottom: 1em;
+}
+
+h2 {
+	font-size: 1.25em;
+	margin-bottom: 0.5em;
+}
+
+section {
+	padding-bottom: 2em;
+}
+
+.container {
+	padding: 0 1em 0 1em;
+}
+
+.button {
+	font-size: 1.25em;
+	padding: 0.75em 2em 0.75em 2em;
+}
+
+#header {
+	margin-top: 2.5em;
+	text-align: center;
+}
+
+#nav a {
+	margin: 0 0.5em 0 0.5em;
+}
+
+#hero {
+	border-radius: 0.5em;
+	line-height: 2em;
+	margin: 2em 0 2em 0;
+	padding: 3em 2em 3em 2em;
+}
+
+#hero h2 {
+	font-size: 2em;
+	margin-bottom: 0.75em;
+}
+
+#hero p {
+	font-size: 1.25em;
+	margin-bottom: 1.5em;
+}
+
+#footer {
+	margin-bottom: 2em;
+}
