@@ -21,7 +21,7 @@ var skel = (function() { var _ = {
 			preloadStyleSheets: false,				// If true, preloads all breakpoint stylesheets ahead of time
 			pollOnce: false,						// If true, only polls the viewport width on load (like 5grid)
 			resetCSS: false,						// If true, inlines Erik Meyer's CSS resets
-			normalizeCSS: false,					// If true, inlines Nicolas Gallagher's normalize.css
+			normalizeCSS: false,					// If true, inlines normalize.css
 			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
 			noConflict: false,						// If true, (almost) all skel.js classes will be prefixed

@@ -6,12 +6,12 @@
 			<section class="6u">
 				<span class="icon icon-th featured"></span>
 				<h3>CSS Grid System</h3>
-				<p>A 12 column CSS grid system with powerful features and a clear, concise, simple to use syntax.</p>
+				<p>A 12 column CSS grid system with powerful features and a concise, simple to use syntax.</p>
 			</section>
 			<section class="6u">
 				<span class="icon icon-custom-responsive featured"></span>
 				<h3>Breakpoint Handler</h3>
-				<p>A streamlined replacement for CSS media queries that's smarter and super easy to work with.</p>
+				<p>A streamlined replacement for CSS media queries that's intelligent and extremely easy to work with.</p>
 			</section>
 		</div>
 		<div class="row">
@@ -28,5 +28,5 @@
 		</div>
 	</section>
 	<p>All designed to work together, and all designed to fit in just a single 18kb file. skel.js also has no 
-	dependencies and will play nice with other libraries and frameworks.</p>
+	dependencies and will play nice with (most) other libraries and frameworks.</p>
 </section>

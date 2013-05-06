@@ -56,6 +56,6 @@ $(function() {
 		})();
 		
 	// Top bar
-		$.scrollzer([ 'top', 'how', 'example', 'setup', 'using' ]);
+		$.scrollzer([ 'top', 'how', 'example', 'setup', 'usage', 'config', 'license', 'credits', 'about' ]);
 
 });

@@ -12,7 +12,6 @@
 		<script src="assets/js/skel.min.js"></script>
 	</head>
 	<body>
-
 		<div id="bar">
 			<div class="container">
 				<h1>skel.js</h1>
@@ -21,40 +20,32 @@
 					<a id="how-link" href="#how">How It Works</a>
 					<a id="example-link" href="#example">An Example</a>
 					<a id="setup-link" href="#setup">Setting Up</a>
-					<a id="using-link" href="#using">Using skel.js</a>
+					<a id="usage-link" href="#usage">Usage</a>
+					<a id="config-link" href="#config">Configuration Reference</a>
+					<a id="license-link" href="#license">License</a>
+					<a id="credits-link" href="#credits">Credits</a>
+					<a id="about-link" href="#about">About</a>
 				</nav>
 			</div>
 		</div>
 		
-		<!-- ************************************************************************** -->
-		<!-- * Top                                                                    * -->
-		<!-- ************************************************************************** -->
-
 		<?php require('1-top.php'); ?>
-
-		<!-- ************************************************************************** -->
-		<!-- * How It Works                                                           * -->
-		<!-- ************************************************************************** -->
 
 		<?php require('2-how.php'); ?>
 
-		<!-- ************************************************************************** -->
-		<!-- An Example                                                               * -->
-		<!-- ************************************************************************** -->
-
 		<?php require('3-example.php'); ?>
-
-		<!-- ************************************************************************** -->
-		<!-- Setting Up                                                               * -->
-		<!-- ************************************************************************** -->
 
 		<?php require('4-setup.php'); ?>
 
-		<!-- ************************************************************************** -->
-		<!-- Using skel.js                                                            * -->
-		<!-- ************************************************************************** -->
+		<?php require('5-usage.php'); ?>
 
-		<?php require('5-using.php'); ?>
+		<?php require('6-config.php'); ?>
+
+		<?php require('7-license.php'); ?>
+
+		<?php require('8-credits.php'); ?>
+
+		<?php require('9-about.php'); ?>
 
 	</body>
 </html>

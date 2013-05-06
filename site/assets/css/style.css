@@ -43,7 +43,7 @@
 		font-family: 'Source Sans Pro', sans-serif;
 		font-weight: 400;
 		color: #626769;
-		font-size: 15pt;
+		font-size: 14pt;
 		line-height: 1.5em;
 		letter-spacing: 0.035em;
 	}
@@ -160,12 +160,17 @@
 		{
 			font-weight: 600;
 			color: #323739;
-			margin: 0 0 1em 0;
+			margin: 2em 0 1em 0;
 		}
 
 		dl.default dd
 		{
 			padding-left: 1.5em;
+		}
+		
+		dl.default dt:first-child
+		{
+			margin-top: 0;
 		}
 
 	ul.default
@@ -321,6 +326,17 @@
 				color: #fff;
 			}
 
+	pre
+	{
+		background: #272b2d;
+		color: #ddd;
+		margin: 0 auto 2em auto;
+		padding: 0.5em 0 0.5em 0;
+		font-family: 'Source Code Pro';
+		font-size: 0.8em;
+		line-height: 32px;
+	}
+
 	.hicode
 	{
 		position: relative;
@@ -471,6 +487,17 @@
 			{
 				border-bottom-width: 0.75em;
 			}
+
+	.demo-grid > .row > *,
+	.demo-grid > .row > * > .row > *
+	{
+		box-shadow: inset 0px 0px 0px 2px #D4D9DB;
+		background: #F4F9FB;
+		height: 4em;
+		line-height: 4em;
+		text-align: center;
+		border-radius: 0.25em;
+	}
 
 /*********************************************************************************/
 /* Icons                                                                         */
@@ -1024,3 +1051,12 @@
 				{
 					border-radius: 0.25em;
 				}
+
+/*********************************************************************************/
+/* usage                                                                         */
+/*********************************************************************************/
+
+	#usage-grids-examples .hicode
+	{
+		margin-bottom: 0;
+	}

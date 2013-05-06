@@ -13,15 +13,15 @@
 		&lt;script src="skel.min.js"&gt;
 		// Starts an inline configuration (one of two ways to configure skel.js).
 		{
-			// Determines our stylesheet names. Used in conjunction with the breakpoint names below. In this case, we're telling skel.js to look for: "style.css", "style-wide.css", "style-narrow.css", and "style-mobile.css".
+			// Determines our stylesheet names. Used in conjunction with the breakpoint names below. In this case, we're telling skel.js to look for "style.css" (our global stylesheet) and "style-wide.css", "style-narrow.css", and "style-mobile.css" (our breakpoint stylesheets).
 			prefix: "style",
-			// Resets our browser CSS so we have a nice clean slate.
+			// Resets the browser CSS so we have a nice clean slate.
 			resetCSS: true,
 			// Sets the global box model to "border-box".
 			boxModel: "border",
 			// Sets global grid options. In this case we're just going to set the gutter size to 2%.
 			grid: { gutters: 2 },
-			// Sets up our breakpoints, which determine the stylesheets and options to apply when the viewport width is within a specified range. Any number of breakpoints can be created and their ranges can even overlap (allowing more than one to be active).
+			// Sets up the breakpoint handler, which determines the stylesheets and options to use at different viewport widths. Any number of breakpoints can be created and their ranges can even overlap (allowing more than one to be active for a given viewport width).
 			breakpoints: {
 				// A breakpoint. In this case it's called "wide", applies when the viewport width is at least 1200px, uses 1140px containers, and 4% gutters on grids.
 				wide: { range: "1200-", containers: 1140, grid: { gutters: 4 } },
@@ -124,7 +124,7 @@
 					<h4>style.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Global styles. Gets loaded regardless of the active breakpoint.
+							Global Stylesheet: Gets loaded regardless of the active breakpoint.
 						</header>
 <pre>
 body {
@@ -169,7 +169,7 @@ h1, h2, h3, h4, h5, h6 {
 					<h4>style-wide.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Only applies when the <strong>wide</strong> breakpoint is active (1200px and up).
+							Breakpoint Stylesheet: Only applies when the <strong>wide</strong> breakpoint is active (1200px and up).
 						</header>
 <pre>
 body {
@@ -230,7 +230,7 @@ h2 {
 					<h4>style-narrow.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Only applies when the <strong>narrow</strong> breakpoint is active (481px - 1199px).
+							Breakpoint Stylesheet: Only applies when the <strong>narrow</strong> breakpoint is active (481px - 1199px).
 						</header>
 <pre>
 body {
@@ -295,7 +295,7 @@ h2 {
 					<h4>style-mobile.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Only applies when the <strong>mobile</strong> breakpoint is active (480px and below).
+							Breakpoint Stylesheet: Only applies when the <strong>mobile</strong> breakpoint is active (480px and below).
 						</header>
 <pre>
 body {
@@ -372,8 +372,7 @@ section {
 					<iframe src="example/index.html" scrolling="no"></iframe>
 				</div>
 				<div class="actions"><a href="example/index.html" target="_blank" class="button icon icon-external-link">Open in New Window</a></div>
-				<p>And that's all there is to it. For a more in depth look, <a href="#">download</a> the example<br class="not-narrow" />
-				or continue on to the <a href="#">Config Reference</a> and the <a href="#">Class Reference</a>.</p>
+				<p>And that's all there is to it. For a more in depth look, <a href="#">download</a> the example or continue on to <a href="#setup">Setting Up</a>.</p>
 			</div>
 		</li>
 	</ol>
