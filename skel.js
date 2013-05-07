@@ -339,6 +339,9 @@ var skel = (function() { var _ = {
 							newStateId += '#' + k;
 					}
 			
+				if (newStateId === '')
+					newStateId = '#';
+			
 				// State changed?
 					if (newStateId !== _.stateId)
 						_.changeState(newStateId);
@@ -394,7 +397,11 @@ var skel = (function() { var _ = {
 							state = _.cache.states[_.stateId];
 
 						// Build composite configuration
-							a = _.stateId.substring(1).split('#');
+							if (_.stateId === '#')
+								a = [];
+							else
+								a = _.stateId.substring(1).split('#');
+
 							_.extend(state.config, _.defaults.config_breakpoint);
 							for (k in a)
 								_.extend(state.config, _.breakpoints[a[k]].config);
