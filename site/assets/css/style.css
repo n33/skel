@@ -932,12 +932,28 @@
 		font-size: 3.5em;
 		box-shadow: 0 0 0 0.2em rgba(50,55,57,0.1);
 	}
+
+		.icon.featured.icon-th:before
+		{
+			font-size: 75px;
+		}
 	
 		.icon.featured.icon-plus-sign:before
 		{
 			position: relative;
 			left: 0.01em;
 			top: -0.01em;
+			font-size: 75px;
+		}
+	
+		.icon.featured.icon-custom-responsive:before
+		{
+			font-size: 60px;
+		}
+	
+		.icon.featured.icon-custom-css:before
+		{
+			font-size: 60px;
 		}
 	
 /*********************************************************************************/
