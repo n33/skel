@@ -29,6 +29,6 @@
 			</section>
 		</div>
 	</section>
-	<p class="summary">All designed to work together, and all designed to fit in a single 18kb file (minified). 
+	<p class="summary">All designed to work together, and all designed to fit in a single 19kb file (minified). 
 	skel.js also has no dependencies and will play nice with (most) other libraries and frameworks.</p>
 </section>
