@@ -115,6 +115,7 @@ var skel = (function() { var _ = {
 		/* Helper */
 
 			DOMReady: null,
+			indexOf: null,
 
 			extend: function(x,y) {
 				
@@ -174,7 +175,7 @@ var skel = (function() { var _ = {
 			
 			isActive: function(k) {
 
-				return (_.stateId.indexOf('#' + k) !== -1);
+				return (_.indexOf(stateId,'#' + k) !== -1);
 
 			},
 
@@ -565,7 +566,7 @@ var skel = (function() { var _ = {
 									
 									for (k in _.breakpoints)
 									{
-										if (a.indexOf(k) !== -1)
+										if (_.indexOf(a,k) !== -1)
 											aX.push('.not-' + k);
 										else
 											aY.push('.only-' + k);
@@ -788,7 +789,7 @@ var skel = (function() { var _ = {
 							fArgs[k] = parseInt(s.substring(0, s.length - 1));
 							f = function(v) { return (v >= fArgs[k]); };
 						}
-						else if (s.indexOf('-') != -1)
+						else if (_.indexOf(s,'-') != -1)
 						{
 							s = s.split('-');
 							fArgs[k] = [parseInt(s[0]), parseInt(s[1])];
@@ -941,8 +942,9 @@ var skel = (function() { var _ = {
 				// Initialize DOMReady method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
 					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
 
-				// Workaround: Add getElementsByClassName to legacy versions of IE
+				// Workaround: Legacy IE shit
 					var d = document;if (!d.getElementsByClassName) d.getElementsByClassName = function(className) { return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); }
+					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
 				
 				// Initialize config
 					_.initConfig();
