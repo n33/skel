@@ -86,11 +86,11 @@
 						<td><em>{ "all": { range: "*", hasStyleSheet: false } }</em></td>
 					</tr>
 				</table>
-				<p>The list of breakpoints the breakpoint handler will use. Consists of an object in the following format:</p>
+				<p>Your breakpoints, listed in the following format:</p>
 <pre>{
-  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
-  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
-  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
   ...
 }</pre>
 							<p>You can also use the following shorthand format if you only need to specify a range for each breakpoint:</p>
@@ -101,7 +101,7 @@
   ...
 }</pre>
 				<p><strong>Note:</strong> Since breakpoint ranges are allowed to overlap, more than one can be active at any given time.
-				When this happens, the options of each are combined (in order, with those defined last taking precedence).</p>
+				When this happens, the options of each are combined in order with those defined <strong>last</strong> taking precedence.</p>
 			</dd>
 			<dt id="config-options-resetCSS">resetCSS</dt>
 			<dd>
@@ -157,10 +157,9 @@
 						<td><em>false</em></td>
 					</tr>
 				</table>
-				<p>For simplicity, skel.js ignores device orientation (where applicable) and assumes it's always being
+				<p>For simplicity, skel.js ignores device orientation (where applicable) and always assumes it's being
 				used in portrait mode. This results in the same viewport width regardless of actual orientation and greatly
-				simplifies breakpoint configuration. However, if you don't want this to happen and instead want orientation
-				to be a factor, set this to <em>true</em>.</p>
+				simplifies breakpoint configuration. However, if you do want orientation to be a factor, set this to <em>true</em>.</p>
 			</dd>
 			<dt id="config-options-preloadStyleSheets">preloadStyleSheets</dt>
 			<dd>
@@ -190,7 +189,7 @@
 					</tr>
 				</table>
 				<p>If <em>true</em>, breakpoint checks will only be performed the first time the page is loaded, disabling
-				switching on resize.</p>
+				breakpoint switching on resize.</p>
 			</dd>
 		</dl>
 	</section>
@@ -314,7 +313,7 @@
 					</tr>
 				</table>
 				<p>If <em>true</em>, all cells (except those in <a href="#usage-grid-modifiers-persistent">persistent</a> grids) are forced to be
-				100% wide regardless of their unit size ("collapsing" the grid). 
+				100% wide regardless of their actual unit size ("collapsing" the grid). 
 				Should only be enabled on mobile-oriented breakpoints.</p>
 			</dd>
 		</dl>

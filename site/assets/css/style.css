@@ -248,16 +248,16 @@
 			padding-top: 0;
 		}
 
-			ol.major li > h2:first-child,
-			ol.major li > h3:first-child,
-			ol.major li > h4:first-child
+			ol.major > li > h2:first-child,
+			ol.major > li > h3:first-child,
+			ol.major > li > h4:first-child
 			{
 				margin: 0 0 1.5em 0;
 			}
 		
-			ol.major li > h2:first-child:before,
-			ol.major li > h3:first-child:before,
-			ol.major li > h4:first-child:before
+			ol.major > li > h2:first-child:before,
+			ol.major > li > h3:first-child:before,
+			ol.major > li > h4:first-child:before
 			{
 				content: counter(li);
 				counter-increment: li;
@@ -387,6 +387,7 @@
 		font-size: 0.8em;
 		line-height: 32px;
 		border-radius: 0.25em;
+		text-align: left;
 	}
 
 	pre

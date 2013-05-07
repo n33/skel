@@ -25,7 +25,7 @@
 			<section class="6u">
 				<span class="icon icon-plus-sign featured"></span>
 				<h3>Plugin Support</h3>
-				<p>Opens the door to doing even more with skel.js, both now (with the <a href="/ui">skel-ui.js</a> plugin) and in the future.</p>
+				<p>Opens the door to doing even more with skel.js, both now (with the upcoming UI plugin) and into the future.</p>
 			</section>
 		</div>
 	</section>

@@ -122,7 +122,7 @@
 			<dl class="default">
 				<dt>flush</dt>
 				<dd>
-					Removes the gutters between each cell (equivalent to setting gutters to <em>0</em> in your configuration, only more localized).
+					Removes the gutters between each cell (similar to setting gutters to <em>0</em> in your configuration, only localized to a particular row/group of rows).
 				</dd>
 				<dt id="usage-grid-modifiers-persistent">persistent</dt>
 				<dd>
@@ -346,20 +346,28 @@
 	</section>
 	<section class="sub" id="usage-noscript">
 		<h3>&lt;noscript&gt; Fallback</h3>
-		<p>skel.js needs JS to do its thing, so clients who have it disabled will be greeted with an experience
+		<p>skel.js needs JS to work, so users with it disabled (including most robots) will be greeted with something
 		reminiscent of the WWW circa 1993. To counter this:</p>
 		<ol class="default">
-			<li>Download <a href="#">skel-noscript.css</a>.</li>
+			<li>Download the noscript stylesheet (<a href="files/skel-noscript.css">skel-noscript.css</a>).</li>
 			<li>Decide on which of your breakpoints best represents your site (hint: most likely the one targeting desktops).</li>
-			<li>Go through the stylesheet and comment/uncomment stuff to match your breakpoint.</li>
+			<li>Go through the noscript stylesheet and comment/uncomment stuff to match your breakpoint.</li>
 			<li>
-				<p>Add this to your <code>&lt;head&gt;</code> element:</p>
+				<p>Add a <code>&lt;noscript&gt;</code> block to your <code>&lt;head&gt;</code> element that adds the noscript
+				stylesheet, your global stylesheet, and all stylesheets that apply to your breakpoint. For example</p>
 				<pre>
-&lt;noscript&gt;&lt;link rel="stylesheet" href="skel-noscript.css" /&gt;&lt;/noscript&gt;
+&lt;noscript&gt;
+	// The noscript stylesheet.
+	&lt;link rel="stylesheet" href="skel-noscript.css" /&gt;
+	// Global stylesheet.
+	&lt;link rel="stylesheet" href="style.css" /&gt;
+	// Breakpoint stylesheet for "wide".
+	&lt;link rel="stylesheet" href="style-wide.css" /&gt;	
+&lt;/noscript&gt;
 				</pre>
 			</li>
 		</ol>
-		<p>And there you go. Clients with JS disabled will now have an experience almost identical to that of their
-		JS-enabled counterparts (minus a few things like responsiveness).</p>
+		<p>And there you go. Users with JS disabled will now have an experience almost identical to that of their
+		JS-enabled counterparts (minus the responsiveness).</p>
 	</section>
 </section>

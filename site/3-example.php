@@ -25,7 +25,7 @@
 			grid: { gutters: 2 },
 			// Sets up the breakpoint handler, which determines the stylesheets and options to use at different viewport widths. Any number of breakpoints can be created and their ranges can even overlap (allowing more than one to be active at a time).
 			breakpoints: {
-				// A breakpoint. In this case it's called "wide", applies when the viewport width is at least 1200px, uses 1140px containers, and 4% gutters on grids (overriding the global 2% setting we set earlier).
+				// A breakpoint. In this case it's called "wide", applies when the viewport width is at least 1200px, uses 1140px containers, and 4% gutters on grids (overriding the global 2% we set earlier).
 				wide: { range: "1200-", containers: 1140, grid: { gutters: 4 } },
 				// Another breakpoint. Kicks in between 481px and 1199px and uses 960px containers.
 				narrow: { range: "481-1199", containers: 960 },
@@ -377,5 +377,5 @@ section {
 			</div>
 		</li>
 	</ol>
-	<p class="summary">And that's all there is to it. For a more in depth look, <a href="#">download</a> the actual example or continue on to <a href="#setup">Setting Up</a>.</p>
+	<p class="summary">And that's all there is to it. For a more in depth look, <a href="files/example.zip">download</a> the actual example or continue on to <a href="#setup">Setting Up</a>.</p>
 </section>

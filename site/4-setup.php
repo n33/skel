@@ -54,12 +54,12 @@
 	</section>
 	<section class="sub">
 		<h3>2. Get Configured</h3>
-		<p>The next (and final) step is actually building your configuration so you can use this thing. Three ways to go about this:</p>
+		<p>The next step is to build your configuration. Three ways to go about this:</p>
 		<section>
 			<h4>Option 1: Use defaults</h4>
 			<p>Simply loading up skel.js without a configuration like so:</p>
 			<pre>&lt;script src="skel.js"&gt;&lt;/script&gt;</pre>
-			<p>will result in the following defaults:</p>
+			<p>Will result in the following defaults:</p>
 			<ul class="default">
 				<li>No stylesheets</li>
 				<li>No breakpoints</li>
@@ -70,9 +70,9 @@
 		</section>
 		<section>
 			<h4>Option 2: Use a preset</h4>
-			<p>Presets are, not surprisingly, preset configurations. You can use one like this:</p>
+			<p>Presets are, as the name implies, preset configurations. You can use one like this:</p>
 			<pre>&lt;script src="skel.js"&gt;{preset:<em>name_of_preset</em>}&lt;/script&gt;</pre>
-			<p>where <em>name_of_preset</em> is any of the following:</p>
+			<p>Where <em>name_of_preset</em> is any of the following:</p>
 			<dl class="default">
 				<dt>standard</dt>
 				<dd>
