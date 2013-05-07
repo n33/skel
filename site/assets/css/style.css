@@ -219,12 +219,13 @@
 
 	ol.default
 	{
-		counter-reset: li;
+		list-style: decimal;
+		margin-left: 1.25em;
 	}
 
 		ol.default > li
 		{
-			padding-top: 4em;
+			padding-top: 1.25em;			
 		}
 		
 		ol.default > li:first-child
@@ -232,16 +233,31 @@
 			padding-top: 0;
 		}
 
-			ol.default li > h2:first-child,
-			ol.default li > h3:first-child,
-			ol.default li > h4:first-child
+	ol.major
+	{
+		counter-reset: li;
+	}
+
+		ol.major > li
+		{
+			padding-top: 4em;
+		}
+		
+		ol.major > li:first-child
+		{
+			padding-top: 0;
+		}
+
+			ol.major li > h2:first-child,
+			ol.major li > h3:first-child,
+			ol.major li > h4:first-child
 			{
 				margin: 0 0 1.5em 0;
 			}
 		
-			ol.default li > h2:first-child:before,
-			ol.default li > h3:first-child:before,
-			ol.default li > h4:first-child:before
+			ol.major li > h2:first-child:before,
+			ol.major li > h3:first-child:before,
+			ol.major li > h4:first-child:before
 			{
 				content: counter(li);
 				counter-increment: li;
@@ -900,7 +916,7 @@
 		.icon-yelp:before                 { content: "\f328"; }
 		
 		.icon-custom-responsive:before    { content: "\f108\e000\f10b"; font-size: 0.9em; letter-spacing: -0.035em; }
-		.icon-custom-css:before           { font-family: sans-serif; content: "{\00a0}"; font-weight: bold; font-size: 0.975em; position: relative; top: -0.125em;}
+		.icon-custom-css:before           { font-family: sans-serif; content: "{\00a0}"; font-weight: bold; font-size: 0.975em; position: relative; top: -0.14em; left: 0.015em; }
 		
 	.icon.featured
 	{
@@ -915,6 +931,13 @@
 		font-size: 3.5em;
 		box-shadow: 0 0 0 0.2em rgba(50,55,57,0.1);
 	}
+	
+		.icon.featured.icon-plus-sign:before
+		{
+			position: relative;
+			left: 0.01em;
+			top: -0.01em;
+		}
 	
 /*********************************************************************************/
 /* Top                                                                            */

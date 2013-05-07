@@ -9,8 +9,7 @@
 		<script src="assets/js/jquery.selectorr-0.1.js"></script>
 		<script src="assets/js/jquery.scrollzer-0.1.js"></script>
 		<script src="assets/js/config.js"></script>
-		<!--<script src="assets/js/skel.min.js"></script>-->
-		<script src="../skel.js"></script>
+		<script src="assets/js/skel.min.js"></script>
 	</head>
 	<body>
 		

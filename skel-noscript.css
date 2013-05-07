@@ -1,34 +1,11 @@
 /* skel.js v0.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 /*
 
-	HEY! READ THIS FIRST!
+	HEY YO. READ THIS FIRST:
+	
+	http://skeljs.org/#usage-noscript
 
-	skel.js relies on JS to load its base styles and manage breakpoints. For folks
-	who have JS disabled this obviously won't work, so this backup stylesheet serves
-	as a fallback in those situations. To use it:
-	
-	1. Decide which breakpoint will be the fallback for non-JS clients, then
-	   make note of its a) container width, and b) required stylesheets.
-	
-	2. Set the container width ("container" class) if yours differs 
-	   from the default (960px).
-	
-	3. (Optional) Customize other stuff. Do this by uncommenting/commenting out 
-	   the sections you need/don't need.
-	
-	4. Add a <noscript> block to your <head> element to pull in this stylesheet
-	   and your chosen breakpoint's required stylesheets. Should look a bit
-	   like this:
-	
-	   <noscript>
-		<link rel="stylesheet" href="skel-noscript.css" />
-		<link rel="stylesheet" href="style.css" />
-		<link rel="stylesheet" href="style-desktop.css" />
-		<link rel="stylesheet" href="style-widescreen.css" />
-	   </noscript>
-
-	5. (Optional) If everything works as expected, delete the unused stuff from
-	   this file *or* just run it through a minifier (like refresh-sf.com/yui)
+	THX.
 
 */
 
@@ -42,110 +19,144 @@
 	article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{background:#fff;color:#000;font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}
 */
 
+/* Box Model */
+/*
+	*, *:before, *:after {
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+*/
+
 /* Container */
 
 	.container { width: 960px; margin: 0 auto; }
 
-/* Grids */
+/* Grid */
 
-	/* 0% Gutter */
-	/*
-		.\31 2u { width: 100%; }
-		.\31 1u { width: 91.6666666667%; }
-		.\31 0u { width: 83.3333333333%; }
-		.\39 u { width: 75%; }
-		.\38 u { width: 66.6666666667%; }
-		.\37 u { width: 58.3333333333%; }
-		.\36 u { width: 50%; }
-		.\35 u { width: 41.6666666667%; }
-		.\34 u { width: 33.3333333333%; }
-		.\33 u { width: 25%; }
-		.\32 u { width: 16.6666666667%; }
-		.\31 u { width: 8.3333333333%; }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-			margin: 0;
-			float: left;
+	/* Cells */
+
+		/* 0% Gutter */
+		/*
+			.\31 2u { width: 100%; }
+			.\31 1u { width: 91.6666666667%; }
+			.\31 0u { width: 83.3333333333%; }
+			.\39 u { width: 75%; }
+			.\38 u { width: 66.6666666667%; }
+			.\37 u { width: 58.3333333333%; }
+			.\36 u { width: 50%; }
+			.\35 u { width: 41.6666666667%; }
+			.\34 u { width: 33.3333333333%; }
+			.\33 u { width: 25%; }
+			.\32 u { width: 16.6666666667%; }
+			.\31 u { width: 8.3333333333%; }
+			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+				margin: 0;
+				float: left;
+			}
+		*/
+
+		/* 1% Gutter */
+		/*
+			.\31 2u { width: 100%; }
+			.\31 1u { width: 91.5833333333%; }
+			.\31 0u { width: 83.1666666667%; }
+			.\39 u { width: 74.75%; }
+			.\38 u { width: 66.3333333333%; }
+			.\37 u { width: 57.9166666667%; }
+			.\36 u { width: 49.5%; }
+			.\35 u { width: 41.0833333333%; }
+			.\34 u { width: 32.6666666667%; }
+			.\33 u { width: 24.25%; }
+			.\32 u { width: 15.8333333333%; }
+			.\31 u { width: 7.4166666667%; }
+			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+				margin: 0.5% 0 0.5% 1%;
+				float: left;
+			}
+		*/
+
+		/* 2% Gutter */
+
+			.\31 2u { width: 100%; }
+			.\31 1u { width: 91.5%; }
+			.\31 0u { width: 83%; }
+			.\39 u { width: 74.5%; }
+			.\38 u { width: 66%; }
+			.\37 u { width: 57.5%; }
+			.\36 u { width: 49%; }
+			.\35 u { width: 40.5%; }
+			.\34 u { width: 32%; }
+			.\33 u { width: 23.5%; }
+			.\32 u { width: 15%; }
+			.\31 u { width: 6.5%; }
+			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+				margin: 1% 0 1% 2%;
+				float: left;
+			}
+
+		/* 4% Gutter */
+		/*
+			.\31 2u { width: 100%; }
+			.\31 1u { width: 91.3333333333%; }
+			.\31 0u { width: 82.6666666667%; }
+			.\39 u { width: 74%; }
+			.\38 u { width: 65.3333333333%; }
+			.\37 u { width: 56.6666666667%; }
+			.\36 u { width: 48%; }
+			.\35 u { width: 39.3333333333%; }
+			.\34 u { width: 30.6666666667%; }
+			.\33 u { width: 22%; }
+			.\32 u { width: 13.3333333333%; }
+			.\31 u { width: 4.6666666667%; }
+			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+				margin: 2% 0 2% 4%;
+				float: left;
+			}
+		*/
+
+		/* 6% Gutter */
+		/*
+			.\31 2u { width: 100%; }
+			.\31 1u { width: 91.1666666667%; }
+			.\31 0u { width: 82.3333333333%; }
+			.\39 u { width: 73.5%; }
+			.\38 u { width: 64.6666666667%; }
+			.\37 u { width: 55.8333333333%; }
+			.\36 u { width: 47%; }
+			.\35 u { width: 38.1666666667%; }
+			.\34 u { width: 29.3333333333%; }
+			.\33 u { width: 20.5%; }
+			.\32 u { width: 11.6666666667%; }
+			.\31 u { width: 2.8333333333%; }
+			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+				margin: 3% 0 3% 6%;
+				float: left;
+			}
+		*/
+
+	/* Rows */
+
+		.row:after {
+			content: '';
+			display: block;
+			clear: both;
+			height: 0;
 		}
-	*/
 
-	/* 1% Gutter */
-	/*
-		.\31 2u { width: 100%; }
-		.\31 1u { width: 91.5833333333%; }
-		.\31 0u { width: 83.1666666667%; }
-		.\39 u { width: 74.75%; }
-		.\38 u { width: 66.3333333333%; }
-		.\37 u { width: 57.9166666667%; }
-		.\36 u { width: 49.5%; }
-		.\35 u { width: 41.0833333333%; }
-		.\34 u { width: 32.6666666667%; }
-		.\33 u { width: 24.25%; }
-		.\32 u { width: 15.8333333333%; }
-		.\31 u { width: 7.4166666667%; }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-			margin: 0.5% 0 0.5% 1%;
-			float: left;
-		}
-	*/
-
-	/* 2% Gutter */
-
-		.\31 2u { width: 100%; }
-		.\31 1u { width: 91.5%; }
-		.\31 0u { width: 83%; }
-		.\39 u { width: 74.5%; }
-		.\38 u { width: 66%; }
-		.\37 u { width: 57.5%; }
-		.\36 u { width: 49%; }
-		.\35 u { width: 40.5%; }
-		.\34 u { width: 32%; }
-		.\33 u { width: 23.5%; }
-		.\32 u { width: 15%; }
-		.\31 u { width: 6.5%; }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-			margin: 1% 0 1% 2%;
-			float: left;
+		.row > :first-child {
+			margin-left: 0;
 		}
 
-	/* 4% Gutter */
-	/*
-		.\31 2u { width: 100%; }
-		.\31 1u { width: 91.3333333333%; }
-		.\31 0u { width: 82.6666666667%; }
-		.\39 u { width: 74%; }
-		.\38 u { width: 65.3333333333%; }
-		.\37 u { width: 56.6666666667%; }
-		.\36 u { width: 48%; }
-		.\35 u { width: 39.3333333333%; }
-		.\34 u { width: 30.6666666667%; }
-		.\33 u { width: 22%; }
-		.\32 u { width: 13.3333333333%; }
-		.\31 u { width: 4.6666666667%; }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-			margin: 2% 0 2% 4%;
-			float: left;
+		.row:first-child > * {
+			margin-top: 0;
 		}
-	*/
 
-	/* 6% Gutter */
-	/*
-		.\31 2u { width: 100%; }
-		.\31 1u { width: 91.1666666667%; }
-		.\31 0u { width: 82.3333333333%; }
-		.\39 u { width: 73.5%; }
-		.\38 u { width: 64.6666666667%; }
-		.\37 u { width: 55.8333333333%; }
-		.\36 u { width: 47%; }
-		.\35 u { width: 38.1666666667%; }
-		.\34 u { width: 29.3333333333%; }
-		.\33 u { width: 20.5%; }
-		.\32 u { width: 11.6666666667%; }
-		.\31 u { width: 2.8333333333%; }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-			margin: 3% 0 3% 6%;
-			float: left;
+		.row:last-child > * {
+			margin-bottom: 0;
 		}
-	*/
 
 	/* Modifiers */
 
@@ -175,7 +186,6 @@
 			.row.flush > .\33 u { width: 25% !important; } 
 			.row.flush > .\32 u { width: 16.6666666667% !important; } 
 			.row.flush > .\31 u { width: 8.3333333333% !important; }
-
 			.row.flush > .\31 u, .row.flush > .\32 u, .row.flush > .\33 u, .row.flush > .\34 u, .row.flush > .\35 u, .row.flush > .\36 u, .row.flush > .\37 u, .row.flush > .\38 u, .row.flush > .\39 u, .row.flush > .\31 0u, .row.flush > .\31 1u, .row.flush > .\31 2u,
 			.flush > .row > .\31 u, .flush > .row > .\32 u, .flush > .row > .\33 u, .flush > .row > .\34 u, .flush > .row > .\35 u, .flush > .row > .\36 u, .flush > .row > .\37 u, .flush > .row > .\38 u, .flush > .row > .\39 u, .flush > .row > .\31 0u, .flush > .row > .\31 1u, .flush > .row > .\31 2u {
 				margin: 0 !important;
@@ -184,27 +194,6 @@
 		/* Persistent */
 
 			.persistent { }
-
-	/* Row */
-
-		.row:after {
-			content: '';
-			display: block;
-			clear: both;
-			height: 0;
-		}
-
-		.row > :first-child {
-			margin-left: 0;
-		}
-
-		.row:first-child > * {
-			margin-top: 0;
-		}
-
-		.row:last-child > * {
-			margin-bottom: 0;
-		}
 
 	/* Collapsed */
 	/*

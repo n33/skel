@@ -410,7 +410,7 @@ var skel = (function() { var _ = {
 								if (_.config.boxModel)
 								{
 									if (!(x = _.getCachedElement('iBM')))
-										x = _.cacheElement('iBM', _.newInline(('*,*:before,*:after{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')), 'head', 2);
+										x = _.cacheElement('iBM', _.newInline(('*,*:before,*:after{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')), 'head', 3);
 									console.log('- added inlineBoxModel');
 									state.elements.push(x);
 								}

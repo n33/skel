@@ -3,7 +3,7 @@
 		<h2>An Example</h2>
 		<p>Using skel.js to build a simple responsive website.</p>
 	</header>
-	<ol class="default">
+	<ol class="major">
 		<li>
 			<h3>The HTML</h3>
 <pre>
