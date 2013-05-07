@@ -2,10 +2,10 @@
 	<header>
 		<h2>Configuration Reference</h2>
 	</header>
-	<section class="sub">
+	<section class="sub" id="config-options">
 		<h3>Options</h3>
 		<dl class="default">
-			<dt id="setup-options-prefix">prefix</dt>
+			<dt id="config-options-prefix">prefix</dt>
 			<dd>
 				<table>
 					<tr>
@@ -46,7 +46,7 @@
 				</ul>
 				<p>Setting prefix to <em>null</em> (the default) disables stylesheet management entirely.</p>
 			</dd>
-			<dt>containers</dt>
+			<dt id="config-options-containers">containers</dt>
 			<dd>
 				<table>
 					<tr>
@@ -58,14 +58,14 @@
 						<td><em>960</em></td>
 					</tr>
 				</table>
-				<p>Sets the global <a href="#">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).</p>
+				<p>Sets the global <a href="#usage-containers">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).</p>
 			</dd>
-			<dt>grid</dt>
+			<dt id="config-options-grid">grid</dt>
 			<dd>
 				<table>
 					<tr>
 						<th>Type</th>
-						<td><a href="#">Grid Options</a></td>
+						<td><a href="#config-grid">Grid Options</a></td>
 					</tr>
 					<tr>
 						<th>Default</th>
@@ -74,12 +74,12 @@
 				</table>
 				<p>Sets global grid options.</p>
 			</dd>
-			<dt id="config-breakpoints">breakpoints</dt>
+			<dt id="config-options-breakpoints">breakpoints</dt>
 			<dd>
 				<table>
 					<tr>
 						<th>Type</th>
-						<td><a href="#">Breakpoint Options</a></td>
+						<td><a href="#config-breakpoint">Breakpoint Options</a></td>
 					</tr>
 					<tr>
 						<th>Default</th>
@@ -88,22 +88,22 @@
 				</table>
 				<p>The list of breakpoints the breakpoint handler will use. Consists of an object in the following format:</p>
 <pre>{
-  "breakpointName": { <em>(<a href="#">breakpoint options</a>)</em> },
-  "breakpointName": { <em>(<a href="#">breakpoint options</a>)</em> },
-  "breakpointName": { <em>(<a href="#">breakpoint options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
+  "breakpointName": { <em>(<a href="#config-breakpoint">breakpoint options</a>)</em> },
   ...
 }</pre>
 							<p>You can also use the following shorthand format if you only need to specify a range for each breakpoint:</p>
 <pre>{
-  "breakpointName": "<em>(<a href="#">range</a>)</em>",
-  "breakpointName": "<em>(<a href="#">range</a>)</em>",
-  "breakpointName": "<em>(<a href="#">range</a>)</em>",
+  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
+  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
+  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
   ...
 }</pre>
 				<p><strong>Note:</strong> Since breakpoint ranges are allowed to overlap, more than one can be active at any given time.
 				When this happens, the options of each are combined (in order, with those defined last taking precedence).</p>
 			</dd>
-			<dt>resetCSS</dt>
+			<dt id="config-options-resetCSS">resetCSS</dt>
 			<dd>
 				<table>
 					<tr>
@@ -117,7 +117,7 @@
 				</table>
 				<p>If <em>true</em>, default browser styles will be reset using Erik Meyer's <a href="http://meyerweb.com/eric/tools/css/reset/">CSS resets</a> (built in to skel.js).</p>
 			</dd>
-			<dt>normalizeCSS</dt>
+			<dt id="config-options-normalizeCSS">normalizeCSS</dt>
 			<dd>
 				<table>
 					<tr>
@@ -131,7 +131,7 @@
 				</table>
 				<p>If <em>true</em>, default browser styles will be normalized using <a href="http://necolas.github.io/normalize.css/">normalize.css</a> (built in to skel.js).</p>
 			</dd>
-			<dt>boxModel</dt>
+			<dt id="config-options-boxModel">boxModel</dt>
 			<dd>
 				<table>
 					<tr>
@@ -145,7 +145,7 @@
 				</table>
 				<p>Sets the global CSS box model. Can be <em>"border"</em>, <em>"content"</em>, <em>"margin"</em>, or <em>"padding"</em>.</p>
 			</dd>
-			<dt>useOrientation</dt>
+			<dt id="config-options-useOrientation">useOrientation</dt>
 			<dd>
 				<table>
 					<tr>
@@ -162,7 +162,7 @@
 				simplifies breakpoint configuration. However, if you don't want this to happen and instead want orientation
 				to be a factor, set this to <em>true</em>.</p>
 			</dd>
-			<dt>preloadStyleSheets</dt>
+			<dt id="config-options-preloadStyleSheets">preloadStyleSheets</dt>
 			<dd>
 				<table>
 					<tr>
@@ -177,7 +177,7 @@
 				<p>By default, skel.js will dynamically load breakpoint stylesheets only when it needs them.
 				Setting this option to <em>true</em> will instead preload them all ahead of time.</p>
 			</dd>
-			<dt>pollOnce</dt>
+			<dt id="config-options-pollOnce">pollOnce</dt>
 			<dd>
 				<table>
 					<tr>
@@ -224,7 +224,7 @@
 				</dl>
 				<p><strong>Note:</strong> Ranges can overlap with that of other breakpoints.</p>
 			</dd>
-			<dt>lockViewport</dt>
+			<dt id="config-breakpoint-lockViewport">lockViewport</dt>
 			<dd>
 				<table>
 					<tr>
@@ -238,7 +238,7 @@
 				</table>
 				<p>If <em>true</em>, skel.js will (where applicable) disable viewport zooming and resizing. Should only be enabled on mobile-oriented breakpoints.</p>
 			</dd>
-			<dt>hasStyleSheet</dt>
+			<dt id="config-breakpoint-hasStyleSheet">hasStyleSheet</dt>
 			<dd>
 				<table>
 					<tr>
@@ -253,7 +253,7 @@
 				<p>Determines if there's a stylesheet for the breakpoint. By default this is <em>true</em>, but there
 				are times when setting this to <em>false</em> makes sense (for example, when a breakpoint exists only to change the container size).</p>
 			</dd>
-			<dt>containers</dt>
+			<dt id="config-breakpoint-containers">containers</dt>
 			<dd>
 				<table>
 					<tr>
@@ -265,15 +265,15 @@
 						<td><em>960</em></td>
 					</tr>
 				</table>
-				<p>Sets the breakpoint's <a href="#">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).
+				<p>Sets the breakpoint's <a href="#usage-containers">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).
 				Overrides the global container width.</p>
 			</dd>
-			<dt>grid</dt>
+			<dt id="config-breakpoint-grid">grid</dt>
 			<dd>
 				<table>
 					<tr>
 						<th>Type</th>
-						<td><a href="#">Grid Options</a></td>
+						<td><a href="#config-grid">Grid Options</a></td>
 					</tr>
 					<tr>
 						<th>Default</th>
@@ -287,7 +287,7 @@
 	<section id="config-grid" class="sub">
 		<h3>Grid Options</h3>
 		<dl class="default">
-			<dt>gutters</dt>
+			<dt id="config-grid-gutters">gutters</dt>
 			<dd>
 				<table>
 					<tr>
@@ -301,7 +301,7 @@
 				</table>
 				<p>Sets the gutter size. Can be <em>0</em> (for no gutters), <em>1</em> (for 1% gutters), <em>2</em> (for 2% gutters), <em>4</em> (for 4% gutters), or <em>6</em> (for 6% gutters). Anything else will tear reality asunder.</p>
 			</dd>
-			<dt id="configuation-grid-collapse">collapse</dt>
+			<dt id="config-grid-collapse">collapse</dt>
 			<dd>
 				<table>
 					<tr>
@@ -313,7 +313,7 @@
 						<td><em>false</em></td>
 					</tr>
 				</table>
-				<p>If <em>true</em>, all cells (except those in <a href="#">persistent</a> grids) are forced to be
+				<p>If <em>true</em>, all cells (except those in <a href="#usage-grid-modifiers-persistent">persistent</a> grids) are forced to be
 				100% wide regardless of their unit size ("collapsing" the grid). 
 				Should only be enabled on mobile-oriented breakpoints.</p>
 			</dd>

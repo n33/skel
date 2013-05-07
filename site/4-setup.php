@@ -63,10 +63,10 @@
 			<ul class="default">
 				<li>No stylesheets</li>
 				<li>No breakpoints</li>
-				<li>2% <a href="#">gutters</a> on all grids</li>
-				<li>960px <a href="#">containers</a></li>
+				<li>2% <a href="#usage-grid-overview">gutters</a> on all grids</li>
+				<li>960px <a href="#usage-containers">containers</a></li>
 			</ul>
-			<p>Not a bad choice if you just want to play with the <a href="#">grid system</a>.</p>
+			<p>Not a bad choice if you just want to play with the <a href="#usage-grid">grid system</a>.</p>
 		</section>
 		<section>
 			<h4>Option 2: Use a preset</h4>
@@ -77,10 +77,10 @@
 				<dt>standard</dt>
 				<dd>
 					<ul class="default">
-						<li>Stylesheet <a href="#">prefix</a> set to <em>"style"</em></li>
-						<li><a href="#">Breakpoints</a> set to <strong>mobile</strong> (480px and below), <strong>1000px</strong> (481px to 1000px), and <strong>desktop</strong> (481px and up)</li>
+						<li>Stylesheet <a href="#config-options-prefix">prefix</a> set to <em>"style"</em></li>
+						<li><a href="#config-options-breakpoints">Breakpoints</a> set to <strong>mobile</strong> (480px and below), <strong>1000px</strong> (481px to 1000px), and <strong>desktop</strong> (481px and up)</li>
 						<li>2% gutters on all grids</li>
-						<li>1200px containers on <strong>desktop</strong>, 960px containers on <strong>1000px</strong>, and fluid containers on <strong>mobile</strong> (with <a href="#">collapse</a> enabled)</li>
+						<li>1200px containers on <strong>desktop</strong>, 960px containers on <strong>1000px</strong>, and fluid containers on <strong>mobile</strong> (with <a href="#config-grid-collapse">collapse</a> enabled)</li>
 					</ul>
 				</dd>
 			</dl>

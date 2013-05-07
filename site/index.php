@@ -9,27 +9,10 @@
 		<script src="assets/js/jquery.selectorr-0.1.js"></script>
 		<script src="assets/js/jquery.scrollzer-0.1.js"></script>
 		<script src="assets/js/config.js"></script>
-		<script src="assets/js/skel.min.js"></script>
+		<!--<script src="assets/js/skel.min.js"></script>-->
+		<script src="../skel.js"></script>
 	</head>
 	<body>
-		<!--
-		<div id="bar">
-			<div class="container">
-				<h1>skel.js</h1>
-				<nav>
-					<a id="top-link" href="#top">Download</a>
-					<a id="how-link" href="#how">How It Works</a>
-					<a id="example-link" href="#example">An Example</a>
-					<a id="setup-link" href="#setup">Setting Up</a>
-					<a id="usage-link" href="#usage">Usage</a>
-					<a id="config-link" href="#config">Configuration Reference</a>
-					<a id="license-link" href="#license">License</a>
-					<a id="credits-link" href="#credits">Credits</a>
-					<a id="about-link" href="#about">About</a>
-				</nav>
-			</div>
-		</div>
-		-->
 		
 		<?php
 			require('1-top.php');

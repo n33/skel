@@ -44,7 +44,7 @@
 		font-weight: 400;
 		color: #626769;
 		font-size: 14pt;
-		line-height: 1.5em;
+		line-height: 1.75em;
 		letter-spacing: 0.035em;
 	}
 
@@ -197,13 +197,19 @@
 
 	ul.default
 	{
-		list-style: disc;
+		list-style: none;
 	}
+
+		ul.default > li:before {
+			content: '\2022';
+			color: #323739;
+			font-size: 1.5em;
+			padding-right: 0.5em;
+		}
 	
 		ul.default > li
 		{
-			margin: 0.75em 0 0 1em;
-			padding-left: 0.5em;
+			margin: 0.75em 0 0 0;
 		}
 		
 		ul.default > li:first-child
@@ -348,7 +354,7 @@
 		.hicode-wrapper header
 		{
 			width: 100%;
-			padding: 1.2em 1.5em 1em 1.5em;
+			padding: 1.85em 1.5em 1.7em 1.5em;
 			line-height: 1.5em;
 		}
 	
@@ -505,7 +511,7 @@
 				position: relative;
 				display: inline-block;
 				margin-right: 1.75em;
-				padding: 0 0 1.25em 0;
+				padding: 0 0 1.5em 0;
 			}
 			
 			.selectorr .titles li:before
@@ -893,7 +899,7 @@
 		.icon-yelp-sign:before            { content: "\f327"; }
 		.icon-yelp:before                 { content: "\f328"; }
 		
-		.icon-custom-responsive:before    { content: "\f108\00a0\f10b"; font-size: 0.9em; letter-spacing: -0.035em; }
+		.icon-custom-responsive:before    { content: "\f108\e000\f10b"; font-size: 0.9em; letter-spacing: -0.035em; }
 		.icon-custom-css:before           { font-family: sans-serif; content: "{\00a0}"; font-weight: bold; font-size: 0.975em; position: relative; top: -0.125em;}
 		
 	.icon.featured
@@ -911,61 +917,6 @@
 	}
 	
 /*********************************************************************************/
-/* Bar                                                                           */
-/*********************************************************************************/
-
-	#bar
-	{
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 2.5em;
-		line-height: 2.5em;
-		background: #323739;
-		z-index: 1000;
-		font-size: 0.85em;
-	}
-	
-		#bar .container
-		{
-			position: relative;
-		}
-	
-		#bar h1
-		{
-			position: absolute;
-			left: 0;
-			top: 0;
-			color: #fff;
-			font-size: 1.2em;
-			letter-spacing: 0.1em;
-		}
-		
-		#bar nav
-		{
-			position: absolute;
-			right: 0;
-			top: 0;
-		}
-		
-			#bar nav a
-			{
-				color: #fff;
-				text-decoration: none;
-				display: inline-block;
-				height: 2.5em;
-				padding: 0 1em 0 1em;
-				outline: 0;
-			}
-			
-			#bar nav a.active
-			{
-				background: #EFF3F4;
-				color: #323739;
-			}
-			
-/*********************************************************************************/
 /* Top                                                                            */
 /*********************************************************************************/
 
@@ -981,7 +932,7 @@
 			display: none;
 		}
 		
-		#top h2
+		#top h1
 		{
 			font-size: 3.75em;
 			letter-spacing: 0.075em;
@@ -1029,7 +980,7 @@
 				position: relative;
 				display: inline-block;
 				margin-right: 1.75em;
-				padding: 0 0 1.25em 0;
+				padding: 0 0 1.5em 0;
 			}
 
 			#example-output .titles li:before
