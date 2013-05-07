@@ -1,8 +1,10 @@
 <section id="license" class="main container">
-	<h2>License</h2>
-	<p>skel.js is dual licensed under the MIT license and GPLv2.</p>
-	<section>
-		<h3>MIT license</h3>
+	<header>
+		<h2>License</h2>
+		<p>skel.js is dual licensed under the MIT and GPLv2 licenses.</p>
+	</header>
+	<section class="sub">
+		<h3>MIT License</h3>
 		<p>Copyright &copy; 2013 <a href="http://n33.co">n33</a></p>
 		<p>Permission is hereby granted, free of charge, to any person
 		obtaining a copy of this software and associated documentation
@@ -23,8 +25,8 @@
 		FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 		OTHER DEALINGS IN THE SOFTWARE.</p>
 	</section>
-	<section>
-		<h3>GPLv2 license</h3>
+	<section class="sub">
+		<h3>GPLv2 License</h3>
 		<p>Copyright &copy; 2013 <a href="http://n33.co">n33</a></p>
 		<p>This program is free software: you can redistribute it and/or modify it
 		under the terms of the GNU General Public License as published by the Free 

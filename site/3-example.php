@@ -1,6 +1,8 @@
 <section id="example" class="main container">
-	<h2>An Example</h2>
-	<p>Using skel.js to build a simple responsive page.</p>
+	<header>
+		<h2>An Example</h2>
+		<p>Using skel.js to build a simple responsive website.</p>
+	</header>
 	<ol class="default">
 		<li>
 			<h3>The HTML</h3>
@@ -15,19 +17,19 @@
 		{
 			// Determines our stylesheet names. Used in conjunction with the breakpoint names below. In this case, we're telling skel.js to look for "style.css" (our global stylesheet) and "style-wide.css", "style-narrow.css", and "style-mobile.css" (our breakpoint stylesheets).
 			prefix: "style",
-			// Resets the browser CSS so we have a nice clean slate.
+			// Resets default browser styles so we start with a nice clean slate.
 			resetCSS: true,
 			// Sets the global box model to "border-box".
 			boxModel: "border",
 			// Sets global grid options. In this case we're just going to set the gutter size to 2%.
 			grid: { gutters: 2 },
-			// Sets up the breakpoint handler, which determines the stylesheets and options to use at different viewport widths. Any number of breakpoints can be created and their ranges can even overlap (allowing more than one to be active for a given viewport width).
+			// Sets up the breakpoint handler, which determines the stylesheets and options to use at different viewport widths. Any number of breakpoints can be created and their ranges can even overlap (allowing more than one to be active at a time).
 			breakpoints: {
-				// A breakpoint. In this case it's called "wide", applies when the viewport width is at least 1200px, uses 1140px containers, and 4% gutters on grids.
+				// A breakpoint. In this case it's called "wide", applies when the viewport width is at least 1200px, uses 1140px containers, and 4% gutters on grids (overriding the global 2% setting we set earlier).
 				wide: { range: "1200-", containers: 1140, grid: { gutters: 4 } },
-				// Another breakpoint. Kicks in between 481px and 1199px and uses 960px containers. Note that since we didn't drop any grid options here it'll just use the defaults (above).
+				// Another breakpoint. Kicks in between 481px and 1199px and uses 960px containers.
 				narrow: { range: "481-1199", containers: 960 },
-				// Our final breakpoint (which we'll use to target mobile devices). Only applies at or below 480px, uses fluid width containers, locks the viewport (required for mobile devices), and collapses its grids (which forces each cell to take up a whole row).
+				// Our final breakpoint (which we'll use to target mobile devices). Only applies at or below 480px, uses fluid width containers, locks the viewport (required for mobile devices), and collapses all grids (which forces all cells to 100% width).
 				mobile: { range: "-480", containers: "fluid", lockViewport: true, grid: { collapse: true } }
 			}
 		}
@@ -35,8 +37,8 @@
 		// @@@
 	&lt;/head&gt;
 	&lt;body&gt;
-		// @@@ (The Page) The actual page, and a pretty good example of using containers and the grid system to put together a basic page layout.
-		// A container element. Width is determined by the active breakpoint.
+		// @@@ (The Page) The actual page, which in this case demonstrates using containers and the grid system to build a basic but still quite functional page layout.
+		// A container element. Width is determined by the active breakpoint, which in our case can be 1140px (when "wide" is active), 960px (when "narrow" is active), or fluid (when "mobile" is active).
 		&lt;div class="container"&gt;
 			&lt;!-- Header --&gt;
 				// A grid row. Holds up to 12 "units" (12u) of grid cells in any combination.
@@ -45,7 +47,7 @@
 					&lt;div class="4u"&gt;
 						&lt;h1&gt;Example&lt;/h1&gt;
 					&lt;/div&gt;
-					// Another cell. This time it's 8u, so combined with the previous 4u cell the row's now full (4u + 8u = 12u).
+					// Another cell. This time it's 8u, so combined with the previous 4u cell the row is now full (4u + 8u = 12u).
 					&lt;nav id="nav" class="8u"&gt;
 						&lt;a href="#"&gt;Home&lt;/a&gt;
 						&lt;a href="#"&gt;About Me&lt;/a&gt;
@@ -54,7 +56,7 @@
 					&lt;/nav&gt;
 				&lt;/div&gt;
 			&lt;!-- Hero --&gt;
-				// Rows and non-rows (like this one) can be sibling elements. The grid system doesn't care.
+				// Rows and non-rows (like this one) can be adjacent to one another. The grid system doesn't care.
 				&lt;section id="hero"&gt;
 					&lt;h2&gt;Hello world.&lt;/h2&gt;
 					&lt;p&gt;Lorem ipsum dolor sit amet sed magna etiam adipiscing.&lt;/p&gt;
@@ -124,7 +126,7 @@
 					<h4>style.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Global Stylesheet: Gets loaded regardless of the active breakpoint.
+							Global Stylesheet: Contains styles shared by all breakpoints. Always gets loaded.
 						</header>
 <pre>
 body {
@@ -169,7 +171,7 @@ h1, h2, h3, h4, h5, h6 {
 					<h4>style-wide.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Breakpoint Stylesheet: Only applies when the <strong>wide</strong> breakpoint is active (1200px and up).
+							Breakpoint Stylesheet: Only applies when <strong>wide</strong> is active (1200px and up).
 						</header>
 <pre>
 body {
@@ -230,7 +232,7 @@ h2 {
 					<h4>style-narrow.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Breakpoint Stylesheet: Only applies when the <strong>narrow</strong> breakpoint is active (481px - 1199px).
+							Breakpoint Stylesheet: Only applies when <strong>narrow</strong> is active (481px - 1199px).
 						</header>
 <pre>
 body {
@@ -295,7 +297,7 @@ h2 {
 					<h4>style-mobile.css</h4>
 					<section class="hicode-wrapper">
 						<header>
-							Breakpoint Stylesheet: Only applies when the <strong>mobile</strong> breakpoint is active (480px and below).
+							Breakpoint Stylesheet: Only applies when <strong>mobile</strong> is active (480px and below).
 						</header>
 <pre>
 body {
@@ -372,8 +374,8 @@ section {
 					<iframe src="example/index.html" scrolling="no"></iframe>
 				</div>
 				<div class="actions"><a href="example/index.html" target="_blank" class="button icon icon-external-link">Open in New Window</a></div>
-				<p>And that's all there is to it. For a more in depth look, <a href="#">download</a> the example or continue on to <a href="#setup">Setting Up</a>.</p>
 			</div>
 		</li>
 	</ol>
+	<p class="summary">And that's all there is to it. For a more in depth look, <a href="#">download</a> the actual example or continue on to <a href="#setup">Setting Up</a>.</p>
 </section>

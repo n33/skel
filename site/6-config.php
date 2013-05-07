@@ -1,5 +1,7 @@
 <section id="config" class="main container">
-	<h2>Configuration Reference</h2>
+	<header>
+		<h2>Configuration Reference</h2>
+	</header>
 	<section class="sub">
 		<h3>Options</h3>
 		<dl class="default">
@@ -44,95 +46,6 @@
 				</ul>
 				<p>Setting prefix to <em>null</em> (the default) disables stylesheet management entirely.</p>
 			</dd>
-			<dt>preloadStyleSheets</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>Boolean</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>false</em></td>
-					</tr>
-				</table>
-				<p>By default, skel.js will dynamically load breakpoint stylesheets only when it needs them.
-				Setting this option to <em>true</em> will instead preload them all ahead of time (= same behavior as CSS media queries).</p>
-			</dd>
-			<dt>pollOnce</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>Boolean</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>false</em></td>
-					</tr>
-				</table>
-				<p>If <em>true</em>, breakpoint checks will only be performed the first time the page is loaded, disabling
-				the ability to switch breakpoints by resizing the viewport.</p>
-			</dd>
-			<dt>resetCSS</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>Boolean</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>false</em></td>
-					</tr>
-				</table>
-				<p>If <em>true</em>, browser CSS will be reset using Erik Meyer's <a href="http://meyerweb.com/eric/tools/css/reset/">CSS resets</a>.</p>
-			</dd>
-			<dt>normalizeCSS</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>Boolean</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>false</em></td>
-					</tr>
-				</table>
-				<p>If <em>true</em>, browser CSS will be normalized using <a href="http://necolas.github.io/normalize.css/">normalize.css</a>.</p>
-			</dd>
-			<dt>boxModel</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>String</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>null</em></td>
-					</tr>
-				</table>
-				<p>Sets the global CSS box model. Can be <em>"border"</em>, <em>"content"</em>, <em>"margin"</em>, or <em>"padding"</em>.</p>
-			</dd>
-			<dt>useOrientation</dt>
-			<dd>
-				<table>
-					<tr>
-						<th>Type</th>
-						<td>Boolean</td>
-					</tr>
-					<tr>
-						<th>Default</th>
-						<td><em>false</em></td>
-					</tr>
-				</table>
-				<p>For simplicity, skel.js ignores device orientation (where applicable) and assumes it's being
-				used in portrait mode (resulting in the same viewport width regardless of actual orientation). Setting this to <em>true</em>,
-				however, tells it to acknowledge device orientation when calculating the viewport width (resulting in different
-				widths for landscape and portrait modes).</p>
-			</dd>
 			<dt>containers</dt>
 			<dd>
 				<table>
@@ -145,7 +58,7 @@
 						<td><em>960</em></td>
 					</tr>
 				</table>
-				<p>Sets the <a href="#">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).</p>
+				<p>Sets the global <a href="#">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).</p>
 			</dd>
 			<dt>grid</dt>
 			<dd>
@@ -173,7 +86,7 @@
 						<td><em>{ "all": { range: "*", hasStyleSheet: false } }</em></td>
 					</tr>
 				</table>
-				<p>The breakpoints list. Consists of an object in the following format:</p>
+				<p>The list of breakpoints the breakpoint handler will use. Consists of an object in the following format:</p>
 <pre>{
   "breakpointName": { <em>(<a href="#">breakpoint options</a>)</em> },
   "breakpointName": { <em>(<a href="#">breakpoint options</a>)</em> },
@@ -188,7 +101,96 @@
   ...
 }</pre>
 				<p><strong>Note:</strong> Since breakpoint ranges are allowed to overlap, more than one can be active at any given time.
-				When this happens, the options of each are combined in the order in which they were defined (with those defined last taking precedence).</p>
+				When this happens, the options of each are combined (in order, with those defined last taking precedence).</p>
+			</dd>
+			<dt>resetCSS</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Boolean</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>false</em></td>
+					</tr>
+				</table>
+				<p>If <em>true</em>, default browser styles will be reset using Erik Meyer's <a href="http://meyerweb.com/eric/tools/css/reset/">CSS resets</a> (built in to skel.js).</p>
+			</dd>
+			<dt>normalizeCSS</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Boolean</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>false</em></td>
+					</tr>
+				</table>
+				<p>If <em>true</em>, default browser styles will be normalized using <a href="http://necolas.github.io/normalize.css/">normalize.css</a> (built in to skel.js).</p>
+			</dd>
+			<dt>boxModel</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>String</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>null</em></td>
+					</tr>
+				</table>
+				<p>Sets the global CSS box model. Can be <em>"border"</em>, <em>"content"</em>, <em>"margin"</em>, or <em>"padding"</em>.</p>
+			</dd>
+			<dt>useOrientation</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Boolean</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>false</em></td>
+					</tr>
+				</table>
+				<p>For simplicity, skel.js ignores device orientation (where applicable) and assumes it's always being
+				used in portrait mode. This results in the same viewport width regardless of actual orientation and greatly
+				simplifies breakpoint configuration. However, if you don't want this to happen and instead want orientation
+				to be a factor, set this to <em>true</em>.</p>
+			</dd>
+			<dt>preloadStyleSheets</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Boolean</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>false</em></td>
+					</tr>
+				</table>
+				<p>By default, skel.js will dynamically load breakpoint stylesheets only when it needs them.
+				Setting this option to <em>true</em> will instead preload them all ahead of time.</p>
+			</dd>
+			<dt>pollOnce</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Boolean</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>false</em></td>
+					</tr>
+				</table>
+				<p>If <em>true</em>, breakpoint checks will only be performed the first time the page is loaded, disabling
+				switching on resize.</p>
 			</dd>
 		</dl>
 	</section>
@@ -207,7 +209,7 @@
 						<td><em>"*"</em> (any width)</td>
 					</tr>
 				</table>
-				<p>Sets the breakpoint's width range (in pixels). Can be any of the following:</p>
+				<p>Sets the breakpoint's active width range (in pixels). Can be any of the following:</p>
 				<dl class="default">
 					<dt>"*"</dt>
 					<dd>Matches any viewport width.</dd>
@@ -220,6 +222,7 @@
 					<dt>"X-"</dt>
 					<dd>Viewport width must be greater than or equal to X.</dd>
 				</dl>
+				<p><strong>Note:</strong> Ranges can overlap with that of other breakpoints.</p>
 			</dd>
 			<dt>lockViewport</dt>
 			<dd>
@@ -247,8 +250,23 @@
 						<td><em>true</em></td>
 					</tr>
 				</table>
-				<p>Determines if there's a stylesheet for this particular breakpoint. By default this is <em>true</em>, but there
-				are times when setting this to <em>false</em> makes sense (for example, when a breakpoint exists only to change a few options).</p>
+				<p>Determines if there's a stylesheet for the breakpoint. By default this is <em>true</em>, but there
+				are times when setting this to <em>false</em> makes sense (for example, when a breakpoint exists only to change the container size).</p>
+			</dd>
+			<dt>containers</dt>
+			<dd>
+				<table>
+					<tr>
+						<th>Type</th>
+						<td>Integer</td>
+					</tr>
+					<tr>
+						<th>Default</th>
+						<td><em>960</em></td>
+					</tr>
+				</table>
+				<p>Sets the breakpoint's <a href="#">container</a> width. Can be a pixel value (eg. <em>960</em> or <em>"960px"</em>), a percentage value (eg. <em>"95%"</em>), or <em>"fluid"</em> (equivalent to <em>"100%"</em>).
+				Overrides the global container width.</p>
 			</dd>
 			<dt>grid</dt>
 			<dd>
@@ -262,7 +280,7 @@
 						<td><em>null</em></td>
 					</tr>
 				</table>
-				<p>Sets this breakpoint's grid options (overrides global grid options).</p>
+				<p>Sets the breakpoint's grid options. Overrides global grid options.</p>
 			</dd>
 		</dl>
 	</section>
@@ -295,8 +313,8 @@
 						<td><em>false</em></td>
 					</tr>
 				</table>
-				<p>If <em>true</em>, all cells (except those in <a href="#">persistent</a> grids) are forced to 100% 
-				width regardless of their specified units (effectively "collapsing" the structure of the grid). 
+				<p>If <em>true</em>, all cells (except those in <a href="#">persistent</a> grids) are forced to be
+				100% wide regardless of their unit size ("collapsing" the grid). 
 				Should only be enabled on mobile-oriented breakpoints.</p>
 			</dd>
 		</dl>

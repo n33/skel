@@ -104,18 +104,40 @@
 	{
 		padding-top: 6em !important;
 		margin-top: 6em !important;
-		border-top: solid 3px #d4d9db;
 	}
+
+		section.container:before
+		{
+			content: '';
+			position: absolute;
+			left: 0;
+			margin-top: -6em;
+			height: 3px;
+			width: 100%;
+			background: #d4d9db;
+		}
 	
 	section.main
 	{
-		position: relative;
 	}
 
-		section.main h2
+		section.main > header
 		{
-			font-size: 2em;
+			text-align: center;
+			margin-bottom: 2.5em;
 		}
+
+			section.main > header h2
+			{
+				font-size: 2.25em;
+				margin: 0;
+			}
+
+			section.main > header p
+			{
+				margin: 2em 0 0 0;
+				padding-bottom: 2em;
+			}
 
 	section.sub
 	{
@@ -274,6 +296,15 @@
 				left: 0.15em;
 				top: 0.25em;
 			}
+			
+			.features section p
+			{
+			}
+
+	.summary
+	{
+		text-align: center;
+	}
 
 	.actions
 	{
@@ -326,15 +357,27 @@
 				color: #fff;
 			}
 
-	pre
+	pre, code
 	{
 		background: #272b2d;
 		color: #ddd;
-		margin: 0 auto 2em auto;
-		padding: 0.5em 0 0.5em 0;
 		font-family: 'Source Code Pro';
 		font-size: 0.8em;
 		line-height: 32px;
+		border-radius: 0.25em;
+	}
+
+	pre
+	{
+		margin: 0 auto 2em auto;
+		padding: 0.5em 0.75em 0.5em 0.75em;
+	}
+
+	code
+	{
+		display: inline-block;
+		padding: 0 0.75em 0 0.75em;
+		margin: 0 0.5em 0 0.5em;
 	}
 
 	.hicode
@@ -928,16 +971,21 @@
 
 	#top
 	{
-		padding-top: 10em !important;
+		padding: 8em 0 2em 0 !important;
 		margin-top: 0 !important;
-		border-top: 0;
+		text-align: center;
 	}
+
+		#top:before
+		{
+			display: none;
+		}
 		
 		#top h2
 		{
 			font-size: 3.75em;
 			letter-spacing: 0.075em;
-			margin: 0 0 0.75em 0;
+			margin: 0 0 .85em 0;
 		}
 		
 		#top p
@@ -950,6 +998,21 @@
 /*********************************************************************************/
 /* Example                                                                       */
 /*********************************************************************************/
+
+	#example
+	{
+	}
+
+		#example ol.default
+		{
+			text-align: center;
+		}
+
+			#example ol.default h3
+			{
+				font-size: 1.5em;
+				margin-left: -1.85em;
+			}
 
 	#example-output
 	{
@@ -1015,7 +1078,7 @@
 			#example-output .output iframe
 			{
 				width: 100%;
-				height: 35em;
+				height: 40em;
 				overflow: hidden;
 			}
 			
@@ -1060,3 +1123,19 @@
 	{
 		margin-bottom: 0;
 	}
+	
+/*********************************************************************************/
+/* Copyright                                                                     */
+/*********************************************************************************/
+
+	#copyright
+	{
+		margin: 10em 0 8em 0;
+		text-align: center;
+		font-size: 0.9em;
+	}
+	
+		#copyright a
+		{
+			color: inherit;
+		}

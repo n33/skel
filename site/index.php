@@ -12,6 +12,7 @@
 		<script src="assets/js/skel.min.js"></script>
 	</head>
 	<body>
+		<!--
 		<div id="bar">
 			<div class="container">
 				<h1>skel.js</h1>
@@ -28,24 +29,23 @@
 				</nav>
 			</div>
 		</div>
+		-->
 		
-		<?php require('1-top.php'); ?>
+		<?php
+			require('1-top.php');
+			require('2-how.php');
+			require('3-example.php');
+			require('4-setup.php');
+			require('5-usage.php');
+			require('6-config.php');
+			require('7-license.php');
+			require('8-credits.php');
+			require('9-about.php');
+		?>
 
-		<?php require('2-how.php'); ?>
-
-		<?php require('3-example.php'); ?>
-
-		<?php require('4-setup.php'); ?>
-
-		<?php require('5-usage.php'); ?>
-
-		<?php require('6-config.php'); ?>
-
-		<?php require('7-license.php'); ?>
-
-		<?php require('8-credits.php'); ?>
-
-		<?php require('9-about.php'); ?>
+		<div id="copyright">
+			&copy; skel.js. Product of <a href="http://n33.co">n33</a>.
+		</div>
 
 	</body>
 </html>

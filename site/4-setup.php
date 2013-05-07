@@ -1,7 +1,9 @@
 <section id="setup" class="main container">
-	<h2>Setting Up</h2>
+	<header>
+		<h2>Setting Up</h2>
+	</header>
 	<section class="sub">
-		<h3>Pick a Configuration Style</h3>
+		<h3>1. Pick a Configuration Style</h3>
 		<p>skel.js uses a JSON-like configuration that can be applied in one of two ways:</p>
 		<div class="row">
 			<div class="6u">
@@ -51,7 +53,7 @@
 		style is fine.</p>
 	</section>
 	<section class="sub">
-		<h3>Get Configured</h3>
+		<h3>2. Get Configured</h3>
 		<p>The next (and final) step is actually building your configuration so you can use this thing. Three ways to go about this:</p>
 		<section>
 			<h4>Option 1: Use defaults</h4>
@@ -76,7 +78,7 @@
 				<dd>
 					<ul class="default">
 						<li>Stylesheet <a href="#">prefix</a> set to <em>"style"</em></li>
-						<li><a href="#">Breakpoints</a> set as <strong>mobile</strong> (480px and below), <strong>1000px</strong> (481px to 1000px), and <strong>desktop</strong> (481px and up)</li>
+						<li><a href="#">Breakpoints</a> set to <strong>mobile</strong> (480px and below), <strong>1000px</strong> (481px to 1000px), and <strong>desktop</strong> (481px and up)</li>
 						<li>2% gutters on all grids</li>
 						<li>1200px containers on <strong>desktop</strong>, 960px containers on <strong>1000px</strong>, and fluid containers on <strong>mobile</strong> (with <a href="#">collapse</a> enabled)</li>
 					</ul>
@@ -86,13 +88,13 @@
 		</section>
 		<section>
 			<h4>Option 3: Use your own (recommended)</h4>
-			<p>While slightly more involved, this approach gives you far more flexibility and control over how skel.js does its thing.
+			<p>While slightly more involved, this approach gives you far more control over how skel.js does its thing.
 			For example, here's a configuration with 5 entirely custom breakpoints and a few additional options:</p>
 <pre>&lt;script src="skel.js"&gt;
 {
 	// Stylesheet prefix.
 	prefix: "style",
-	// Resets browser CSS.
+	// Resets default browser styles.
 	resetCSS: true,
 	// Sets the global box model to "border-box".
 	boxModel: "border",
@@ -107,14 +109,17 @@
 		narrow960: { range: "-960" },
 		// Applies at and below 740px.
 		narrow740: { range: "-740" },
-		// Applies at and below 460px, collapses grids.
+		// Applies at and below 460px and collapses grids.
 		narrow460: { range: "-460", grid: { collapse: true } }
 	}
 }
 &lt;/script&gt;</pre>
-			<p>If you go this route, be sure to read up on the many <a href="#">configuration options</a> you have at your disposal.</p>
+			<p>If you go this route, be sure to read up on the many <a href="#config">configuration options</a> you have at your disposal.</p>
 		</section>
-		<p>And with that, skel.js is fully configured and ready to go. Head on down to <a href="#usage">Usage</a> to do
-		some cool stuff, or hit the <a href="#config">Configuration Reference</a> if you're rolling your own configuration.</p>
+		<section class="sub">
+			<h3>3. Profit?</h3>
+			<p>And with that, skel.js is fully configured and ready to go. Head on down to <a href="#usage">Usage</a> or hit the 
+			<a href="#config">Configuration Reference</a> if you want to further flesh out your configuration.</p>
+		</section>
 	</section>
 </section>

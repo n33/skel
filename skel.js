@@ -7,7 +7,7 @@
 		
 		CSS Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain))
 		Normalize (normalize.css v2.1.1 | MIT License | git.io/normalize) 
-		DOMReady method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
+		DOMReady Method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
 */
 
 var skel = (function() { var _ = {
