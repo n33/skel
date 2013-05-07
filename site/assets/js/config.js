@@ -12,10 +12,10 @@ window._skel_config = {
 	},
 	breakpoints: {
 		'wide': {
-			range: '1660-',
+			range: '1660-'
 		},
 		'normal': {
-			range: '-1659',
+			range: '-1659'
 		},
 		'narrow': {
 			range: '-1200',
