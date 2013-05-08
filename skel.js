@@ -175,7 +175,7 @@ var skel = (function() { var _ = {
 			
 			isActive: function(k) {
 
-				return (_.indexOf(stateId,'#' + k) !== -1);
+				return (_.indexOf(_.stateId,'#' + k) !== -1);
 
 			},
 
