@@ -944,7 +944,7 @@ var skel = (function() { var _ = {
 
 				// Workaround: Legacy IE shit
 					var d = document;if (!d.getElementsByClassName) d.getElementsByClassName = function(className) { if (d.querySelectorAll) return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); else return []; }
-					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
+					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
 				
 				// Initialize config
 					_.initConfig();
