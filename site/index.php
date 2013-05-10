@@ -5,7 +5,6 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,700|Source+Code+Pro" rel="stylesheet" />
 		<!--[if lte IE 8]><script src="assets/js/html5shiv.js" type="text/javascript"></script><![endif]-->
-		<script src="assets/js/jquery-1.9.1.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<script src="assets/js/config.js"></script>
 		<script src="assets/js/skel.min.js"></script>
