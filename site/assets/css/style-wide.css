@@ -8,11 +8,11 @@
 
 		.hicode .line-comment
 		{
-			right: -230px;
+			left: -230px;
 			margin-top: -33px;
 			width: 230px;
-			border-top-right-radius: 0.25em;
-			border-bottom-right-radius: 0.25em;
+			border-top-left-radius: 0.25em;
+			border-bottom-left-radius: 0.25em;
 			padding: 1.5em;
 			line-height: 1.5em;
 		}
@@ -20,11 +20,11 @@
 		.hicode .block-comment
 		{
 			position: absolute;
-			left: -230px;
+			right: -230px;
 			margin-top: -1px;
 			width: 230px;
-			border-top-left-radius: 0.25em;
-			border-bottom-left-radius: 0.25em;
+			border-top-right-radius: 0.25em;
+			border-bottom-right-radius: 0.25em;
 			padding: 2em 1.5em 2em 1.5em;
 			line-height: 1.5em;
 		}

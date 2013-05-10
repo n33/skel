@@ -88,17 +88,17 @@
 				</table>
 				<p>Your breakpoints, listed in the following format:</p>
 <pre>{
-  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
-  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
-  "breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
-  ...
+	"breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
+	"breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
+	"breakpointName": { <em>(<a href="#config-breakpoint">Breakpoint Options</a>)</em> },
+	...
 }</pre>
 							<p>You can also use the following shorthand format if you only need to specify a range for each breakpoint:</p>
 <pre>{
-  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
-  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
-  "breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
-  ...
+	"breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
+	"breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
+	"breakpointName": "<em>(<a href="#config-breakpoint-range">range</a>)</em>",
+	...
 }</pre>
 				<p><strong>Note:</strong> Since breakpoint ranges are allowed to overlap, more than one can be active at any given time.
 				When this happens, the options of each are combined in order with those defined <strong>last</strong> taking precedence.</p>
