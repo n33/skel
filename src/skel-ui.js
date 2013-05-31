@@ -14,12 +14,12 @@ skel.registerPlugin('ui', (function() { var _ = {
 			baseZIndex: 10000,						// Base z-index (should be well above anything else on the page)
 			speed: 250,								// Animation speed (in ms)
 			panels: {},								// Panels
-			bars: {}								// Bars
+			overlays: {}							// Overlays
 		},
 
 		cache: {
 			panels: {},
-			bars: {},
+			overlays: {},
 			body: null,
 			window: null,
 			pageWrapper: null,
@@ -47,12 +47,12 @@ skel.registerPlugin('ui', (function() { var _ = {
 						html: '<div data-action="navList" data-target="nav"></div>'
 					}
 				},
-				bars: {
+				overlays: {
 					titleBar: {
 						breakpoints: 'mobile',
-						position: 'top',
-						size: 44,
-						style: 'floating',
+						position: 'top-left',
+						width: '100%',
+						height: 44,
 						html: '<span class="toggle" data-action="panelToggle" data-target="navPanel"></span>' +
 							  '<span class="title" data-action="copyHTML" data-target="logo"></span>'
 					}
@@ -71,12 +71,11 @@ skel.registerPlugin('ui', (function() { var _ = {
 					resetForms: true,
 					swipeToClose: true
 				},
-				bar: {
+				overlay: {
 					breakpoints: null,
 					position: null,
-					style: null,
-					size: 44,
-					style: 'floating',
+					width: 0,
+					height: 0,
 					html: ''
 				}
 			}
@@ -138,7 +137,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 							};
 
 							// Workaround: Android doesn't seem to register touch events on fixed elements properly,
-							// so if this panelToggle is on a bar it needs to be a click.
+							// so if this panelToggle is on an overlay it needs to be a click.
 							if (_.deviceType == 'android')
 								x.bind('click', a);
 							else
@@ -636,72 +635,38 @@ skel.registerPlugin('ui', (function() { var _ = {
 							
 							break;
 					
-						case 'bar':
+						case 'overlay':
 							
 							// Basic stuff
 								t
 									.css('z-index', _.config.baseZIndex)
-									.addClass('skel-ui-bar');
-
-							// Style
-								switch (config.style)
-								{
-									case 'floating':
-										t.css('position', 'fixed');
-										break;
-								
-									case 'fixed':
-										t.css('position', 'absolute');
-										break;
-								
-									default:
-										break;
-								}
+									.css('position', 'fixed')
+									.addClass('skel-ui-overlay');
+							
+							// Width/height
+								t
+									.css('width', config.width)
+									.css('height', config.height);
 							
 							// Position
 								switch (config.position)
 								{
+									case 'top-left':
 									case 'top':
-										t
-											.addClass('skel-ui-bar-top')
-											.css('top', 0)
-											.css('left', 0)
-											.css('width', '100%')
-											.css('height', config.size);
-
+									default:
+										t.addClass('skel-ui-overlay-top-left').css('top', 0).css('left', 0);
 										break;
 
-									case 'bottom':
-										
-											t
-												.addClass('skel-ui-bar-bottom')
-												.css('bottom', 0)
-												.css('left', 0)
-												.css('width', '100%')
-												.css('height', config.size);
-										
+									case 'top-right':
+										t.addClass('skel-ui-overlay-top-right').css('top', 0).css('right', 0);
 										break;
 
-									case 'left':
-										
-											t
-												.addClass('skel-ui-bar-left')
-												.css('top', 0)
-												.css('left', 0)
-												.css('width', config.size)
-												.css('height', '100%');
-										
+									case 'bottom-left':
+										t.addClass('skel-ui-overlay-bottom-left').css('bottom', 0).css('left', 0);
 										break;
 
-									case 'right':
-										
-											t
-												.addClass('skel-ui-bar-right')
-												.css('top', 0)
-												.css('right', 0)
-												.css('width', config.size)
-												.css('height', '100%');
-										
+									case 'bottom-right':
+										t.addClass('skel-ui-overlay-bottom-right').css('bottom', 0).css('right', 0);
 										break;
 								}
 							
@@ -739,7 +704,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 						
 						for (i in a)
 						{
-							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'bar' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
+							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'overlay' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
 								z.config = c;
 								z.initialized = false;
 								z.type = type;
@@ -916,7 +881,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 					_.initObjects();
 
 				// Components
-					_.initComponents('bar');
+					_.initComponents('overlay');
 					_.initComponents('panel');
 
 				// Update state
