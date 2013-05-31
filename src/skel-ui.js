@@ -698,6 +698,14 @@ skel.registerPlugin('ui', (function() { var _ = {
 									case 'bottom-right':
 										t.addClass('skel-ui-overlay-bottom-right').css('bottom', 0).css('right', 0);
 										break;
+
+									case 'middle-left':
+										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('left', 0).css('margin-top', '-' + _.getHalf(config.height));
+										break;
+
+									case 'middle-right':
+										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('right', 0).css('margin-top', '-' + _.getHalf(config.height));
+										break;
 								}
 							
 							break;
