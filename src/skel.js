@@ -103,6 +103,7 @@ var skel = (function() { var _ = {
 			config_breakpoint: {
 				range: '',
 				lockViewport: false,
+				viewportWidth: false,
 				hasStyleSheet: true,
 				grid: {}
 			}
@@ -448,10 +449,18 @@ var skel = (function() { var _ = {
 							// metaViewport
 								if (state.config.lockViewport)
 								{
-									if (!(x = _.getCachedElement('mV')))
-										x = _.cacheElement('mV', _.newMeta('viewport', 'width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'), 'head', 1);
+									if (!(x = _.getCachedElement('mVL' + _.stateId)))
+										x = _.cacheElement('mVL' + _.stateId, _.newMeta('viewport', 'width=' + (state.config.viewportWidth ? state.config.viewportWidth : 'device-width') + ',initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'), 'head', 1);
 									
-									console.log('- added metaViewport');
+									console.log('- added metaViewportLock' + _.stateId);
+									state.elements.push(x);
+								}
+								else if (state.config.viewportWidth)
+								{
+									if (!(x = _.getCachedElement('mV' + _.stateId)))
+										x = _.cacheElement('mV' + _.stateId, _.newMeta('viewport', 'width=' + state.config.viewportWidth), 'head', 1);
+									
+									console.log('- added metaViewport' + _.stateId);
 									state.elements.push(x);
 								}
 									
