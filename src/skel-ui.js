@@ -496,6 +496,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 																	.scrollTop(0)
 																	.css('top', '0px')
 																	.css(config.position, '-' + _.recalc(config.size) + 'px')
+																	.css('width', _.recalc(config.size))
 																	.css('height', '100%')
 																	.show();
 
@@ -578,6 +579,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 																	.scrollTop(0)
 																	.css('top', '0px')
 																	.css(config.position, '0px')
+																	.css('width', _.recalc(config.size))
 																	.css('height', '100%')
 																	.show();
 															
@@ -674,7 +676,6 @@ skel.registerPlugin('ui', (function() { var _ = {
 								switch (config.position)
 								{
 									case 'top-left':
-									case 'top':
 									default:
 										t.addClass('skel-ui-overlay-top-left').css('top', 0).css('left', 0);
 										break;
@@ -683,6 +684,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 										t.addClass('skel-ui-overlay-top-right').css('top', 0).css('right', 0);
 										break;
 
+									case 'top':
 									case 'top-center':
 										t.addClass('skel-ui-overlay-top-center').css('top', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
 										break;
@@ -691,6 +693,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 										t.addClass('skel-ui-overlay-bottom-left').css('bottom', 0).css('left', 0);
 										break;
 
+									case 'bottom':
 									case 'bottom-center':
 										t.addClass('skel-ui-overlay-bottom-center').css('bottom', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
 										break;
@@ -699,10 +702,12 @@ skel.registerPlugin('ui', (function() { var _ = {
 										t.addClass('skel-ui-overlay-bottom-right').css('bottom', 0).css('right', 0);
 										break;
 
+									case 'left':
 									case 'middle-left':
 										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('left', 0).css('margin-top', '-' + _.getHalf(config.height));
 										break;
 
+									case 'right':
 									case 'middle-right':
 										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('right', 0).css('margin-top', '-' + _.getHalf(config.height));
 										break;
