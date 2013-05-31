@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+        echo Usage: $0 [version]
+        exit
+fi
+
+VERSION="skel.js v$1 | (c) n33 | n33.co @n33co | MIT + GPLv2"
+DIR="src"
+
+# C-style files
+
+FILES="$DIR/skel.js
+$DIR/skel-ui.js
+$DIR/skel-noscript.css"
+
+for f in $FILES
+do
+	sed "1 s/^.*$/\/\* $VERSION \*\//" $f > $f.tmp
+	mv $f.tmp $f
+done
+
+echo updated version to $1
