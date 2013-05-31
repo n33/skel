@@ -655,7 +655,7 @@
 
 	#top
 	{
-		padding: 8em 0 2em 0 !important;
+		padding: 11em 0 2em 0 !important;
 		margin-top: 0 !important;
 		text-align: center;
 	}
@@ -687,12 +687,12 @@
 	{
 	}
 
-		#example ol.default
+		#example ol.major
 		{
 			text-align: center;
 		}
 
-			#example ol.default h3
+			#example ol.major h3
 			{
 				font-size: 1.5em;
 				margin-left: -1.85em;
@@ -823,3 +823,49 @@
 		{
 			color: inherit;
 		}
+		
+/*********************************************************************************/
+/* Bar                                                                           */
+/*********************************************************************************/
+
+	#bar
+	{
+		position: fixed;
+		top: 0;
+		left: 0;
+		text-align: center;
+		width: 100%;
+		background: #323739;
+		z-index: 10000;
+		cursor: default;
+	}
+	
+		#bar ul
+		{
+			margin: 0;
+		}
+	
+		#bar li
+		{
+			display: inline-block;
+			margin: 0 0.25em 0 0.25em;
+			padding: 0 1em 0 1em;
+		}
+	
+		#bar li a
+		{
+			color: #9B9FA0;
+			text-decoration: none;
+			display: inline-block;
+			line-height: 2.5em;
+		}
+	
+		#bar .active
+		{
+			background: #41484B;
+		}
+		
+			#bar .active a
+			{
+				color: #fff;
+			}
