@@ -453,12 +453,12 @@ skel.registerPlugin('ui', (function() { var _ = {
 											t
 												.addClass('skel-ui-panel-' + config.position)
 												.css('height', _.recalcH(config.size))
-												.scrollLeft(0);
+												.scrollTop(0);
 												
 											if (_.isTouch)
 											{
 												t
-													.css('overflow-x', 'scroll')
+													.css('overflow-y', 'scroll')
 													.css('-webkit-overflow-scrolling', 'touch')
 													.bind('touchstart', function(e) {
 														t._posY = e.originalEvent.touches[0].pageY;
@@ -468,38 +468,25 @@ skel.registerPlugin('ui', (function() { var _ = {
 														var	diffX = t._posX - e.originalEvent.touches[0].pageX,
 															diffY = t._posY - e.originalEvent.touches[0].pageY,
 															th = t.outerHeight(),
-															ts = (t.get(0).scrollHeight - t.scrollLeft());
-														
-														// Swipe to close?
-															/*
-															if (config.swipeToClose
-															&&	diffX < 20
-															&&	diffX > -20
-															&&	((config.position == 'top' && diffY > 50)
-															||	(config.position == 'bottom' && diffY < -50)))
-															{
-																t.close_skel();
-																return false;
-															}
-															*/
+															ts = (t.get(0).scrollHeight - t.scrollTop());
 														
 														// Prevent vertical scrolling past the top or bottom
-															if (	(t.scrollLeft() == 0 && diffX < 0)
-															||		(ts > (th - 2) && ts < (th + 2) && diffX > 0)	)
+															if (	(t.scrollTop() == 0 && diffY < 0)
+															||		(ts > (th - 2) && ts < (th + 2) && diffY > 0)	)
 															{
 																return false;
 															}
 													});
 											}
 											else
-												t.css('overflow-x', 'auto');
+												t.css('overflow-y', 'auto');
 												
 										// Style
 											switch (config.style)
 											{
-												// No reveal yet (gets a little weird)
 												case 'reveal':
 												case 'push':
+												default:
 													
 													// Open
 														t.open_skel = function() {
@@ -528,14 +515,10 @@ skel.registerPlugin('ui', (function() { var _ = {
 															// Move stuff
 																window.setTimeout(function() {
 																
-																	// Fixed page elements
-																		_.cache.fixedWrapper.children().css('transform', 'translate(0px,' + sign + _.recalcH(config.size) + 'px)');
-															
-																	// Panel
-																		t.css('transform', 'translate(0px,' + sign + _.recalcH(config.size) + 'px)');
-																		
-																	// Page
-																		_.cache.pageWrapper.css('transform', 'translate(0px,' + sign + _.recalcH(config.size) + 'px)');
+																	t
+																		.add(_.cache.fixedWrapper.children())
+																		.add(_.cache.pageWrapper)
+																		.css('transform', 'translate(0px,' + sign + _.recalcH(config.size) + 'px)');
 																	
 																	// Set active
 																		_.cache.activePanel = t;
@@ -550,15 +533,10 @@ skel.registerPlugin('ui', (function() { var _ = {
 																t.find('*').blur();
 														
 															// Move stuff back
-															
-																// Panel
-																	t.css('transform', 'translate(0px,0px)');
-															
-																// Page
-																	_.cache.pageWrapper.css('transform', 'translate(0px,0px)');
-															
-																// Fixed page elements
-																	_.cache.fixedWrapper.children().css('transform', 'translate(0px,0px)');
+																t
+																	.add(_.cache.pageWrapper)
+																	.add(_.cache.fixedWrapper.children())
+																	.css('transform', 'translate(0px,0px)');
 
 															// Cleanup
 																window.setTimeout(function() { 
@@ -577,9 +555,6 @@ skel.registerPlugin('ui', (function() { var _ = {
 																}, _.config.speed + 50);
 														};
 													
-													break;
-													
-												default:
 													break;
 											}
 
@@ -637,6 +612,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 											switch (config.style)
 											{
 												case 'push':
+												default:
 													
 													// Open
 														t.open_skel = function() {
@@ -665,14 +641,10 @@ skel.registerPlugin('ui', (function() { var _ = {
 															// Move stuff
 																window.setTimeout(function() {
 																
-																	// Fixed page elements
-																		_.cache.fixedWrapper.children().css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
-
-																	// Panel
-																		t.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
-																		
-																	// Page
-																		_.cache.pageWrapper.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
+																	t
+																		.add(_.cache.fixedWrapper.children())
+																		.add(_.cache.pageWrapper)
+																		.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
 															
 																	// Set active
 																		_.cache.activePanel = t;
@@ -687,16 +659,11 @@ skel.registerPlugin('ui', (function() { var _ = {
 																t.find('*').blur();
 														
 															// Move stuff back
-															
-																// Panel
-																	t.css('transform', 'translate(0px,0px)');
-															
-																// Page
-																	_.cache.pageWrapper.css('transform', 'translate(0px,0px)');
-															
-																// Fixed page elements
-																	_.cache.fixedWrapper.children().css('transform', 'translate(0px,0px)');
-
+																t
+																	.add(_.cache.fixedWrapper.children())
+																	.add(_.cache.pageWrapper)
+																	.css('transform', 'translate(0px,0px)');
+																
 															// Cleanup
 																window.setTimeout(function() { 
 																	
@@ -748,11 +715,9 @@ skel.registerPlugin('ui', (function() { var _ = {
 															// Move stuff
 																window.setTimeout(function() {
 																
-																	// Fixed page elements
-																		_.cache.fixedWrapper.children().css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
-
-																	// Page
-																		_.cache.pageWrapper.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
+																	_.cache.pageWrapper
+																		.add(_.cache.fixedWrapper.children())
+																		.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
 																	
 																	// Set active
 																		_.cache.activePanel = t;
@@ -768,14 +733,9 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 															// Move stuff back
 															
-																// Panel
-																	t.css('transform', 'translate(0px,0px)');
-															
-																// Page
-																	_.cache.pageWrapper.css('transform', 'translate(0px,0px)');
-															
-																// Fixed page elements
-																	_.cache.fixedWrapper.children().css('transform', 'translate(0px,0px)');
+																_.cache.pageWrapper
+																	.add(_.cache.fixedWrapper.children())
+																	.css('transform', 'translate(0px,0px)');
 
 															// Cleanup
 																window.setTimeout(function() { 
@@ -796,9 +756,6 @@ skel.registerPlugin('ui', (function() { var _ = {
 																}, _.config.speed + 50);
 														};
 													
-													break;
-													
-												default:
 													break;
 											}
 
