@@ -1,4 +1,4 @@
-/* skel.js v0.3 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS v0.3 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
 	This is for development purposes only. Use the minified version instead.
@@ -24,7 +24,7 @@ var skel = (function() { var _ = {
 			normalizeCSS: false,					// If true, inlines normalize.css
 			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
-			noConflict: false,						// If true, (almost) all skel.js classes will be prefixed
+			noConflict: false,						// If true, (almost) all skelJS classes will be prefixed
 			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
 			containers: 960,						// Width of container elements (px, %, or 'fluid')
 			grid: {
@@ -34,7 +34,7 @@ var skel = (function() { var _ = {
 			breakpoints: {
 				'all': {							// Breakpoint name
 					range: '*',						// Range (x-y, x-, -x, *)
-					hasStyleSheet: false			// If true, skel.js will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
+					hasStyleSheet: false			// If true, skelJS will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
 				}
 			},
 			events: {}								// Events (eventName: function() { })
