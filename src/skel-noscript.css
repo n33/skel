@@ -73,9 +73,10 @@
 			.\32 u { width: 15.8333333333%; }
 			.\31 u { width: 7.4166666667%; }
 			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-				margin: 0.5% 0 0.5% 1%;
+				margin: 1% 0 0 1%;
 				float: left;
 			}
+			.row + .row > * { margin-top: 1%; }
 		*/
 
 		/* 2% Gutter */
@@ -93,9 +94,10 @@
 			.\32 u { width: 15%; }
 			.\31 u { width: 6.5%; }
 			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-				margin: 1% 0 1% 2%;
+				margin: 2% 0 0 2%;
 				float: left;
 			}
+			.row + .row > * { margin-top: 2%; }
 
 		/* 4% Gutter */
 		/*
@@ -112,9 +114,10 @@
 			.\32 u { width: 13.3333333333%; }
 			.\31 u { width: 4.6666666667%; }
 			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-				margin: 2% 0 2% 4%;
+				margin: 4% 0 0 4%;
 				float: left;
 			}
+			.row + .row > * { margin-top: 4%; }
 		*/
 
 		/* 6% Gutter */
@@ -132,9 +135,10 @@
 			.\32 u { width: 11.6666666667%; }
 			.\31 u { width: 2.8333333333%; }
 			.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
-				margin: 3% 0 3% 6%;
+				margin: 6% 0 0 6%;
 				float: left;
 			}
+			.row + .row > * { margin-top: 6%; }
 		*/
 
 	/* Rows */
@@ -154,8 +158,8 @@
 			margin-top: 0;
 		}
 
-		.row:last-child > * {
-			margin-bottom: 0;
+		.row > * {
+			margin-top: 0;
 		}
 
 	/* Modifiers */
