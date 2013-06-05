@@ -518,7 +518,7 @@ var skel = (function() { var _ = {
 									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
 										x = _.cacheElement( 
 											'iGG' + state.config.grid.gutters, 
-											_.newInline('.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{padding:' + g + ' ' + gh + ' 0 '+ gh + ';float:left}.row+.row>*{padding-top:' + g + '}.row .row{margin-left:-' + gh + ';margin-right:-' + gh + '}'), 
+											_.newInline('.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{padding:' + g + ' ' + gh + ' 0 '+ gh + ';float:left}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + gh + ';margin-right:-' + gh + '}'), 
 											'head', 
 											3
 										); 
