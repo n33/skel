@@ -341,9 +341,9 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 			},
 		
-		/* Component */
+		/* Element */
 		
-			resumeComponent: function(o) {
+			resumeElement: function(o) {
 
 				// Get object from cache
 					var t = _.cache[o.type + 's'][o.id];
@@ -355,7 +355,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 			},
 		
-			suspendComponent: function(o) {
+			suspendElement: function(o) {
 			
 				// Get object from cache
 					var t = _.cache[o.type + 's'][o.id];
@@ -370,7 +370,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 			},
 	
-			initComponent: function(o) {
+			initElement: function(o) {
 
 				var	config = o.config, t = jQuery(o.object);
 
@@ -833,7 +833,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 			
 		/* Init */
 		
-			initComponents: function(type) {
+			initElements: function(type) {
 
 				var c, k, o, a, i;
 				
@@ -862,14 +862,14 @@ skel.registerPlugin('ui', (function() { var _ = {
 								z.onAttach = function() {
 									if (!this.initialized)
 									{
-										_.initComponent(this);
+										_.initElement(this);
 										this.initialized = true;
 									}
 									else
-										_.resumeComponent(this);
+										_.resumeElement(this);
 								};
 								z.onDetach = function() {
-									_.suspendComponent(this);
+									_.suspendElement(this);
 								};
 						}
 				}
@@ -1030,9 +1030,9 @@ skel.registerPlugin('ui', (function() { var _ = {
 				// Objects
 					_.initObjects();
 
-				// Components
-					_.initComponents('overlay');
-					_.initComponents('panel');
+				// Elements
+					_.initElements('overlay');
+					_.initElements('panel');
 
 				// Update state
 					_._.updateState();
