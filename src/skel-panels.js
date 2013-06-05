@@ -4,7 +4,7 @@
 	This is for development purposes only. Use the minified version instead.
 */
 
-skel.registerPlugin('ui', (function() { var _ = {
+skel.registerPlugin('panels', (function() { var _ = {
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Properties
@@ -246,7 +246,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 								console.log('moving element');
 								
 								// Insert placeholder before target
-									jQuery('<div id="skel-ui-tmp-' + target.attr('id') + '" />').insertBefore(target);
+									jQuery('<div id="skel-panels-tmp-' + target.attr('id') + '" />').insertBefore(target);
 								
 								// Move target
 									x.append(target);
@@ -256,7 +256,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 								console.log('returning HTML');
 								
 								// Replace placeholder with target
-									jQuery('#skel-ui-tmp-' + target.attr('id')).replaceWith(target);
+									jQuery('#skel-panels-tmp-' + target.attr('id')).replaceWith(target);
 							};
 							
 							o.resume_skel();
@@ -392,7 +392,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 
 							// Basic stuff
 								t
-									.addClass('skel-ui-panel')
+									.addClass('skel-panels-panel')
 									.css('z-index', _.config.baseZIndex)
 									.css('position', 'fixed')
 									.hide();
@@ -451,7 +451,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 									
 										// Basic stuff
 											t
-												.addClass('skel-ui-panel-' + config.position)
+												.addClass('skel-panels-panel-' + config.position)
 												.css('height', _.recalcH(config.size))
 												.scrollTop(0);
 												
@@ -567,7 +567,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 									
 										// Basic stuff
 											t
-												.addClass('skel-ui-panel-' + config.position)
+												.addClass('skel-panels-panel-' + config.position)
 												.css('width', _.recalcW(config.size))
 												.scrollTop(0);
 												
@@ -773,7 +773,7 @@ skel.registerPlugin('ui', (function() { var _ = {
 								t
 									.css('z-index', _.config.baseZIndex)
 									.css('position', 'fixed')
-									.addClass('skel-ui-overlay');
+									.addClass('skel-panels-overlay');
 							
 							// Width/height
 								t
@@ -785,39 +785,39 @@ skel.registerPlugin('ui', (function() { var _ = {
 								{
 									case 'top-left':
 									default:
-										t.addClass('skel-ui-overlay-top-left').css('top', 0).css('left', 0);
+										t.addClass('skel-panels-overlay-top-left').css('top', 0).css('left', 0);
 										break;
 
 									case 'top-right':
-										t.addClass('skel-ui-overlay-top-right').css('top', 0).css('right', 0);
+										t.addClass('skel-panels-overlay-top-right').css('top', 0).css('right', 0);
 										break;
 
 									case 'top':
 									case 'top-center':
-										t.addClass('skel-ui-overlay-top-center').css('top', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
+										t.addClass('skel-panels-overlay-top-center').css('top', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
 										break;
 
 									case 'bottom-left':
-										t.addClass('skel-ui-overlay-bottom-left').css('bottom', 0).css('left', 0);
+										t.addClass('skel-panels-overlay-bottom-left').css('bottom', 0).css('left', 0);
 										break;
 
 									case 'bottom':
 									case 'bottom-center':
-										t.addClass('skel-ui-overlay-bottom-center').css('bottom', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
+										t.addClass('skel-panels-overlay-bottom-center').css('bottom', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
 										break;
 
 									case 'bottom-right':
-										t.addClass('skel-ui-overlay-bottom-right').css('bottom', 0).css('right', 0);
+										t.addClass('skel-panels-overlay-bottom-right').css('bottom', 0).css('right', 0);
 										break;
 
 									case 'left':
 									case 'middle-left':
-										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('left', 0).css('margin-top', '-' + _.getHalf(config.height));
+										t.addClass('skel-panels-overlay-middle-left').css('top', '50%').css('left', 0).css('margin-top', '-' + _.getHalf(config.height));
 										break;
 
 									case 'right':
 									case 'middle-right':
-										t.addClass('skel-ui-overlay-middle-left').css('top', '50%').css('right', 0).css('margin-top', '-' + _.getHalf(config.height));
+										t.addClass('skel-panels-overlay-middle-left').css('top', '50%').css('right', 0).css('margin-top', '-' + _.getHalf(config.height));
 										break;
 								}
 							
@@ -848,14 +848,14 @@ skel.registerPlugin('ui', (function() { var _ = {
 					// Build element
 						o = _._.newDiv(c.html);
 							o.id = k;
-							o.className = 'skel-ui-' + type;
+							o.className = 'skel-panels-' + type;
 
 					// Cache it
 						a = c.breakpoints.split(',');
 						
 						for (i in a)
 						{
-							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'overlay' ? 'skel_ui_fixedWrapper' : 'skel_ui_defaultWrapper'), 2);
+							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'overlay' ? 'skel_panels_fixedWrapper' : 'skel_panels_defaultWrapper'), 2);
 								z.config = c;
 								z.initialized = false;
 								z.type = type;
@@ -962,8 +962,8 @@ skel.registerPlugin('ui', (function() { var _ = {
 					_.cache.body = jQuery('body');
 				
 				// pageWrapper
-					_.cache.body.wrapInner('<div id="skel-ui-pageWrapper" />');
-					_.cache.pageWrapper = jQuery('#skel-ui-pageWrapper');
+					_.cache.body.wrapInner('<div id="skel-panels-pageWrapper" />');
+					_.cache.pageWrapper = jQuery('#skel-panels-pageWrapper');
 					_.cache.pageWrapper
 						.css('position', 'relative')
 						.css('left', '0')
@@ -974,22 +974,22 @@ skel.registerPlugin('ui', (function() { var _ = {
 						.accelerate_skel();
 						
 				// defaultWrapper
-					_.cache.defaultWrapper = jQuery('<div id="skel-ui-defaultWrapper" />').appendTo(_.cache.body);
+					_.cache.defaultWrapper = jQuery('<div id="skel-panels-defaultWrapper" />').appendTo(_.cache.body);
 					_.cache.defaultWrapper
 						.css('height', '100%');
 
 				// fixedWrapper
-					_.cache.fixedWrapper = jQuery('<div id="skel-ui-fixedWrapper" />').appendTo(_.cache.body);
+					_.cache.fixedWrapper = jQuery('<div id="skel-panels-fixedWrapper" />').appendTo(_.cache.body);
 					_.cache.fixedWrapper
 						.css('position', 'relative');
 				
-					// Move elements with the "skel-ui-fixed" class to fixedWrapper
-						jQuery('.skel-ui-fixed').appendTo(_.cache.fixedWrapper);
+					// Move elements with the "skel-panels-fixed" class to fixedWrapper
+						jQuery('.skel-panels-fixed').appendTo(_.cache.fixedWrapper);
 				
 				// Register locations
-					_._.registerLocation('skel_ui_defaultWrapper', _.cache.defaultWrapper[0]);
-					_._.registerLocation('skel_ui_fixedWrapper', _.cache.fixedWrapper[0]);
-					_._.registerLocation('skel_ui_pageWrapper', _.cache.pageWrapper[0]);
+					_._.registerLocation('skel_panels_defaultWrapper', _.cache.defaultWrapper[0]);
+					_._.registerLocation('skel_panels_fixedWrapper', _.cache.fixedWrapper[0]);
+					_._.registerLocation('skel_panels_pageWrapper', _.cache.pageWrapper[0]);
 
 				});
 
