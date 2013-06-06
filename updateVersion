@@ -11,7 +11,7 @@ DIR="src"
 # C-style files
 
 FILES="$DIR/skel.js
-$DIR/skel-ui.js
+$DIR/skel-panels.js
 $DIR/skel-noscript.css"
 
 for f in $FILES

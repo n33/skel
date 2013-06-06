@@ -26,11 +26,13 @@ var skel = (function() { var _ = {
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
 			noConflict: false,						// If true, (almost) all skelJS classes will be prefixed
 			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
-			containers: 960,						// Width of container elements (px, %, or 'fluid')
+			containers: 960,						// Width of container elements
+			containerUnits: 'px',					// Container units (px, pt, %, vw)
 			debug: false,
 			grid: {
 				collapse: false,					// If true, collapse grid structures and force all cells to occupy a full row
-				gutters: 2							// Size of gutters (1, 2, 4, 6, or 0 for no gutters)
+				gutters: 40,						// Size of gutters
+				gutterUnits: 'px'					// Gutter units (px, pt, %, vw)
 			},
 			breakpoints: {
 				'all': {							// Breakpoint name
@@ -98,6 +100,8 @@ var skel = (function() { var _ = {
 			},
 			config_breakpoint: {
 				range: '',
+				containers: 960,
+				containerUnits: 'px',
 				lockViewport: false,
 				viewportWidth: false,
 				hasStyleSheet: true,
@@ -133,14 +137,36 @@ var skel = (function() { var _ = {
 			
 			},
 
+			getDevicePixelRatio: function() {
+				
+				// If DPR is available use it (Workaround: But only if we're not using Firefox mobile, which appears to always report 1)
+					if (window.devicePixelRatio !== undefined && !navigator.userAgent.match(/(Firefox)/))
+						return window.devicePixelRatio;
+
+				// If matchMedia is available, attempt to use that instead
+					if (window.matchMedia)
+					{
+						if (window.matchMedia('(-webkit-min-device-pixel-ratio: 2),(min--moz-device-pixel-ratio: 2),(-o-min-device-pixel-ratio: 2/1),(min-resolution: 2dppx)').matches)
+							return 2;
+						else if (window.matchMedia('(-webkit-min-device-pixel-ratio: 1.5),(min--moz-device-pixel-ratio: 1.5),(-o-min-device-pixel-ratio: 3/2),(min-resolution: 1.5dppx)').matches)
+							return 1.5;
+					}
+				
+				return 1;
+			},
+
 			getViewportWidth: function() {
 			
 				var w, o, r;
 				
-				w = window.innerWidth || document.documentElement.clientWidth;
+				w = document.documentElement.clientWidth;
 				o = (window.orientation ? Math.abs(window.orientation) : false);
-				r = (window.devicePixelRatio ? window.devicePixelRatio : 1);
+				r = _.getDevicePixelRatio();
 			
+				// Workaround: Both iOS and Android report a DPR, but iOS automatically factors it into stuff
+					if (navigator.userAgent.match(/(iPod|iPhone|iPad)/))
+						r = 1;
+
 				// Screen width smaller than viewport width? Use screen width instead.
 					if (screen.width < w)
 						w = screen.width;
@@ -166,6 +192,9 @@ var skel = (function() { var _ = {
 							}
 					}
 				
+				// Divide by pixel ratio
+					w = w / r;
+
 				return w;
 
 			},
@@ -465,34 +494,15 @@ var skel = (function() { var _ = {
 								w = parseInt(state.config.containers);
 								
 								// Figure out units
-									if (typeof state.config.containers == 'string'
-									&&	state.config.containers != w)
+									if (state.config.containers === 'fluid')
 									{
-										if (state.config.containers.charAt(state.config.containers.length - 1) == '%')
-										{
-											u ='%';
-											w = Math.min(100, w);
-										}
-										else if (state.config.containers.substring(state.config.containers.length - 2) == 'px')
-										{
-											u = 'px';
-										}
-										else if (state.config.containers == 'fluid')
-										{
-											u = '%';
-											w = 100;
-										}
-										else
-											w = 0;
+										w = 100;
+										u = '%';
 									}
 									else
-										u = 'px';
-								
-								// Invalid? Default to 960px
-									if (w == 0)
 									{
-										w = 960;
-										u = 'px';
+										w = state.config.containers;
+										u = state.config.containerUnits;
 									}
 
 								if (!(x = _.getCachedElement('iC' + w + u)))
@@ -509,11 +519,11 @@ var skel = (function() { var _ = {
 								state.elements.push(x);
 
 								// Gutters
-									g = state.config.grid.gutters * 10;
+									g = state.config.grid.gutters;
 									gh = g / 2;
 
-									g = g + 'px';
-									gh = gh + 'px';
+									g = g + state.config.grid.gutterUnits;
+									gh = gh + state.config.grid.gutterUnits;
 
 									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
 										x = _.cacheElement( 
