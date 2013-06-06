@@ -94,6 +94,10 @@
 
 	/* Modifiers */
 
+		/* Persistent */
+
+			.persistent { }
+
 		/* Flush */
 
 			.row.flush {
@@ -104,25 +108,38 @@
 				padding: 0 !important;
 			}
 
-		/* Persistent */
+		/* Half */
 
-			.persistent { }
-
-		/* Narrow */
-
-			.row.narrow > * {
+			.row.half > * {
 				/* padding: (gutters / 2) 0 0 (gutters / 2) */
 				padding: 20px 0 0 20px;
 			}
 
-			.row.narrow + .row.narrow > * {
+			.row.half + .row.half > * {
 				/* padding-top: (gutters / 2) */
 				padding-top: 20px;
 			}
 
-			.row.narrow {
+			.row.half {
 				/* margin-left: -(gutters / 2) */
 				margin-left: -20px;
+			}
+
+		/* Double */
+
+			.row.double > * {
+				/* padding: (gutters * 2) 0 0 (gutters * 2) */
+				padding: 80px 0 0 80px;
+			}
+
+			.row.double + .row.double > * {
+				/* padding-top: (gutters * 2) */
+				padding-top: 80px;
+			}
+
+			.row.double {
+				/* margin-left: -(gutters * 2) */
+				margin-left: -80px;
 			}
 
 	/* Collapsed */
