@@ -530,7 +530,7 @@ var skel = (function() { var _ = {
 											'iGG' + state.config.grid.gutters, 
 											_.newInline(
 												'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
-												'.rowNarrow>*{padding:' + gh + ' 0 0 '+ gh + '}.rowNarrow+.rowNarrow>*{padding-top:' + gh + '}.rowNarrow{margin-left:-' + gh + '}'
+												'.row.narrow>*{padding:' + gh + ' 0 0 '+ gh + '}.row.narrow+.row.narrow>*{padding-top:' + gh + '}.row.narrow{margin-left:-' + gh + '}'
 											), 
 											'head', 
 											3

@@ -54,7 +54,7 @@
 		.\33 u { width: 25% }
 		.\32 u { width: 16.6666666667% }
 		.\31 u { width: 8.3333333333% }
-		.\31 u, .\32 u, .\33 u, .\34 u, .\35 u, .\36 u, .\37 u, .\38 u, .\39 u, .\31 0u, .\31 1u, .\31 2u {
+		.row > * {
 			/* padding: (gutters) 0 0 (gutters); */
 			padding: 40px 0 0 40px;
 			float: left;
@@ -107,6 +107,23 @@
 		/* Persistent */
 
 			.persistent { }
+
+		/* Narrow */
+
+			.row.narrow > * {
+				/* padding: (gutters / 2) 0 0 (gutters / 2) */
+				padding: 20px 0 0 20px;
+			}
+
+			.row.narrow + .row.narrow > * {
+				/* padding-top: (gutters / 2) */
+				padding-top: 20px;
+			}
+
+			.row.narrow {
+				/* margin-left: -(gutters / 2) */
+				margin-left: -20px;
+			}
 
 	/* Collapsed */
 	/*
