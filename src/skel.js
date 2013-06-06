@@ -408,7 +408,7 @@ var skel = (function() { var _ = {
 			changeState: function(newStateId) {
 
 				var a, i, k, x, w, aX, aY;
-				var g, gh;
+				var g, gh, gd;
 				var location, state;
 				
 				_.stateId = newStateId;
@@ -521,16 +521,19 @@ var skel = (function() { var _ = {
 								// Gutters
 									g = state.config.grid.gutters;
 									gh = g / 2;
+									gd = g * 2;
 
 									g = g + state.config.grid.gutterUnits;
 									gh = gh + state.config.grid.gutterUnits;
+									gd = gd + state.config.grid.gutterUnits;
 
 									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
 										x = _.cacheElement(
 											'iGG' + state.config.grid.gutters, 
 											_.newInline(
 												'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
-												'.row.narrow>*{padding:' + gh + ' 0 0 '+ gh + '}.row.narrow+.row.narrow>*{padding-top:' + gh + '}.row.narrow{margin-left:-' + gh + '}'
+												'.row.half>*{padding:' + gh + ' 0 0 '+ gh + '}.row.half+.row.half>*{padding-top:' + gh + '}.row.half{margin-left:-' + gh + '}' +
+												'.row.double>*{padding:' + gd + ' 0 0 '+ gd + '}.row.double+.row.double>*{padding-top:' + gd + '}.row.double{margin-left:-' + gd + '}'
 											), 
 											'head', 
 											3
