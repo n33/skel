@@ -68,7 +68,7 @@ var skel = (function() { var _ = {
 			gF: '.row.flush{margin-left:0}.row.flush>*{padding:0!important}',
 			gR: '.row:after{content:\'\';display:block;clear:both;height:0}.row:first-child>*{padding-top:0}.row>*{padding-top:0}',
 			gCo: '.row:not(.persistent){overflow-x:hidden;margin-left:0}.row:not(.persistent)>*{float:none!important;width:100%!important;padding:10px 0 10px 0!important}',
-			d: '.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{box-shadow:inset 0 0 0 1px red}'
+			d: '.row>*{box-shadow:inset 0 0 0 1px red}'
 		},
 		presets: {
 			'standard': {
@@ -528,7 +528,10 @@ var skel = (function() { var _ = {
 									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
 										x = _.cacheElement(
 											'iGG' + state.config.grid.gutters, 
-											_.newInline('.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}'), 
+											_.newInline(
+												'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
+												'.rowNarrow>*{padding:' + gh + ' 0 0 '+ gh + '}.rowNarrow+.rowNarrow>*{padding-top:' + gh + '}.rowNarrow{margin-left:-' + gh + '}'
+											), 
 											'head', 
 											3
 										); 
