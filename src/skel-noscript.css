@@ -1,4 +1,4 @@
-/* skelJS v0.3.1 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS v0.3.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 /*
 
 	HEY YO. READ THIS FIRST:
@@ -54,6 +54,18 @@
 		.\33 u { width: 25% }
 		.\32 u { width: 16.6666666667% }
 		.\31 u { width: 8.3333333333% }
+		.\-11u { margin-left: 91.6666666667% }
+		.\-10u { margin-left: 83.3333333333% }
+		.\-9u { margin-left: 75% }
+		.\-8u { margin-left: 66.6666666667% }
+		.\-7u { margin-left: 58.3333333333% }
+		.\-6u { margin-left: 50% }
+		.\-5u { margin-left: 41.6666666667% }
+		.\-4u { margin-left: 33.3333333333% }
+		.\-3u { margin-left: 25% }
+		.\-2u { margin-left: 16.6666666667% }
+		.\-1u { margin-left: 8.3333333333% }
+
 		.row > * {
 			/* padding: (gutters) 0 0 (gutters); */
 			padding: 40px 0 0 40px;
@@ -154,5 +166,6 @@
 			float: none !important;
 			width: 100% !important;
 			padding: 10px 0 10px 0 !important;
+			margin-left: 0 !important;
 		}
 	*/
