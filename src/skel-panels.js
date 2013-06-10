@@ -857,6 +857,13 @@ skel.registerPlugin('panels', (function() { var _ = {
 							o.id = k;
 							o.className = 'skel-panels-' + type;
 
+						if (!c.html)
+							_._.DOMReady(function() {
+								var x = jQuery('#' + k), y = jQuery(o);
+								x.children().appendTo(y);
+								x.remove();
+							});
+					
 					// Cache it
 						if (c.breakpoints)
 							a = c.breakpoints.split(',');
