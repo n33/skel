@@ -842,7 +842,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 		
 			initElements: function(type) {
 
-				var c, k, o, a, i;
+				var c, k, o, a, b = [], i;
 				
 				for (k in _.config[type + 's'])
 				{
@@ -857,12 +857,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 							o.id = k;
 							o.className = 'skel-panels-' + type;
 
+						// If no HTML was defined, add it to our list of inline-defined elements (which we'll initialize
+						// later when the DOM is ready to mess with)
 						if (!c.html)
-							_._.DOMReady(function() {
-								var x = jQuery('#' + k), y = jQuery(o);
-								x.children().appendTo(y);
-								x.remove();
-							});
+							b[k] = o;
 					
 					// Cache it
 						if (c.breakpoints)
@@ -890,6 +888,19 @@ skel.registerPlugin('panels', (function() { var _ = {
 								};
 						}
 				}
+				
+				// Deal with inline-defined elements
+					_._.DOMReady(function() {
+						var x, y, k;
+						
+						for (k in b)
+						{
+							x = jQuery('#' + k)
+							y = jQuery(b[k]);
+							x.children().appendTo(y);
+							x.remove();
+						}
+					});
 
 			},
 			
