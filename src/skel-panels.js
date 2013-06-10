@@ -62,7 +62,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 		defaults: {
 			config: {
 				panel: {
-					breakpoints: null,
+					breakpoints: '',
 					position: null,
 					style: null,
 					size: '80%',
@@ -72,7 +72,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					swipeToClose: true
 				},
 				overlay: {
-					breakpoints: null,
+					breakpoints: '',
 					position: null,
 					width: 0,
 					height: 0,
@@ -851,7 +851,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 							o.className = 'skel-panels-' + type;
 
 					// Cache it
-						a = c.breakpoints.split(',');
+						if (c.breakpoints)
+							a = c.breakpoints.split(',');
+						else
+							a = _._.breakpointList;
 						
 						for (i in a)
 						{

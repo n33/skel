@@ -44,6 +44,7 @@ var skel = (function() { var _ = {
 		isLegacyIE: false,
 		stateId: '',
 		breakpoints: [],
+		breakpointList: [],
 		events: [],
 		plugins: {},
 		cache: {
@@ -888,6 +889,9 @@ var skel = (function() { var _ = {
 							if (_.config.preloadStyleSheets
 							&&	b.config.hasStyleSheet)
 								preloads.push(_.newStyleSheet(_.config.prefix + '-' + k + '.css'));
+					
+						// Add to list
+							_.breakpointList.push(k);
 					}
 					
 				// Process events config
