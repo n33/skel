@@ -53,7 +53,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 						position: 'top-left',
 						width: '100%',
 						height: 44,
-						html: '<span class="toggle" data-action="panelToggle" data-target="navPanel"></span>' +
+						html: '<span class="toggle" data-action="togglePanel" data-target="navPanel"></span>' +
 							  '<span class="title" data-action="copyHTML" data-target="logo"></span>'
 					}
 				}
@@ -150,6 +150,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 				{
 					// panelToggle (Opens/closes a panel)
 					// target = panel
+						case 'togglePanel':
 						case 'panelToggle':
 						
 							x
@@ -159,7 +160,13 @@ skel.registerPlugin('panels', (function() { var _ = {
 							a = function(e) {
 								e.preventDefault();
 								e.stopPropagation();
-							
+						
+								if (_.cache.activePanel)
+								{
+									_.cache.activePanel.close_skel();
+									return false;
+								}
+
 								var t = jQuery(this), panel = _.cache.panels[t.attr('data-target')];
 								
 								if (panel.is(':visible'))
