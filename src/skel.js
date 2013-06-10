@@ -1,4 +1,4 @@
-/* skelJS v0.3.2 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS v0.3.3-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
 	This is for development purposes only. Use the minified version instead.
@@ -139,7 +139,12 @@ var skel = (function() { var _ = {
 
 			getDevicePixelRatio: function() {
 				
-				// If DPR is available use it (Workaround: But only if we're not using Firefox mobile, which appears to always report 1)
+				// Hack: iOS and OS X both support devicePixelRatio but it factors it into width calculations ahead of
+				// time. Which is nice I guess, but as this isn't consistent with other platforms we need to force a 1 here.
+					if (navigator.userAgent.match(/(iPod|iPhone|iPad|Macintosh)/))
+						return 1;
+
+				// If DPR is available use it (Hack: But only if we're not using Firefox mobile, which appears to always report 1)
 					if (window.devicePixelRatio !== undefined && !navigator.userAgent.match(/(Firefox)/))
 						return window.devicePixelRatio;
 
@@ -163,10 +168,6 @@ var skel = (function() { var _ = {
 				o = (window.orientation ? Math.abs(window.orientation) : false);
 				r = _.getDevicePixelRatio();
 			
-				// Workaround: OS X prefactors DPR into other calculations
-					if (navigator.userAgent.match(/(iPod|iPhone|iPad|Macintosh)/))
-						r = 1;
-
 				// Screen width smaller than viewport width? Use screen width instead.
 					if (screen.width < w)
 						w = screen.width;
@@ -954,7 +955,7 @@ var skel = (function() { var _ = {
 				// Initialize DOMReady method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
 					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
 
-				// Workaround: Legacy IE shit
+				// Hack: Legacy IE shit
 					var d = document;if (!d.getElementsByClassName) d.getElementsByClassName = function(className) { if (d.querySelectorAll) return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); else return []; }
 					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
 				
