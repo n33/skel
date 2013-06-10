@@ -24,8 +24,6 @@ var skel = (function() { var _ = {
 			normalizeCSS: false,					// If true, inlines normalize.css
 			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
-			noConflict: false,						// If true, (almost) all skelJS classes will be prefixed
-			noConflictPrefix: 'skel',				// Prefix to use when noConflict is true
 			containers: 960,						// Width of container elements
 			containerUnits: 'px',					// Container units (px, pt, %, vw)
 			debug: false,
@@ -507,7 +505,7 @@ var skel = (function() { var _ = {
 									}
 
 								if (!(x = _.getCachedElement('iC' + w + u)))
-									x = _.cacheElement('iC' + w + u, _.newInline('.' + (_.config.noConflict ? _.config.noConflictPrefix + '-' : '') + 'container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
+									x = _.cacheElement('iC' + w + u, _.newInline('.container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
 								
 								console.log('- added inlineContainer' + w + u);
 								state.elements.push(x);						
@@ -934,20 +932,6 @@ var skel = (function() { var _ = {
 
 			},
 			
-			initNoConflict: function() {
-			
-				/*
-					.row			=> .noConflictPrefix-row
-					.flush			=> .noConflictPrefix-flush
-					.persistent		=> .noConflictPrefix-persistent
-					.container		=> .noConflictPrefix-container
-				*/
-			
-				_.css.gF = _.css.gF.replace(/\.flush>\.row/g, '.' + _.config.noConflictPrefix +  '-flush>\.' + _.config.noConflictPrefix + '-row');
-				_.css.gR = _.css.gR.replace(/\.row/g, '.' + _.config.noConflictPrefix +  '-row');
-				_.css.gCo = _.css.gCo.replace(/:not\(\.persistent\)>\.row/g, ':not(.' + _.config.noConflictPrefix + '-persistent)>\.' + _.config.noConflictPrefix + '-row');
-			},
-			
 			init: function() {
 
 				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
@@ -961,10 +945,6 @@ var skel = (function() { var _ = {
 				
 				// Initialize config
 					_.initConfig();
-
-				// No conflict?
-					if (_.config.noConflict)
-						_.initNoConflict();
 
 				// Register locations
 					_.registerLocation('head', document.getElementsByTagName('head')[0]);
