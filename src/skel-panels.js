@@ -44,7 +44,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 						position: 'left',
 						style: 'push',
 						size: '80%',
-						html: '<div data-action="navList" data-target="nav"></div>'
+						html: '<div data-action="navList" data-args="nav"></div>'
 					}
 				},
 				overlays: {
@@ -53,8 +53,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 						position: 'top-left',
 						width: '100%',
 						height: 44,
-						html: '<span class="toggle" data-action="togglePanel" data-target="navPanel"></span>' +
-							  '<span class="title" data-action="copyHTML" data-target="logo"></span>'
+						html: '<span class="toggle" data-action="togglePanel" data-args="navPanel"></span>' +
+							  '<span class="title" data-action="copyHTML" data-args="logo"></span>'
 					}
 				}
 			}
@@ -143,13 +143,16 @@ skel.registerPlugin('panels', (function() { var _ = {
 				
 				var	o = x.get(0),
 					action = x.attr('data-action'),
-					target = (x.attr('data-target') ? jQuery('#' + x.attr('data-target')) : null),
-					targetHide = (x.attr('data-target-hide') == 1);
+					args = x.attr('data-args'),
+					arg1, arg2;
+				
+				if (action && args)
+					args = args.split(',');
 				
 				switch (action)
 				{
 					// panelToggle (Opens/closes a panel)
-					// target = panel
+					// arg1 = panel
 						case 'togglePanel':
 						case 'panelToggle':
 						
@@ -167,7 +170,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 									return false;
 								}
 
-								var t = jQuery(this), panel = _.cache.panels[t.attr('data-target')];
+								var t = jQuery(this), panel = _.cache.panels[args[0]];
 								
 								if (panel.is(':visible'))
 									panel.close_skel();
@@ -185,9 +188,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 							break;
 				
 					// navList (Builds a nav list using links from an existing nav)
-					// target = existing nav
+					// arg1 = existing nav
 						case 'navList':
-							a = target.find('a');
+							arg1 = jQuery('#' + args[0]);
+							
+							a = arg1.find('a');
 							b = [];
 							
 							a.each(function() {
@@ -208,37 +213,39 @@ skel.registerPlugin('panels', (function() { var _ = {
 							break;
 
 					// copyText (Copies text using jQuery.text() from an element)
-					// target = the element
+					// arg1 = the element
 						case 'copyText':
-							x.html(target.text());
+							arg1 = jQuery('#' + args[0]);
+							x.html(arg1.text());
 							break;
 
 					// copyHTML (Copies HTML using jQuery.html() from an element)
-					// target = the element
+					// arg1 = the element
 						case 'copyHTML':
-							x.html(target.html());
+							arg1 = jQuery('#' + args[0]);
+							x.html(arg1.html());
 							break;
 						
-					// moveHTML (Moves an element's (inner) HTML to this one)
-					// target = the element
-						case 'moveHTML':
+					// moveElementContents (Moves an element's (inner) HTML to this one)
+					// arg1 = the element
+						case 'moveElementContents':
+
+							arg1 = jQuery('#' + args[0]);
 						
 							o.resume_skel = function() {
-								console.log('moving HTML');
-								target.children().each(function() {
+								console.log('moving element contents');
+								arg1.children().each(function() {
 									x.append(jQuery(this));
 								});
-								if (targetHide)
-									target.hide();
+								//	arg1.hide();
 							};
 							
 							o.suspend_skel = function() {
-								console.log('returning HTML');
+								console.log('returning element contents');
 								x.children().each(function() {
-									target.append(jQuery(this));
+									arg1.append(jQuery(this));
 								});
-								if (targetHide)
-									target.show();
+								//	arg1.show();
 							};
 							
 							o.resume_skel();
@@ -246,27 +253,106 @@ skel.registerPlugin('panels', (function() { var _ = {
 							break;
 						
 					// moveElement (Moves an element to this one)
-					// target = the element
+					// arg1 = the element
 						case 'moveElement':
+							arg1 = jQuery('#' + args[0]);
 						
 							o.resume_skel = function() {
 								console.log('moving element');
 								
-								// Insert placeholder before target
-									jQuery('<div id="skel-panels-tmp-' + target.attr('id') + '" />').insertBefore(target);
+								// Insert placeholder before arg1
+									jQuery('<div id="skel-panels-tmp-' + arg1.attr('id') + '" />').insertBefore(arg1);
 								
-								// Move target
-									x.append(target);
+								// Move arg1
+									x.append(arg1);
 							};
 							
 							o.suspend_skel = function() {
-								console.log('returning HTML');
+								console.log('returning element');
 								
-								// Replace placeholder with target
-									jQuery('#skel-panels-tmp-' + target.attr('id')).replaceWith(target);
+								// Replace placeholder with arg1
+									jQuery('#skel-panels-tmp-' + arg1.attr('id')).replaceWith(arg1);
 							};
 							
 							o.resume_skel();
+						
+							break;
+
+					// moveCell (Moves a grid cell to this element)
+					// arg1 = the cell
+						case 'moveCell':
+
+							/*
+								Resume:
+									- Move cell element
+										- move element from source row
+										- disable width class
+										- redistribute width to source row cells
+										
+								Suspend:
+									- Move back cell element
+										- move element back to soruce row
+										- enable width class
+										- restore original widths to source row cells
+							*/
+							
+							arg1 = jQuery('#' + args[0]);
+							arg2 = jQuery('#' + args[1]);
+							
+							o.resume_skel = function() {
+								console.log('moving cell');
+
+								// Insert placeholder before arg1
+									jQuery('<div id="skel-panels-tmp-' + arg1.attr('id') + '" />').insertBefore(arg1);
+								
+								// Move arg1
+									x.append(arg1);
+
+								// Override arg1 width
+									arg1.css('width', 'auto');
+
+								// Override arg2 width
+									if (arg2)
+										arg2.expandCell_skel();
+							};
+							
+							o.suspend_skel = function() {
+								console.log('returning cell');
+								
+								// Replace placeholder with arg1
+									jQuery('#skel-panels-tmp-' + arg1.attr('id')).replaceWith(arg1);
+									
+								// Restore arg1 override
+									arg1.css('width', '');
+									
+								// Restore arg2 width
+									if (arg2)
+										arg2.css('width', '');
+							};
+							
+							o.resume_skel();
+						
+							break;
+
+					// moveCellContents (Moves a grid cell's contents to this element)
+					// arg1 = the cell
+						case 'moveCellContents':
+						
+							/*
+								Resume:
+									- Move cell element contents
+									- Disable cell element
+										- move element from source row
+										- disable width class
+										- redistribute width to source row cells
+										
+								Suspend:
+									- Move back cell element contents 
+									- Enable cell element
+										- move element back to soruce row
+										- enable width class
+										- restore original widths to source row cells
+							*/
 						
 							break;
 						
@@ -970,6 +1056,36 @@ skel.registerPlugin('panels', (function() { var _ = {
 					});
 					
 					return t;
+				};
+				
+				jQuery.fn.initialize_skel = function() {
+					var t = jQuery(this);
+					
+					if (t.attr('class').match(/(\s+|^)([0-9]+)u(\s+|$)/))
+						t.data('cell-size', parseInt(RegExp.$2));
+				};
+
+				jQuery.fn.expandCell_skel = function() {
+					var t = jQuery(this);
+					var p = t.parent();
+					var diff = 12;
+					
+					p.children().each(function() {
+						var t = $(this), c = t.attr('class');
+						
+						if (c && c.match(/(\s+|^)([0-9]+)u(\s+|$)/))
+							diff -= parseInt(RegExp.$2);
+					});
+					
+					if (diff > 0)
+					{
+						t.initialize_skel();
+						
+						t.css(
+							'width',
+							(((t.data('cell-size') + diff) / 12) * 100.00) + '%'
+						);
+					}
 				};
 
 			},
