@@ -178,7 +178,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 									panel.open_skel();
 							};
 
-							// Workaround: Android doesn't seem to register touch events on fixed elements properly,
+							// Hack: Android doesn't seem to register touch events on fixed elements properly,
 							// so if this panelToggle is on an overlay it needs to be a click.
 							if (_.deviceType == 'android')
 								x.bind('click', a);
@@ -508,7 +508,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 											}, _.config.speed + 10);
 										});
 
-								// Workaround: iOS zooms + scrolls on focus. Messes up panel stuff. This fix isn't perfect but it works.
+								// Hack: iOS zooms + scrolls on input focus. Messes up panel stuff. This fix isn't perfect but it works.
 									if (_.deviceType == 'ios')
 									{
 										t.find('input,select,textarea').focus(function(e) {

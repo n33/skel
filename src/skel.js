@@ -7,7 +7,7 @@
 		
 		CSS Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain))
 		Normalize (normalize.css v2.1.1 | MIT License | git.io/normalize) 
-		DOMReady Method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
+		DOMReady Method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
 */
 
 var skel = (function() { var _ = {
@@ -940,7 +940,7 @@ var skel = (function() { var _ = {
 
 				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
 
-				// Initialize DOMReady method (adapted from jQuery, courtesy: jQuery project, Diego Perini, Lucent M., Addy Osmani)
+				// Initialize DOMReady method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
 					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
 
 				// Hack: Legacy IE shit
