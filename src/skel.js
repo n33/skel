@@ -1076,9 +1076,11 @@ var skel = (function() { var _ = {
 						_.init();
 				// Otherwise, wait for user to manually init later
 					else
+					{
 						console.log('no configuration detected, waiting for manual init');
+					}
 			
-			}
+			},
 	}
 
 	// Pre-init
