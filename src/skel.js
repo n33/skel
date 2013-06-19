@@ -25,12 +25,12 @@ var skel = (function() { var _ = {
 			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
 			containers: 960,						// Width of container elements
-			containerUnits: 'px',					// Container units (px, pt, %, vw)
+			containerUnits: false,					// Container units (px, pt, %, vw)
 			debug: false,
 			grid: {
 				collapse: false,					// If true, collapse grid structures and force all cells to occupy a full row
 				gutters: 40,						// Size of gutters
-				gutterUnits: 'px'					// Gutter units (px, pt, %, vw)
+				gutterUnits: false					// Gutter units (px, pt, %, vw)
 			},
 			breakpoints: {
 				'all': {							// Breakpoint name
@@ -104,7 +104,7 @@ var skel = (function() { var _ = {
 			config_breakpoint: {
 				range: '',
 				containers: 960,
-				containerUnits: 'px',
+				containerUnits: false,
 				lockViewport: false,
 				viewportWidth: false,
 				hasStyleSheet: true,
@@ -138,6 +138,34 @@ var skel = (function() { var _ = {
 						x[k] = y[k];
 				}
 			
+			},
+
+			parseMeasurement: function(x) { 
+
+				var a, tmp;
+
+				// Not a string? Assume it's in px
+				if (typeof x !== 'string')
+					a = [x,'px'];
+				// Fluid shortcut?
+				else if (x == 'fluid')
+					a = [100,'%'];
+				else
+				{
+					var tmp;
+					
+					tmp = x.match(/([0-9\.]+)([^\s]*)/);
+					
+					// Missing units? Assume it's in px
+						if (tmp.length < 3 || !tmp[2])
+							a = [parseFloat(x),'px'];
+					// Otherwise, we have a winrar
+						else
+							a = [parseFloat(tmp[1]),tmp[2]];
+				}
+				
+				return a;
+
 			},
 
 			getDevicePixelRatio: function() {
@@ -418,7 +446,7 @@ var skel = (function() { var _ = {
 		
 			changeState: function(newStateId) {
 
-				var a, i, k, x, w, aX, aY;
+				var a, i, k, x, w, aX, aY, tmp;
 				var g, gh, gd;
 				var location, state;
 				
@@ -505,16 +533,19 @@ var skel = (function() { var _ = {
 								w = parseInt(state.config.containers);
 								
 								// Figure out units
-									if (state.config.containers === 'fluid')
-									{
-										w = 100;
-										u = '%';
-									}
-									else
-									{
-										w = state.config.containers;
-										u = state.config.containerUnits;
-									}
+									// If explicit container units were provided, use legacy method
+										if (state.config.containerUnits)
+										{
+											w = state.config.containers;
+											u = state.config.containerUnits;
+										}
+									// Otherwise, use new method (parseMeasurement)
+										else
+										{
+											tmp = _.parseMeasurement(state.config.containers);
+											w = tmp[0];
+											u = tmp[1];
+										}
 
 								if (!(x = _.getCachedElement('iC' + w + u)))
 									x = _.cacheElement('iC' + w + u, _.newInline('.container{width:' + w + u + ' !important;margin: 0 auto;}'), 'head', 3);
@@ -530,13 +561,26 @@ var skel = (function() { var _ = {
 								state.elements.push(x);
 
 								// Gutters
-									g = state.config.grid.gutters;
+									// If explicit container units were provided, use legacy method
+										if (state.config.grid.gutterUnits)
+										{
+											g = state.config.grid.gutters;
+											u = state.config.grid.gutterUnits;
+										}
+									// Otheriwse, use new method (parseMeasurement)
+										else
+										{
+											tmp = _.parseMeasurement(state.config.grid.gutters);
+											g = tmp[0];
+											u = tmp[1];
+										}
+									
 									gh = g / 2;
 									gd = g * 2;
 
-									g = g + state.config.grid.gutterUnits;
-									gh = gh + state.config.grid.gutterUnits;
-									gd = gd + state.config.grid.gutterUnits;
+									g = g + u;
+									gh = gh + u;
+									gd = gd + u;
 
 									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
 										x = _.cacheElement(
