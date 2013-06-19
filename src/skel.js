@@ -72,6 +72,8 @@ var skel = (function() { var _ = {
 			d: '.row>*{box-shadow:inset 0 0 0 1px red}'
 		},
 		presets: {
+			'default': {
+			},
 			'standard': {
 				breakpoints: {
 					'mobile': {
