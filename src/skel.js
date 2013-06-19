@@ -41,6 +41,8 @@ var skel = (function() { var _ = {
 			events: {}								// Events (eventName: function() { })
 		},
 		
+		isConfigured: false,
+		isInit: false,
 		isLegacyIE: false,
 		stateId: '',
 		breakpoints: [],
@@ -226,7 +228,14 @@ var skel = (function() { var _ = {
 					(_.events[name][k])();
 			},
 			
-			onStateChange: function(f) { _.bind('stateChange', f); },
+			onStateChange: function(f) {
+				_.bind('stateChange', f); 
+				
+				// If skel's already been initialized and we're just now binding this event,
+				// we're late to the game so manually fire it once.
+					if (_.isInit)
+						(f)();
+			},
 
 		/* Locations */
 		
@@ -413,7 +422,7 @@ var skel = (function() { var _ = {
 				
 				_.stateId = newStateId;
 
-				console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n" + 'new state detected (id: ' + _.stateId + ')');
+				console.log('new state detected (id: ' + _.stateId + ')');
 				
 				// 1. Get State
 					if (!_.cache.states[_.stateId])
@@ -741,9 +750,12 @@ var skel = (function() { var _ = {
 				
 				_.plugins[id] = o;
 				o._ = this;
-				_.initPluginConfig(id, o);
-				o.init();
 
+				if (_.isConfigured)
+				{
+					_.initPluginConfig(id, _.plugins[id]);
+					o.init();
+				}
 			},
 			
 			initPluginConfig: function(id, o) {
@@ -936,7 +948,9 @@ var skel = (function() { var _ = {
 
 			},
 			
-			init: function() {
+			init: function(config, pluginConfig) {
+
+				console.log('starting init');
 
 				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
 
@@ -948,6 +962,18 @@ var skel = (function() { var _ = {
 					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
 				
 				// Initialize config
+				
+					if (config)
+						window._skel_config = config;
+						
+					if (pluginConfig)
+					{
+						var id;
+						
+						for (id in pluginConfig)
+							window['_skel_' + id + '_config'] = pluginConfig[id];
+					}
+				
 					_.initConfig();
 
 				// Register locations
@@ -963,11 +989,54 @@ var skel = (function() { var _ = {
 				// Do initial poll
 					_.poll();
 
+				// Init plugins
+					var id;
+
+					for (id in _.plugins)
+					{
+						_.initPluginConfig(id, _.plugins[id]);
+						_.plugins[id].init();
+					}
+
+				// Mark as initialized
+					_.isInit = true;
+			},
+			
+			preInit: function() {
+
+				console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+				// Are we preconfigured?
+					if (window._skel_config)
+					{
+						console.log('detected configuration (type: preconfigured), performing automatic init');
+						_.isConfigured = true;
+					}
+				// Are we inline configured?
+					else
+					{
+						s = document.getElementsByTagName('script');
+						s = s[s.length - 1].innerHTML.replace(/^\s+|\s+$/g, '');
+						
+						if (s)
+						{
+							console.log('detected configuration (type: inline), performing automatic init');
+							_.isConfigured = true;
+						}
+					}
+				
+				// If we're configured, run init now
+					if (_.isConfigured)
+						_.init();
+				// Otherwise, wait for user to manually init later
+					else
+						console.log('no configuration detected, waiting for manual init');
+			
 			}
 	}
-	
-	// Initialize
-		_.init();
+
+	// Pre-init
+		_.preInit();
 
 	return _;
 
