@@ -1,4 +1,4 @@
-/* skelJS vv0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
 	This is for development purposes only. Use the minified version instead.
@@ -28,7 +28,7 @@ var skel = (function() { var _ = {
 			containerUnits: false,					// Container units (px, pt, %, vw)
 			debug: false,
 			grid: {
-				collapse: false,					// If true, collapse grid structures and force all cells to occupy a full row
+				collapse: false,					// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
 				gutters: 40,						// Size of gutters
 				gutterUnits: false					// Gutter units (px, pt, %, vw)
 			},
@@ -68,7 +68,7 @@ var skel = (function() { var _ = {
 			g: '.\\31 2u{width:100%}.\\31 1u{width:91.6666666667%}.\\31 0u{width:83.3333333333%}.\\39 u{width:75%}.\\38 u{width:66.6666666667%}.\\37 u{width:58.3333333333%}.\\36 u{width:50%}.\\35 u{width:41.6666666667%}.\\34 u{width:33.3333333333%}.\\33 u{width:25%}.\\32 u{width:16.6666666667%}.\\31 u{width:8.3333333333%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}.\\-11u{margin-left:91.6666666667%}.\\-10u{margin-left:83.3333333333%}.\\-9u{margin-left:75%}.\\-8u{margin-left:66.6666666667%}.\\-7u{margin-left:58.3333333333%}.\\-6u{margin-left:50%}.\\-5u{margin-left:41.6666666667%}.\\-4u{margin-left:33.3333333333%}.\\-3u{margin-left:25%}.\\-2u{margin-left:16.6666666667%}.\\-1u{margin-left:8.3333333333%}',
 			gF: '.row.flush{margin-left:0}.row.flush>*{padding:0!important}',
 			gR: '.row:after{content:\'\';display:block;clear:both;height:0}.row:first-child>*{padding-top:0}.row>*{padding-top:0}',
-			gCo: '.row:not(.persistent){overflow-x:hidden;margin-left:0}.row:not(.persistent)>*{float:none!important;width:100%!important;padding:10px 0 10px 0!important;margin-left:0!important}',
+			gC: '.row@{overflow-x:hidden;margin-left:0}.row@>*{float:none!important;width:100%!important;padding:10px 0 10px 0!important;margin-left:0!important}',
 			d: '.row>*{box-shadow:inset 0 0 0 1px red}'
 		},
 		presets: {
@@ -81,7 +81,7 @@ var skel = (function() { var _ = {
 						lockViewport: true,
 						containers: 'fluid',
 						grid: {
-							collapse: true
+							collapse: 1
 						}
 					},
 					'desktop': {
@@ -446,7 +446,7 @@ var skel = (function() { var _ = {
 		
 			changeState: function(newStateId) {
 
-				var a, i, k, x, w, aX, aY, tmp;
+				var a, i, k, x, w, aX, aY, tmp, d;
 				var g, gh, gd;
 				var location, state;
 				
@@ -600,10 +600,41 @@ var skel = (function() { var _ = {
 							// inlineGridCollapse
 								if (state.config.grid.collapse)
 								{
-									if (!(x = _.getCachedElement('iGCo')))
-										x = _.cacheElement('iGCo', _.newInline(_.css.gR + _.css.gCo), 'head', 3);
+									d = parseInt(state.config.grid.collapse);
 									
-									console.log('- added inlineGridCollapse');
+									if (isNaN(d))
+										d = 1;
+								
+									if (!(x = _.getCachedElement('iGC' + d)))
+									{
+										g = _.css.gR + _.css.gC;
+										tmp = ':not(.persistent):not(.no-collapse)';
+										
+										switch (d)
+										{
+											case 4:
+												break;
+
+											case 3:
+												tmp += ':not(.no-collapse-3)';
+												break;
+
+											case 2:
+												tmp += ':not(.no-collapse-2):not(.no-collapse-3)';
+												break;
+
+											case 1:
+											default:
+												tmp += ':not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3)';
+												break;
+										}
+
+										g = g.replace(/@/g, tmp);
+										
+										x = _.cacheElement('iGC' + d, _.newInline(g), 'head', 3);
+									}
+									
+									console.log('- added inlineGridCollapse' + d);
 									state.elements.push(x);						
 								}
 								else
