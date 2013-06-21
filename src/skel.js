@@ -1,4 +1,4 @@
-/* skelJS v0.3.4 | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS vv0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
 	This is for development purposes only. Use the minified version instead.
