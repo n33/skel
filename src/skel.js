@@ -57,6 +57,7 @@ var skel = (function() { var _ = {
 			head: null,
 			body: null
 		},
+		values: [],
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
@@ -227,6 +228,10 @@ var skel = (function() { var _ = {
 				// Divide by pixel ratio
 					w = w / r;
 
+				// Set values
+					_.values['viewportWidth'] = w;
+					_.values['devicePixelRatio'] = r;
+
 				return w;
 
 			},
@@ -235,6 +240,15 @@ var skel = (function() { var _ = {
 
 				return (_.indexOf(_.stateId,'#' + k) !== -1);
 
+			},
+			
+			getValue: function(k) {
+			
+				if (k in _.values)
+					return _.values[k];
+			
+				return null;
+			
 			},
 
 		/* Events */
