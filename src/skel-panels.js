@@ -603,7 +603,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																	t.resetForms_skel();
 															
 															// Lock view
-																_.lockView('x');
+																_.lockView('y');
 															
 															// Move stuff
 																window.setTimeout(function() {
@@ -635,7 +635,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																window.setTimeout(function() { 
 																	
 																	// Unlock view
-																		_.unlockView('x');
+																		_.unlockView('y');
 																		
 																	// Hide and demote panel
 																		t
