@@ -369,7 +369,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				_.cache.window.scrollPos_skel = _.cache.window.scrollTop();
 			
 				// Lock overflow
-					_.cache.body.css('overflow-' + a, 'hidden');
+					if (_.isTouch)
+						_.cache.body.css('overflow-' + a, 'hidden');
 				
 				// Lock events
 					_.cache.pageWrapper.bind('touchstart.lock', function(e) {
@@ -418,7 +419,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 			unlockView: function(a) {
 				
 				// Unlock overflow
-					_.cache.body.css('overflow-' + a, 'visible');
+					if (_.isTouch)
+						_.cache.body.css('overflow-' + a, 'visible');
 				
 				// Unlock events
 					_.cache.pageWrapper.unbind('touchstart.lock');
