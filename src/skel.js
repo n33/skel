@@ -54,6 +54,7 @@ var skel = (function() { var _ = {
 			states: {}
 		},
 		locations: {
+			html: null,
 			head: null,
 			body: null
 		},
@@ -425,7 +426,16 @@ var skel = (function() { var _ = {
 			
 				// State changed?
 					if (newStateId !== _.stateId)
-						_.changeState(newStateId);
+					{
+						// Remove previous state classes from <html>
+							_.locations.html.className = _.locations.html.className.replace(_.stateId, '');
+
+						// Change state
+							_.changeState(newStateId);
+							
+						// Apply new state classes to <html>
+							_.locations.html.className = _.locations.html.className + _.stateId;
+					}
 			
 			},
 		
@@ -1069,6 +1079,7 @@ var skel = (function() { var _ = {
 					_.initConfig();
 
 				// Register locations
+					_.registerLocation('html', document.getElementsByTagName('html')[0]);
 					_.registerLocation('head', document.getElementsByTagName('head')[0]);
 					
 					_.DOMReady(function() {
