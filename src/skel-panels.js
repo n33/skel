@@ -1164,6 +1164,14 @@ skel.registerPlugin('panels', (function() { var _ = {
 				_.eventType = (_.isTouch ? 'touchend' : 'click');
 
 			},
+			
+			initIncludes: function() {
+			
+				_._.DOMReady(function() {
+					jQuery('.skel-panels-include').each(function() { _.parseInit(jQuery(this)); });
+				});
+			
+			},
 		
 			init: function() {
 
@@ -1179,6 +1187,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 				// Elements
 					_.initElements('overlay');
 					_.initElements('panel');
+
+				// Includes
+					_.initIncludes();
 
 				// Update state
 					_._.updateState();
