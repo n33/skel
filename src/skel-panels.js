@@ -1,7 +1,7 @@
 /* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
-	This is for development purposes only. Use the minified version instead.
+	Don't use this version for production! Use skel-panels.min.js instead.
 */
 
 skel.registerPlugin('panels', (function() { var _ = {

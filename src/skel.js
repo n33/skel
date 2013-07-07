@@ -1,7 +1,7 @@
 /* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
-	This is for development purposes only. Use the minified version instead.
+	Don't use this version for production! Use skel.min.js instead.
 
 	Credits:
 		
@@ -16,56 +16,56 @@ var skel = (function() { var _ = {
 	// Properties
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		config: {
-			prefix: null,							// Stylesheet prefix (null = disable stylesheet management)
-			preloadStyleSheets: false,				// If true, preloads all breakpoint stylesheets ahead of time
-			pollOnce: false,						// If true, only polls the viewport width on load (like 5grid)
-			resetCSS: false,						// If true, inlines Erik Meyer's CSS resets
-			normalizeCSS: false,					// If true, inlines normalize.css
-			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
-			useOrientation: false,					// If true, viewport width will be allowed to change based on orientation
-			containers: 960,						// Width of container elements
-			containerUnits: false,					// Container units (px, pt, %, vw)
-			debug: false,
-			grid: {
-				collapse: false,					// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
-				gutters: 40,						// Size of gutters
-				gutterUnits: false					// Gutter units (px, pt, %, vw)
+		config: {									// Config
+			prefix: null,								// Stylesheet prefix (null = disable stylesheet management)
+			preloadStyleSheets: false,					// If true, preloads all breakpoint stylesheets ahead of time
+			pollOnce: false,							// If true, only polls the viewport width on first load (like 5grid)
+			resetCSS: false,							// If true, inlines Erik Meyer's CSS resets
+			normalizeCSS: false,						// If true, inlines normalize.css
+			boxModel: null,								// Sets the CSS box model (border, content, margin, padding)
+			useOrientation: false,						// If true, viewport width will be allowed to change based on orientation
+			containers: 960,							// Width of container elements
+			containerUnits: false,						// Container units (px, pt, %, vw)
+			debug: false,								// If true, enable debug mode (still working on this)
+			grid: {										// Grid
+				collapse: false,							// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
+				gutters: 40,								// Size of gutters
+				gutterUnits: false							// Gutter units (px, pt, %, vw)
 			},
-			breakpoints: {
-				'all': {							// Breakpoint name
-					range: '*',						// Range (x-y, x-, -x, *)
-					hasStyleSheet: false			// If true, skelJS will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
+			breakpoints: {								// Breakpoints
+				'all': {									// Breakpoint name
+					range: '*',								// Range (x-y, x-, -x, *)
+					hasStyleSheet: false					// If true, skelJS will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
 				}
 			},
 			events: {}								// Events (eventName: function() { })
 		},
 		
-		isConfigured: false,
-		isInit: false,
-		isLegacyIE: false,
-		stateId: '',
-		breakpoints: [],
-		breakpointList: [],
-		events: [],
-		plugins: {},
-		cache: {
-			elements: {},
-			states: {}
+		isConfigured: false,						// Are we configured?
+		isInit: false,								// Are we initialized?
+		isLegacyIE: false,							// Are we stuck in the past?
+		stateId: '',								// Current state ID
+		breakpoints: [],							// Breakpoints
+		breakpointList: [],							// List of breakpoint names
+		events: [],									// Bound events
+		plugins: {},								// Active plugins
+		cache: {									// Object cache
+			elements: {},								// Elements
+			states: {}									// States
 		},
-		locations: {
-			html: null,
-			head: null,
-			body: null
+		locations: {								// Locations to insert stuff
+			html: null,									// html
+			head: null,									// head
+			body: null									// body
 		},
-		values: [],
+		values: [],									// Internal state values (read with skel.getValue())
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		sd: ' ',
-		css: {
+		sd: ' ',									// State delimiter (used to separate breakpoint names in the state ID)
+		css: {										// CSS code blocks (reset, normalize, various parts of the grid system)
 			r: 'html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:\'\';content:none}table{border-collapse:collapse;border-spacing:0}body{-webkit-text-size-adjust:none}',
 			n: 'article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{background:#fff;color:#000;font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}',
 			g: '.\\31 2u{width:100%}.\\31 1u{width:91.6666666667%}.\\31 0u{width:83.3333333333%}.\\39 u{width:75%}.\\38 u{width:66.6666666667%}.\\37 u{width:58.3333333333%}.\\36 u{width:50%}.\\35 u{width:41.6666666667%}.\\34 u{width:33.3333333333%}.\\33 u{width:25%}.\\32 u{width:16.6666666667%}.\\31 u{width:8.3333333333%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}.\\-11u{margin-left:91.6666666667%}.\\-10u{margin-left:83.3333333333%}.\\-9u{margin-left:75%}.\\-8u{margin-left:66.6666666667%}.\\-7u{margin-left:58.3333333333%}.\\-6u{margin-left:50%}.\\-5u{margin-left:41.6666666667%}.\\-4u{margin-left:33.3333333333%}.\\-3u{margin-left:25%}.\\-2u{margin-left:16.6666666667%}.\\-1u{margin-left:8.3333333333%}',
@@ -74,10 +74,10 @@ var skel = (function() { var _ = {
 			gC: '.row@{overflow-x:hidden;margin-left:0}.row@>*{float:none!important;width:100%!important;padding:10px 0 10px 0!important;margin-left:0!important}',
 			d: '.row>*{box-shadow:inset 0 0 0 1px red}'
 		},
-		presets: {
-			'default': {
+		presets: {									// Presets
+			'default': {								// Default (placeholder)
 			},
-			'standard': {
+			'standard': {								// Standard (mobile/desktop/standard)
 				breakpoints: {
 					'mobile': {
 						range: '-480',
@@ -98,13 +98,13 @@ var skel = (function() { var _ = {
 				}
 			}
 		},
-		defaults: {
-			breakpoint: {
+		defaults: {									// Defaults for various things
+			breakpoint: {								// Breakpoint defaults
 				test: null,
 				config: null,
 				elements: null
 			},
-			config_breakpoint: {
+			config_breakpoint: {						// Breakpoint *config* defaults
 				range: '',
 				containers: 960,
 				containerUnits: false,
@@ -119,11 +119,13 @@ var skel = (function() { var _ = {
 	// Methods
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		/* Helper */
+		/* Utility */
 
 			DOMReady: null,
 			indexOf: null,
 
+			// Extends x by y
+			// Args: object x, object y
 			extend: function(x,y) {
 				
 				var k;
@@ -143,34 +145,40 @@ var skel = (function() { var _ = {
 			
 			},
 
+			// Parses a CSS measurement string (eg. 960, '960px', '313.37em') and splits it into its numeric and unit parts
+			// Args: string x (CSS measurement)
+			// Returns: array (0 = (float) numeric part, 1 = (string) unit part)
 			parseMeasurement: function(x) { 
 
 				var a, tmp;
 
-				// Not a string? Assume it's in px
-				if (typeof x !== 'string')
-					a = [x,'px'];
+				// Not a string? Just assume it's in px
+					if (typeof x !== 'string')
+						a = [x,'px'];
 				// Fluid shortcut?
-				else if (x == 'fluid')
-					a = [100,'%'];
-				else
-				{
-					var tmp;
-					
-					tmp = x.match(/([0-9\.]+)([^\s]*)/);
-					
-					// Missing units? Assume it's in px
-						if (tmp.length < 3 || !tmp[2])
-							a = [parseFloat(x),'px'];
-					// Otherwise, we have a winrar
-						else
-							a = [parseFloat(tmp[1]),tmp[2]];
-				}
+					else if (x == 'fluid')
+						a = [100,'%'];
+				// Guess we're doing this the hard way, McFly ...
+					else
+					{
+						var tmp;
+						
+						tmp = x.match(/([0-9\.]+)([^\s]*)/);
+						
+						// Missing units? Assume it's in px
+							if (tmp.length < 3 || !tmp[2])
+								a = [parseFloat(x),'px'];
+						// Otherwise, we have a winrar
+							else
+								a = [parseFloat(tmp[1]),tmp[2]];
+					}
 				
 				return a;
 
 			},
 
+			// Figures out the client's device pixel ratio.
+			// Returns: float (Device pixel ratio)
 			getDevicePixelRatio: function() {
 				
 				// Hack: iOS and OS X both support devicePixelRatio but it factors it into width calculations ahead of
@@ -194,6 +202,8 @@ var skel = (function() { var _ = {
 				return 1;
 			},
 
+			// Calculates the viewport width used for all breakpoint stuff.
+			// Returns: integer (Viewport width)
 			getViewportWidth: function() {
 			
 				var w, o, r;
@@ -238,12 +248,19 @@ var skel = (function() { var _ = {
 
 			},
 			
+			// Determines if a given breakpoint is active
+			// Args: string k (Breakpoint ID)
+			// Returns: bool (Breakpoint state)
 			isActive: function(k) {
 
 				return (_.indexOf(_.stateId, _.sd + k) !== -1);
 
 			},
 			
+			// Gets an internal state value
+			// Args: string k (Key)
+			// Returns: mixed (Value)
+			// Returns: null (Key doesn't exist)
 			getValue: function(k) {
 			
 				if (k in _.values)
@@ -255,6 +272,8 @@ var skel = (function() { var _ = {
 
 		/* Events */
 
+			// Binds an event
+			// Args: string name (Name), function f (Function)
 			bind: function(name, f) {
 
 				if (!_.events[name])
@@ -264,7 +283,10 @@ var skel = (function() { var _ = {
 
 			},
 			
+			// Triggers an event
+			// Args: string name (Name)
 			trigger: function(name) {
+				
 				if (!_.events[name] || _.events[name].length == 0)
 					return;
 				
@@ -272,19 +294,26 @@ var skel = (function() { var _ = {
 				
 				for (k in _.events[name])
 					(_.events[name][k])();
+
 			},
-			
+
+			// Shortcut to bind a "stateChange" event
+			// Args: function f (Function)
 			onStateChange: function(f) {
+
 				_.bind('stateChange', f); 
 				
 				// If skel's already been initialized and we're just now binding this event,
 				// we're late to the game so manually fire it once.
 					if (_.isInit)
 						(f)();
+
 			},
 
 		/* Locations */
 		
+			// Registers a location element
+			// Args: string id (Location ID), DOMHTMLElement object (Location element)
 			registerLocation: function(id,object) {
 				
 				_.locations[id] = object;
@@ -293,6 +322,9 @@ var skel = (function() { var _ = {
 
 		/* Elements */
 
+			// Caches an HTML element
+			// Args: string id (ID), DOMHTMLElement object (HTML element), string location (Location ID), integer priority (Priority)
+			// Returns: object (Cache entry)
 			cacheElement: function(id,object,location,priority) {
 
 				console.log('(cached element ' + id + ')');
@@ -306,23 +338,32 @@ var skel = (function() { var _ = {
 
 			},
 
-			cacheBreakpointElement: function(breakpointName,id,object,location,priority) {
+			// Caches an HTML element and links it to a specific breakpoint
+			// Args: string breakpointId (Breakpoint ID), string id (ID), DOMHTMLElement object (HTML element), string location (Location ID), integer priority (Priority)
+			// Returns: object (Cache entry)
+			cacheBreakpointElement: function(breakpointId,id,object,location,priority) {
 				
 				var o = _.getCachedElement(id);
 				
-				if (!o)
-					o = _.cacheElement(id,object,location,priority); 
+				// Not cached yet? Go ahead and take care of that.
+					if (!o)
+						o = _.cacheElement(id,object,location,priority); 
 				
-				if (_.breakpoints[breakpointName])
-				{
-					console.log('- linked element ' + id + ' to breakpoint ' + breakpointName);
-					_.breakpoints[breakpointName].elements.push(o);
-				}
+				// Link it to the specified breakpoint (assuming it exists)
+					if (_.breakpoints[breakpointId])
+					{
+						console.log('- linked element ' + id + ' to breakpoint ' + breakpointId);
+						_.breakpoints[breakpointId].elements.push(o);
+					}
 
 				return o;
 
 			},
-		
+
+			// Gets a cache entry
+			// Args: string id (Cache entry ID)
+			// Return: object (Cache entry)
+			// Return: null (Cache entry doesn't exist)
 			getCachedElement: function(id) {
 
 				if (_.cache.elements[id])
@@ -332,6 +373,7 @@ var skel = (function() { var _ = {
 
 			},
 		
+			// Detaches all cached HTML elements from the DOM
 			detachAllElements: function() {
 
 				var k, x;
@@ -340,73 +382,102 @@ var skel = (function() { var _ = {
 				{
 					x = _.cache.elements[k].object;
 					
-					if (!x.parentNode
-					|| (x.parentNode && !x.parentNode.tagName))
-						continue;
+					// No parent? Guess it's already detached so we can skip it.
+						if (!x.parentNode
+						|| (x.parentNode && !x.parentNode.tagName))
+							continue;
 
-					console.log('-- detached ' + _.cache.elements[k].id);
-					
-					x.parentNode.removeChild(x);
+					// Detach it
+						console.log('-- detached ' + _.cache.elements[k].id);
+						x.parentNode.removeChild(x);
 
-					if (_.cache.elements[k].onDetach)
-						(_.cache.elements[k].onDetach)();
+					// Trigger onDetach
+						if (_.cache.elements[k].onDetach)
+							(_.cache.elements[k].onDetach)();
 				}
 
 			},
 		
+			// Attaches a list of cached elements to the DOM
+			// Args: array list (Cache entries to attach)
 			attachElements: function(list) {
 
 				var a = [], w = [], k, l, x;
 				
-				for (k in list)
-				{
-					if (!a[ list[k].priority ])
-						a[ list[k].priority ] = [];
-						
-					a[ list[k].priority ].push(list[k]);
-				}
-				
-				for (k in a)
-				{
-					if (a[k].length == 0)
-						continue;
-					
-					for (x in a[k])
+				// Reorganize elements into priority "buckets"
+					for (k in list)
 					{
-						l = _.locations[ a[k][x].location ];
-						if (l)
-						{
-							console.log('-- attached (' + k + ') ' + a[k][x].id);
-							l.appendChild( a[k][x].object );
-
-							if (a[k][x].onAttach)
-								(a[k][x].onAttach)();
-						}
-						else
-						{
-							console.log('-- DOMReady attached (' + k + ') ' + a[k][x].id);
-							w.push(a[k][x]);
-						}
-					}
-				}
-				
-				if (w.length > 0)
-				{
-					_.DOMReady(function() {
-						for (var k in w)
-						{
-							_.locations[ w[k].location ].appendChild(w[k].object);
+						if (!a[ list[k].priority ])
+							a[ list[k].priority ] = [];
 							
-							if (w[k].onAttach)
-								(w[k].onAttach)();
-						}
-					});
-				}
+						a[ list[k].priority ].push(list[k]);
+					}
+
+				// Step through bucket list (heh)
+					for (k in a)
+					{
+						// Nothing in this one? Skip it.
+							if (a[k].length == 0)
+								continue;
+						
+						// Step through bucket contents.
+							for (x in a[k])
+							{
+								// Get the element's location.
+									l = _.locations[ a[k][x].location ];
+							
+								// If the location exists, go ahead and attach the element.
+									if (l)
+									{
+										console.log('-- attached (' + k + ') ' + a[k][x].id);
+										l.appendChild( a[k][x].object );
+
+										// Trigger onAttach
+											if (a[k][x].onAttach)
+												(a[k][x].onAttach)();
+									}
+								// However, if the location doesn't exist, that means either a) the location
+								// is invalid (which is weird), or b) it doesn't exist *yet* because the
+								// rest of the DOM hasn't loaded (which is far more likely). Assuming (b)
+								// is indeed the case, we'll just put the element in a separate "DOMReady"
+								// bucket for now.
+									else
+									{
+										console.log('-- DOMReady attached (' + k + ') ' + a[k][x].id);
+										w.push(a[k][x]);
+									}
+							}
+					}
+				
+				// If our DOMReady bucket isn't empty, bind an event that triggers when the DOM is
+				// actually ready. When that happens, we'll go through our DOMReady bucket and finally
+				// sort out those elements.
+					if (w.length > 0)
+					{
+						_.DOMReady(function() {
+							for (var k in w)
+							{
+								// Get the element's location
+									l = _.locations[ w[k].location ];
+								
+								// If the location exists (which by now it should), attach the element.
+									if (l)
+									{
+										l.appendChild(w[k].object);
+										
+										// Trigger onAttach
+											if (w[k].onAttach)
+												(w[k].onAttach)();
+									}
+							}
+						});
+					}
 
 			},
 
 		/* Main */
 	
+			// Polls for state changes
 			poll: function() {
 			
 				var k, w, newStateId = '';
@@ -439,6 +510,7 @@ var skel = (function() { var _ = {
 			
 			},
 		
+			// Forces a state update. Typically called after the cache has been modified by something other than skelJS (like a plugin).
 			updateState: function() {
 
 				var b, k, j, list = [], a = _.stateId.substring(1).split(_.sd);
@@ -448,10 +520,11 @@ var skel = (function() { var _ = {
 					{
 						b = _.breakpoints[a[k]];
 						
-						// If the breakpoint now has elements of its own, add them into the state's cache
+						// No elements? Skip it.
 							if (b.elements.length == 0)
 								continue;
 								
+						// Add the breakpoint's elements to the state's cache
 							for (j in b.elements)
 							{
 								console.log('- added new breakpoint element ' + b.elements[j].id + ' to state ' + _.stateId);
@@ -469,10 +542,12 @@ var skel = (function() { var _ = {
 
 			},
 		
+			// Switches to a different state.
+			// Args: string newStateId (New state ID)
 			changeState: function(newStateId) {
 
 				var a, i, k, x, w, aX, aY, tmp, d;
-				var g, gh, gd;
+				var g, gq, gh, goh, gd;
 				var location, state;
 				
 				_.stateId = newStateId;
@@ -600,24 +675,33 @@ var skel = (function() { var _ = {
 											u = tmp[1];
 										}
 									
-									gh = g / 2;
-									gd = g * 2;
+									// Calculate additional gutter sizes
+										gh = g / 2;
+										gq = g / 4;
+										goh = g * 1.5;
+										gd = g * 2;
 
-									g = g + u;
-									gh = gh + u;
-									gd = gd + u;
+									// Append units
+										g = g + u;
+										gh = gh + u;
+										gq = gq + u;
+										goh = goh + u;
+										gd = gd + u;
 
-									if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
-										x = _.cacheElement(
-											'iGG' + state.config.grid.gutters, 
-											_.newInline(
-												'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
-												'.row.half>*{padding:' + gh + ' 0 0 '+ gh + '}.row.half+.row.half>*{padding-top:' + gh + '}.row.half{margin-left:-' + gh + '}' +
-												'.row.double>*{padding:' + gd + ' 0 0 '+ gd + '}.row.double+.row.double>*{padding-top:' + gd + '}.row.double{margin-left:-' + gd + '}'
-											), 
-											'head', 
-											3
-										); 
+									// Cache element
+										if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
+											x = _.cacheElement(
+												'iGG' + state.config.grid.gutters, 
+												_.newInline(
+													'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
+													'.row.half>*{padding:' + gh + ' 0 0 '+ gh + '}.row.half+.row.half>*{padding-top:' + gh + '}.row.half{margin-left:-' + gh + '}' +
+													'.row.quarter>*{padding:' + gq + ' 0 0 '+ gq + '}.row.quarter+.row.quarter>*{padding-top:' + gq + '}.row.quarter{margin-left:-' + gq + '}' +
+													'.row.oneandhalf>*{padding:' + goh + ' 0 0 '+ goh + '}.row.oneandhalf+.row.oneandhalf>*{padding-top:' + goh + '}.row.oneandhalf{margin-left:-' + goh + '}' +
+													'.row.double>*{padding:' + gd + ' 0 0 '+ gd + '}.row.double+.row.double>*{padding-top:' + gd + '}.row.double{margin-left:-' + gd + '}'
+												), 
+												'head', 
+												3
+											); 
 
 									console.log('- added inlineGrid' + state.config.grid.gutters);
 									state.elements.push(x);
@@ -796,6 +880,9 @@ var skel = (function() { var _ = {
 		
 		/* New */
 
+			// Creates a new meta element
+			// Args: string name (Name), string content (Content)
+			// Return: DOMHTMLElement (Meta element)
 			newMeta: function(name, content) {
 
 				var o = document.createElement('meta');
@@ -806,17 +893,23 @@ var skel = (function() { var _ = {
 
 			},
 			
-			newStyleSheet: function(f) {
+			// Creates a new link element set to load a given stylesheet
+			// Args: string href (Stylesheet's href)
+			// Return: DOMHTMLElement (Link element)
+			newStyleSheet: function(href) {
 				
 				var o = document.createElement('link');
 					o.rel = 'stylesheet';
 					o.type = 'text/css';
-					o.href = f;
+					o.href = href;
 				
 				return o;
 
 			},
 			
+			// Creates a new style element
+			// Args: string s (Style rules)
+			// Return: DOMHTMLElement (Style element)
 			newInline: function(s) {
 
 				var o;
@@ -837,6 +930,9 @@ var skel = (function() { var _ = {
 
 			},
 
+			// Creates a new div element
+			// Args: string s (Inner HTML)
+			// Return: DOMHTMLElement (Div element)
 			newDiv: function(s) {
 
 				var o = document.createElement('div');
@@ -848,6 +944,8 @@ var skel = (function() { var _ = {
 
 		/* Plugins */
 
+			// Registers a plugin (and, if we're already configured, initialize it)
+			// Args: string id (Plugin ID), object o (Plugin)
 			registerPlugin: function(id, o) {
 				
 				_.plugins[id] = o;
@@ -860,6 +958,8 @@ var skel = (function() { var _ = {
 				}
 			},
 			
+			// Initializes a plugin's config
+			// Args: string id (Plugin ID), object o (Plugin)
 			initPluginConfig: function(id, o) {
 
 				var s, k = '_skel_' + id + '_config';
@@ -891,6 +991,7 @@ var skel = (function() { var _ = {
 
 		/* Init */
 
+			// Initializes the config
 			initConfig: function() {
 
 				var c, b, s, f, fArgs = [], preloads = [];
@@ -900,32 +1001,38 @@ var skel = (function() { var _ = {
 					{
 						var f;
 
-						if (typeof s != 'string')
-							f = function(v) { return false; };
+						// Invalid? Always fail.
+							if (typeof s != 'string')
+								f = function(v) { return false; };
 						
-						if (s == '*')
-							f = function(v) { return true; };
-						else if (s.charAt(0) == '-')
-						{
-							fArgs[k] = parseInt(s.substring(1));
-							f = function(v) { return (v <= fArgs[k]); };
-						}
-						else if (s.charAt(s.length - 1) == '-')
-						{
-							fArgs[k] = parseInt(s.substring(0, s.length - 1));
-							f = function(v) { return (v >= fArgs[k]); };
-						}
-						else if (_.indexOf(s,'-') != -1)
-						{
-							s = s.split('-');
-							fArgs[k] = [parseInt(s[0]), parseInt(s[1])];
-							f = function(v) { return (v >= fArgs[k][0] && v <= fArgs[k][1]); };
-						}
-						else
-						{
-							fArgs[k] = parseInt(s);
-							f = function(v) { return (v == fArgs[k]); };
-						}
+						// Wildcard? Always succeed.
+							if (s == '*')
+								f = function(v) { return true; };
+						// Less than or equal (-X)
+							else if (s.charAt(0) == '-')
+							{
+								fArgs[k] = parseInt(s.substring(1));
+								f = function(v) { return (v <= fArgs[k]); };
+							}
+						// Greater than or equal (X-)
+							else if (s.charAt(s.length - 1) == '-')
+							{
+								fArgs[k] = parseInt(s.substring(0, s.length - 1));
+								f = function(v) { return (v >= fArgs[k]); };
+							}
+						// Range (X-Y)
+							else if (_.indexOf(s,'-') != -1)
+							{
+								s = s.split('-');
+								fArgs[k] = [parseInt(s[0]), parseInt(s[1])];
+								f = function(v) { return (v >= fArgs[k][0] && v <= fArgs[k][1]); };
+							}
+						// Exact match (X)
+							else
+							{
+								fArgs[k] = parseInt(s);
+								f = function(v) { return (v == fArgs[k]); };
+							}
 						
 						return f;
 					}
@@ -1028,6 +1135,7 @@ var skel = (function() { var _ = {
 
 			},
 			
+			// Initializes browser events
 			initEvents: function() {
 				
 				var o;
@@ -1050,6 +1158,7 @@ var skel = (function() { var _ = {
 
 			},
 			
+			// Initializes skelJS
 			init: function(config, pluginConfig) {
 
 				console.log('starting init');
@@ -1105,6 +1214,9 @@ var skel = (function() { var _ = {
 					_.isInit = true;
 			},
 			
+			// Determines if skelJS has been preconfigured (meaning we can go ahead and call skel.init()) or if
+			// a configuration has yet to be provided (in which case we need to hold off an wait for the user to
+			// manually call skel.init() him/herself with a configuration).
 			preInit: function() {
 
 				console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n");
