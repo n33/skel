@@ -15,34 +15,34 @@ skel.registerPlugin('panels', (function() { var _ = {
 	// Properties
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		config: {									// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
-			baseZIndex: 10000,						// Base z-index (should be well above anything else on the page)
-			speed: 250,								// Animation speed (in ms)
-			panels: {},								// Panels
-			overlays: {}							// Overlays
+		config: {					// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
+			baseZIndex: 10000,			// Base z-index (should be well above anything else on the page)
+			speed: 250,				// Animation speed (in ms)
+			panels: {},				// Panels
+			overlays: {}				// Overlays
 		},
 
-		cache: {									// Object cache
-			panels: {},								// Panels
-			overlays: {},							// Overlays
-			body: null,								// <body>
-			window: null,							// window
-			pageWrapper: null,						// Page Wrapper (the original page)
-			defaultWrapper: null,					// Default Wrapper (where panels live)
-			fixedWrapper: null,						// Fixed Wrapper (where overlays live)
-			activePanel: null						// Active Panel
+		cache: {					// Object cache
+			panels: {},				// Panels
+			overlays: {},				// Overlays
+			body: null,				// <body>
+			window: null,				// window
+			pageWrapper: null,			// Page Wrapper (the original page)
+			defaultWrapper: null,			// Default Wrapper (where panels live)
+			fixedWrapper: null,			// Fixed Wrapper (where overlays live)
+			activePanel: null			// Active Panel
 		},
 
-		deviceType: null,							// Client's device type (android, ios)
-		eventType: 'click',							// Interaction event type
-		isTouch: false,								// Is this a touch-enabled device?
+		deviceType: null,				// Client's device type (android, ios)
+		eventType: 'click',				// Interaction event type
+		isTouch: false,					// Is this a touch-enabled device?
 		
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		presets: {									// Presets
-			'standard': {							// Standard (usually used in conjunction with skelJS's "standard" preset)
+		presets: {					// Presets
+			'standard': {				// Standard (usually used in conjunction with skelJS's "standard" preset)
 				panels: {
 					navPanel: {
 						breakpoints: 'mobile',
@@ -64,8 +64,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				}
 			}
 		},
-		defaults: {									// Defaults for various things
-			config: {								// Config defaults
+		defaults: {					// Defaults for various things
+			config: {				// Config defaults
 				panel: {
 					breakpoints: '',
 					position: null,
