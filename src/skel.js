@@ -1,4 +1,4 @@
-/* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
+/* skelJS v0.3.5 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -32,7 +32,7 @@ var skel = (function() { var _ = {
 			containerUnits: false,					// (deprecated) Container units (px, pt, %, vw)
 			debug: false,							// If true, enable debug mode (still working on this)
 			grid: {									// Grid
-				collapse: false,					// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
+				collapse: false,					// If true, all grids will be collapsed
 				gutters: 40,						// Size of gutters
 				gutterUnits: false					// (deprecated) Gutter units (px, pt, %, vw)
 			},

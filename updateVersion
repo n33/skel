@@ -5,7 +5,7 @@ if [ $# -lt 1 ]; then
         exit
 fi
 
-VERSION="skelJS v$1 | (c) n33 | n33.co @n33co | MIT + GPLv2"
+VERSION="skelJS v$1 | (c) n33 | skeljs.org | MIT licensed"
 DIR="src"
 
 # C-style files
