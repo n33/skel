@@ -1,7 +1,12 @@
 /* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
-	Don't use this version for production! Use skel-panels.min.js instead.
+
+	Panels is a skelJS plugin that adds sliding panels and persistent viewport overlays. It requires both skelJS and jQuery, so be
+	sure to load those first (otherwise things will fail quite miserably). Learn more about skelJS and Panels at http://skeljs.org
+
+	This is the uncompressed version of Panels. For actual projects, please use the minified version (skel-panels.min.js).
+
 */
 
 skel.registerPlugin('panels', (function() { var _ = {
@@ -10,34 +15,34 @@ skel.registerPlugin('panels', (function() { var _ = {
 	// Properties
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		config: {
+		config: {									// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
 			baseZIndex: 10000,						// Base z-index (should be well above anything else on the page)
 			speed: 250,								// Animation speed (in ms)
 			panels: {},								// Panels
 			overlays: {}							// Overlays
 		},
 
-		cache: {
-			panels: {},
-			overlays: {},
-			body: null,
-			window: null,
-			pageWrapper: null,
-			defaultWrapper: null,
-			fixedWrapper: null,
-			activePanel: null
+		cache: {									// Object cache
+			panels: {},								// Panels
+			overlays: {},							// Overlays
+			body: null,								// <body>
+			window: null,							// window
+			pageWrapper: null,						// Page Wrapper (the original page)
+			defaultWrapper: null,					// Default Wrapper (where panels live)
+			fixedWrapper: null,						// Fixed Wrapper (where overlays live)
+			activePanel: null						// Active Panel
 		},
 
-		deviceType: null,
-		eventType: 'click',
-		isTouch: false,
+		deviceType: null,							// Client's device type (android, ios)
+		eventType: 'click',							// Interaction event type
+		isTouch: false,								// Is this a touch-enabled device?
 		
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		presets: {
-			'standard': {
+		presets: {									// Presets
+			'standard': {							// Standard (usually used in conjunction with skelJS's "standard" preset)
 				panels: {
 					navPanel: {
 						breakpoints: 'mobile',
@@ -59,8 +64,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				}
 			}
 		},
-		defaults: {
-			config: {
+		defaults: {									// Defaults for various things
+			config: {								// Config defaults
 				panel: {
 					breakpoints: '',
 					position: null,
@@ -85,8 +90,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 	// Methods
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		/* Misc */
+		/* Utility */
 
+			// Converts a percentage-based CSS measurement to a pixel value (relative to viewport width)
+			// Args: string n (CSS measurement)
+			// Returns: integer (Pixel value)
 			recalcW: function(n) {
 				var i = parseInt(n);
 
@@ -97,6 +105,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 				return i;
 			},
 			
+			// Converts a percentage-based CSS measurement to a pixel value (relative to viewport height)
+			// Args: string n (CSS measurement)
+			// Returns: integer (Pixel value)
 			recalcH: function(n) {
 				var i = parseInt(n);
 
@@ -107,6 +118,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 				return i;
 			},
 			
+			// Gets half of a CSS measurement (px or %) while preserving its units
+			// Args: string n (CSS measurement)
+			// Returns: string (Half of the original CSS measurement)
 			getHalf: function(n) {
 				var i = parseInt(n);
 
@@ -119,6 +133,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 		/* Parse */
 
+			// Tells a child element to suspend
+			// Args: jQuery x (Child element)
 			parseSuspend: function(x) {
 				
 				var o = x.get(0);
@@ -128,6 +144,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 
+			// Tells a child element to resume
+			// Args: jQuery x (Child element)
 			parseResume: function(x) {
 
 				var o = x.get(0);
@@ -137,6 +155,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 
+			// Parses a child element for Panels actions
+			// Args: jQuery x (Child element)
 			parseInit: function(x) {
 
 				var a,b;
@@ -180,10 +200,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 							// Hack: Android doesn't seem to register touch events on fixed elements properly,
 							// so if this panelToggle is on an overlay it needs to be a click.
-							if (_.deviceType == 'android')
-								x.bind('click', a);
-							else
-								x.bind(_.eventType, a);
+								if (_.deviceType == 'android')
+									x.bind('click', a);
+								else
+									x.bind(_.eventType, a);
 						
 							break;
 				
@@ -237,7 +257,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 								arg1.children().each(function() {
 									x.append(jQuery(this));
 								});
-								//	arg1.hide();
 							};
 							
 							o.suspend_skel = function() {
@@ -245,7 +264,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 								x.children().each(function() {
 									arg1.append(jQuery(this));
 								});
-								//	arg1.show();
 							};
 							
 							o.resume_skel();
@@ -282,20 +300,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 					// arg1 = the cell
 						case 'moveCell':
 
-							/*
-								Resume:
-									- Move cell element
-										- move element from source row
-										- disable width class
-										- redistribute width to source row cells
-										
-								Suspend:
-									- Move back cell element
-										- move element back to soruce row
-										- enable width class
-										- restore original widths to source row cells
-							*/
-							
 							arg1 = jQuery('#' + args[0]);
 							arg2 = jQuery('#' + args[1]);
 							
@@ -334,28 +338,28 @@ skel.registerPlugin('panels', (function() { var _ = {
 						
 							break;
 
+					/*
 					// moveCellContents (Moves a grid cell's contents to this element)
 					// arg1 = the cell
 						case 'moveCellContents':
 						
-							/*
-								Resume:
-									- Move cell element contents
-									- Disable cell element
-										- move element from source row
-										- disable width class
-										- redistribute width to source row cells
-										
-								Suspend:
-									- Move back cell element contents 
-									- Enable cell element
-										- move element back to soruce row
-										- enable width class
-										- restore original widths to source row cells
-							*/
+							Resume:
+								- Move cell element contents
+								- Disable cell element
+									- move element from source row
+									- disable width class
+									- redistribute width to source row cells
+									
+							Suspend:
+								- Move back cell element contents 
+								- Enable cell element
+									- move element back to soruce row
+									- enable width class
+									- restore original widths to source row cells
 						
 							break;
-						
+					*/
+					
 					default:
 						break;
 				}
@@ -364,6 +368,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 		
 		/* View */
 		
+			// Locks the viewport. Usually called when a panel is opened.
+			// Args: string a (Orientation)
 			lockView: function(a) {
 
 				_.cache.window.scrollPos_skel = _.cache.window.scrollTop();
@@ -416,6 +422,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 			
+			// Unlocks the viewport. Usually called when a panel is closed.
+			// Args: string a (Orientation)
 			unlockView: function(a) {
 				
 				// Unlock overflow
@@ -438,6 +446,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 		
 		/* Element */
 		
+			// Resumes an element.
+			// Args: jQuery o (Element)
 			resumeElement: function(o) {
 
 				// Get object from cache
@@ -450,6 +460,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 		
+			// Suspends an element.
+			// Args: jQuery o (Element)
 			suspendElement: function(o) {
 			
 				// Get object from cache
@@ -465,6 +477,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 	
+			// Initializes an element.
+			// Args: jQuery o (Element)
 			initElement: function(o) {
 
 				var	config = o.config, t = jQuery(o.object);
@@ -827,7 +841,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 																t.find('*').blur();
 
 															// Move stuff back
-															
 																_.cache.pageWrapper
 																	.add(_.cache.fixedWrapper.children())
 																	.css('transform', 'translate(0px,0px)');
@@ -928,6 +941,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 			
 		/* Init */
 		
+			// Initializes elements
+			// Args: string type (Type of element to initialize)
 			initElements: function(type) {
 
 				var c, k, o, a, b = [], i;
@@ -947,8 +962,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 						// If no HTML was defined, add it to our list of inline-defined elements (which we'll initialize
 						// later when the DOM is ready to mess with)
-						if (!c.html)
-							b[k] = o;
+							if (!c.html)
+								b[k] = o;
 					
 					// Cache it
 						if (c.breakpoints)
@@ -992,6 +1007,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 			
+			// Initializes helper jQuery functions
 			initHelpers: function() {
 				
 				jQuery.fn.promote_skel = function(n) {
@@ -1015,7 +1031,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css('perspective', '500'); 
 				};
 
-				jQuery.fn.xcssValue_skel = function(p,v) {
+				jQuery.fn.xcssValue_skel = function(p, v) {
 					return jQuery(this)
 							.css(p, '-moz-' + v)
 							.css(p, '-webkit-' + v)
@@ -1024,7 +1040,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css(p, v);
 				};
 
-				jQuery.fn.xcssProperty_skel = function(p,v) {
+				jQuery.fn.xcssProperty_skel = function(p, v) {
 					return jQuery(this)
 							.css('-moz-' + p, v)
 							.css('-webkit-' + p, v)
@@ -1033,7 +1049,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css(p, v);
 				};
 
-				jQuery.fn.xcss_skel = function(p,v) {
+				jQuery.fn.xcss_skel = function(p, v) {
 					return jQuery(this)
 							.css('-moz-' + p, '-moz-' + v)
 							.css('-webkit-' + p, '-webkit-' + v)
@@ -1092,6 +1108,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 
+			// Initializes objects
 			initObjects: function() {
 				
 				// window
@@ -1141,6 +1158,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 		
+			// Initializes the device type
 			initDeviceType: function() {
 				
 				var k, a = {
@@ -1165,6 +1183,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 			
+			// Initializes includes
 			initIncludes: function() {
 			
 				_._.DOMReady(function() {
@@ -1173,6 +1192,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			
 			},
 		
+			// Initializes Panels
 			init: function() {
 
 				// Device Type
@@ -1191,7 +1211,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 				// Includes
 					_.initIncludes();
 
-				// Update state
+				// Force a state update
 					_._.updateState();
 			
 			}

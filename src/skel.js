@@ -1,13 +1,17 @@
 /* skelJS v0.3.5-dev | (c) n33 | n33.co @n33co | MIT + GPLv2 */
 
 /*
-	Don't use this version for production! Use skel.min.js instead.
+
+	skelJS is a lightweight frontend framework for building responsive sites and apps. Learn more at http://skeljs.org
+
+	This is the uncompressed version of skelJS. For actual projects, please use the minified version (skel.min.js).
 
 	Credits:
 		
 		CSS Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain))
 		Normalize (normalize.css v2.1.1 | MIT License | git.io/normalize) 
 		DOMReady Method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
+
 */
 
 var skel = (function() { var _ = {
@@ -16,29 +20,29 @@ var skel = (function() { var _ = {
 	// Properties
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		config: {									// Config
-			prefix: null,								// Stylesheet prefix (null = disable stylesheet management)
-			preloadStyleSheets: false,					// If true, preloads all breakpoint stylesheets ahead of time
-			pollOnce: false,							// If true, only polls the viewport width on first load (like 5grid)
-			resetCSS: false,							// If true, inlines Erik Meyer's CSS resets
-			normalizeCSS: false,						// If true, inlines normalize.css
-			boxModel: null,								// Sets the CSS box model (border, content, margin, padding)
-			useOrientation: false,						// If true, viewport width will be allowed to change based on orientation
-			containers: 960,							// Width of container elements
-			containerUnits: false,						// Container units (px, pt, %, vw)
-			debug: false,								// If true, enable debug mode (still working on this)
-			grid: {										// Grid
-				collapse: false,							// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
-				gutters: 40,								// Size of gutters
-				gutterUnits: false							// Gutter units (px, pt, %, vw)
+		config: {									// Config (don't edit this directly; override it per skeljs.org/docs#setup)
+			prefix: null,							// Stylesheet prefix (null = disable stylesheet management)
+			preloadStyleSheets: false,				// If true, preloads all breakpoint stylesheets on init
+			pollOnce: false,						// If true, only polls the viewport width on first load
+			resetCSS: false,						// If true, inlines Erik Meyer's CSS resets
+			normalizeCSS: false,					// If true, inlines normalize.css
+			boxModel: null,							// Sets the CSS box model (border, content, margin, padding)
+			useOrientation: false,					// If true, device orientation will be factored into viewport width calculations
+			containers: 960,						// Width of container elements
+			containerUnits: false,					// (deprecated) Container units (px, pt, %, vw)
+			debug: false,							// If true, enable debug mode (still working on this)
+			grid: {									// Grid
+				collapse: false,					// Sets the collapse depth (1/true, 2, or 3; false = don't collapse)
+				gutters: 40,						// Size of gutters
+				gutterUnits: false					// (deprecated) Gutter units (px, pt, %, vw)
 			},
-			breakpoints: {								// Breakpoints
-				'all': {									// Breakpoint name
-					range: '*',								// Range (x-y, x-, -x, *)
-					hasStyleSheet: false					// If true, skelJS will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
+			breakpoints: {							// Breakpoints
+				'all': {							// Breakpoint name
+					range: '*',						// Range (x-y, x-, -x, *)
+					hasStyleSheet: false			// If true, skelJS will assume there's a stylesheet for this breakpoint (prefix + breakpoint name)
 				}
 			},
-			events: {}								// Events (eventName: function() { })
+			events: {}								// Events (eventName: function() { ... })
 		},
 		
 		isConfigured: false,						// Are we configured?
@@ -50,13 +54,13 @@ var skel = (function() { var _ = {
 		events: [],									// Bound events
 		plugins: {},								// Active plugins
 		cache: {									// Object cache
-			elements: {},								// Elements
-			states: {}									// States
+			elements: {},							// Elements
+			states: {}								// States
 		},
 		locations: {								// Locations to insert stuff
-			html: null,									// html
-			head: null,									// head
-			body: null									// body
+			html: null,								// <html>
+			head: null,								// <head>
+			body: null								// <body>
 		},
 		values: [],									// Internal state values (read with skel.getValue())
 
@@ -64,7 +68,7 @@ var skel = (function() { var _ = {
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		sd: ' ',									// State delimiter (used to separate breakpoint names in the state ID)
+		sd: ' ',									// State ID delimiter (don't change this)
 		css: {										// CSS code blocks (reset, normalize, various parts of the grid system)
 			r: 'html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:\'\';content:none}table{border-collapse:collapse;border-spacing:0}body{-webkit-text-size-adjust:none}',
 			n: 'article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{background:#fff;color:#000;font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}',
@@ -75,9 +79,9 @@ var skel = (function() { var _ = {
 			d: '.row>*{box-shadow:inset 0 0 0 1px red}'
 		},
 		presets: {									// Presets
-			'default': {								// Default (placeholder)
+			'default': {							// Default (placeholder)
 			},
-			'standard': {								// Standard (mobile/desktop/standard)
+			'standard': {							// Standard (mobile/desktop/standard)
 				breakpoints: {
 					'mobile': {
 						range: '-480',
@@ -99,12 +103,12 @@ var skel = (function() { var _ = {
 			}
 		},
 		defaults: {									// Defaults for various things
-			breakpoint: {								// Breakpoint defaults
+			breakpoint: {							// Breakpoint defaults
 				test: null,
 				config: null,
 				elements: null
 			},
-			config_breakpoint: {						// Breakpoint *config* defaults
+			config_breakpoint: {					// Breakpoint *config* defaults
 				range: '',
 				containers: 960,
 				containerUnits: false,
@@ -126,7 +130,7 @@ var skel = (function() { var _ = {
 
 			// Extends x by y
 			// Args: object x, object y
-			extend: function(x,y) {
+			extend: function(x, y) {
 				
 				var k;
 				
@@ -158,7 +162,7 @@ var skel = (function() { var _ = {
 				// Fluid shortcut?
 					else if (x == 'fluid')
 						a = [100,'%'];
-				// Guess we're doing this the hard way, McFly ...
+				// Okay, hard way it is ...
 					else
 					{
 						var tmp;
@@ -181,12 +185,12 @@ var skel = (function() { var _ = {
 			// Returns: float (Device pixel ratio)
 			getDevicePixelRatio: function() {
 				
-				// Hack: iOS and OS X both support devicePixelRatio but it factors it into width calculations ahead of
-				// time. Which is nice I guess, but as this isn't consistent with other platforms we need to force a 1 here.
+				// Hack: iOS and OS X both support devicePixelRatio but they appear to factor it into stuff ahead of time.
+				// Nice I guess, but as this isn't consistent with other platforms we need to force a 1 here.
 					if (navigator.userAgent.match(/(iPod|iPhone|iPad|Macintosh)/))
 						return 1;
 
-				// If DPR is available use it (Hack: But only if we're not using Firefox mobile, which appears to always report 1)
+				// If DPR is available, use it (Hack: But only if we're not using Firefox mobile, which appears to always report 1)
 					if (window.devicePixelRatio !== undefined && !navigator.userAgent.match(/(Firefox)/))
 						return window.devicePixelRatio;
 
@@ -314,7 +318,7 @@ var skel = (function() { var _ = {
 		
 			// Registers a location element
 			// Args: string id (Location ID), DOMHTMLElement object (Location element)
-			registerLocation: function(id,object) {
+			registerLocation: function(id, object) {
 				
 				_.locations[id] = object;
 			
@@ -325,7 +329,7 @@ var skel = (function() { var _ = {
 			// Caches an HTML element
 			// Args: string id (ID), DOMHTMLElement object (HTML element), string location (Location ID), integer priority (Priority)
 			// Returns: object (Cache entry)
-			cacheElement: function(id,object,location,priority) {
+			cacheElement: function(id, object, location, priority) {
 
 				console.log('(cached element ' + id + ')');
 
@@ -341,13 +345,13 @@ var skel = (function() { var _ = {
 			// Caches an HTML element and links it to a specific breakpoint
 			// Args: string breakpointId (Breakpoint ID), string id (ID), DOMHTMLElement object (HTML element), string location (Location ID), integer priority (Priority)
 			// Returns: object (Cache entry)
-			cacheBreakpointElement: function(breakpointId,id,object,location,priority) {
+			cacheBreakpointElement: function(breakpointId, id, object, location, priority) {
 				
 				var o = _.getCachedElement(id);
 				
 				// Not cached yet? Go ahead and take care of that.
 					if (!o)
-						o = _.cacheElement(id,object,location,priority); 
+						o = _.cacheElement(id, object, location, priority); 
 				
 				// Link it to the specified breakpoint (assuming it exists)
 					if (_.breakpoints[breakpointId])
@@ -438,7 +442,7 @@ var skel = (function() { var _ = {
 									}
 								// However, if the location doesn't exist, that means either a) the location
 								// is invalid (which is weird), or b) it doesn't exist *yet* because the
-								// rest of the DOM hasn't loaded (which is far more likely). Assuming (b)
+								// rest of the DOM hasn't been loaded (which is more likely). Assuming (b)
 								// is indeed the case, we'll just put the element in a separate "DOMReady"
 								// bucket for now.
 									else
@@ -1168,7 +1172,7 @@ var skel = (function() { var _ = {
 				// Initialize DOMReady method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
 					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
 
-				// Hack: Legacy IE shit
+				// Hack: Legacy IE crap
 					var d = document;if (!d.getElementsByClassName) d.getElementsByClassName = function(className) { if (d.querySelectorAll) return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); else return []; }
 					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
 				
@@ -1214,9 +1218,9 @@ var skel = (function() { var _ = {
 					_.isInit = true;
 			},
 			
-			// Determines if skelJS has been preconfigured (meaning we can go ahead and call skel.init()) or if
-			// a configuration has yet to be provided (in which case we need to hold off an wait for the user to
-			// manually call skel.init() him/herself with a configuration).
+			// Determines if skelJS has been preconfigured (meaning we can call skel.init() as soon as we load) or if
+			// a configuration has yet to be provided (in which case we need to hold off and wait for the user to
+			// manually call skel.init() with a configuration).
 			preInit: function() {
 
 				console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n");
