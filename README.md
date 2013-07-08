@@ -2,9 +2,9 @@
 
 skelJS is a lightweight frontend framework for building responsive sites and apps. 
 
-* Full documentation here: http://skeljs.docs
+* Full documentation: http://skeljs.org/docs
 * Minified production versions (built w/Closure Compiler): http://skeljs.org
-* Various templates I've built w/skelJS: http://html5up.net
+* Responsive templates built w/skelJS: http://html5up.net
 
 ## License
 
