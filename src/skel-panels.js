@@ -511,17 +511,20 @@ skel.registerPlugin('panels', (function() { var _ = {
 								// Links
 									t.find('a')
 										.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)')
-										.click(function(e) {
-											e.preventDefault();
-											e.stopPropagation();
-											
-											var href = jQuery(this).attr('href');
-											
-											_.cache.activePanel.close_skel();
-											
-											window.setTimeout(function() {
-												window.location.href = href;
-											}, _.config.speed + 10);
+										.bind('click.skel-panels', function(e) {
+											if (_.cache.activePanel)
+											{
+												e.preventDefault();
+												e.stopPropagation();
+												
+												var href = jQuery(this).attr('href');
+												
+												_.cache.activePanel.close_skel();
+												
+												window.setTimeout(function() {
+													window.location.href = href;
+												}, _.config.speed + 10);
+											}
 										});
 
 								// Hack: iOS zooms + scrolls on input focus. Messes up panel stuff. This fix isn't perfect but it works.
