@@ -1,5 +1,0 @@
-#!/bin/sh
-
-../minify src/skel.js dist/skel.min.js
-../minify src/skel-panels.js dist/skel-panels.min.js
-cp src/skel-noscript.css dist/skel-noscript.css
