@@ -30,3 +30,12 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+## Credits
+
+* CSS Resets
+  Eric Meyer (http://meyerweb.com/eric/tools/css/reset/)
+* normalize.css
+  Nicolas Gallagher + Jonathan Neal (http://necolas.github.io/normalize.css/)
+* DOMReady Method
+  Adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani.
