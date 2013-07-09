@@ -129,7 +129,7 @@ var skel = (function() { var _ = {
 			indexOf: null,
 
 			// Extends x by y
-			// Args: object x, object y
+			// Args: object x (Target object), object y (Source object)
 			extend: function(x, y) {
 				
 				var k;
