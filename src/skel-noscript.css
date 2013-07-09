@@ -159,17 +159,17 @@
 
 			.row.oneandhalf > * {
 				/* padding: (gutters * 1.5) 0 0 (gutters * 1.5) */
-				padding: 80px 0 0 80px;
+				padding: 60px 0 0 60px;
 			}
 
 			.row.oneandhalf + .row.oneandhalf > * {
 				/* padding-top: (gutters * 1.5) */
-				padding-top: 80px;
+				padding-top: 60px;
 			}
 
 			.row.oneandhalf {
 				/* margin-left: -(gutters * 1.5) */
-				margin-left: -80px;
+				margin-left: -60px;
 			}
 
 		/* Double */
