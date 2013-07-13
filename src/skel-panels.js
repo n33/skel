@@ -950,8 +950,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 				var c, k, o, a, b = [], i;
 				
-				for (k in _.config[type + 's'])
-				{
+				_._.iterate(_.config[type + 's'], function(k) {
+
 					// Extend with defaults
 						c = {};
 						_._.extend(c, _.defaults.config[type]);
@@ -974,9 +974,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 						else
 							a = _._.breakpointList;
 						
-						for (i in a)
-						{
-							z = _._.cacheBreakpointElement(a[i], k, o, (type == 'overlay' ? 'skel_panels_fixedWrapper' : 'skel_panels_defaultWrapper'), 2);
+						_._.iterate(a, function(i) {
+							var z = _._.cacheBreakpointElement(a[i], k, o, (type == 'overlay' ? 'skel_panels_fixedWrapper' : 'skel_panels_defaultWrapper'), 2);
 								z.config = c;
 								z.initialized = false;
 								z.type = type;
@@ -992,26 +991,25 @@ skel.registerPlugin('panels', (function() { var _ = {
 								z.onDetach = function() {
 									_.suspendElement(this);
 								};
-						}
-				}
+						});
+				});
 				
 				// Deal with inline-defined elements
 					_._.DOMReady(function() {
 						var x, y, k;
 						
-						for (k in b)
-						{
+						_._.iterate(b, function(k) {
 							x = jQuery('#' + k)
 							y = jQuery(b[k]);
 							x.children().appendTo(y);
 							x.remove();
-						}
+						});
 					});
 
 			},
 			
-			// Initializes helper jQuery functions
-			initHelpers: function() {
+			// Initializes jQuery utility functions
+			initJQueryUtilityFuncs: function() {
 				
 				jQuery.fn.promote_skel = function(n) {
 					this._zIndex = this.css('z-index');
@@ -1169,14 +1167,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 					android: 'Android'
 				};
 				
-				for (k in a)
-				{
+				_._.iterate(a, function(k) {
 					if (navigator.userAgent.match(new RegExp(a[k], 'g')))
-					{
 						_.deviceType = k;
-						break;
-					}
-				}
+				});
 				
 				if (!_.deviceType)
 					_.deviceType = 'other';
@@ -1201,8 +1195,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				// Device Type
 					_.initDeviceType();
 
-				// Helpers
-					_.initHelpers();
+				// jQuery Utility functions
+					_.initJQueryUtilityFuncs();
 
 				// Objects
 					_.initObjects();
