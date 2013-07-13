@@ -1215,11 +1215,11 @@ var skel = (function() { var _ = {
 								if (!a)
 									return [];
 
-								var i, x, k = [];
+								var i;
 								
-								for (x in a)
-									if (a.hasOwnProperty(x))
-										(f)(a[x]);
+								for (i in a)
+									if (a.hasOwnProperty(i))
+										(f)(i);
 
 							};
 
