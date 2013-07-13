@@ -123,10 +123,14 @@ var skel = (function() { var _ = {
 	// Methods
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		/* Utility */
+		/* Helper */
 
 			DOMReady: null,
+			getElementsByClassName: null,
 			indexOf: null,
+			iterate: null,
+
+		/* Utility */
 
 			// Extends x by y
 			// Args: object x (Target object), object y (Source object)
@@ -838,7 +842,7 @@ var skel = (function() { var _ = {
 						
 						// mainContent
 							m = 'skel-cell-mainContent';
-							x = document.getElementsByClassName(m);
+							x = _.getElementsByClassName(m);
 
 							if (x && x.length > 0)
 							{
@@ -1162,6 +1166,41 @@ var skel = (function() { var _ = {
 
 			},
 			
+			initHelpers: function() {
+
+				// _.DOMReady: Adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani
+					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
+
+				// _.getElementsByClassName: Polyfill
+					if (document.getElementsByClassName)
+						_.getElementsByClassName = function(className) { return document.getElementsByClassName(className); }
+					else
+						_.getElementsByClassName = function(className) { var d = document; if (d.querySelectorAll) return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); else return []; }
+				
+				// _.indexOf: Polyfill
+					if (Array.prototype.indexOf)
+						_.indexOf = function(x,b) { return x.indexOf(b) };
+					else
+						_.indexOf = function(x,b) { if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1 };
+
+				// _.iterate: Pseudo-polyfill
+					if (Object.keys)
+						_.iterate = function(a, f) {
+							var i, k;
+							k = Object.keys(a);
+							for (i=0; k[i]; i++)
+								(f)(k[i]);
+						};
+					else
+						_.iterate = function(a, f) {
+							var i, x, k = [];
+							for (x in a)
+								if (a.hasOwnProperty(x))
+									(f)(a[x]);
+						};
+
+			},
+			
 			// Initializes skelJS
 			init: function(config, pluginConfig) {
 
@@ -1169,15 +1208,10 @@ var skel = (function() { var _ = {
 
 				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
 
-				// Initialize DOMReady method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
-					(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;for(var j in i){(i[j])()}i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
+				// Init helper methods
+					_.initHelpers();
 
-				// Hack: Legacy IE crap
-					var d = document;if (!d.getElementsByClassName) d.getElementsByClassName = function(className) { if (d.querySelectorAll) return d.querySelectorAll(('.' + className.replace(' ', ' .')).replace(/\.([0-9])/, '.\\3$1 ')); else return []; }
-					if (Array.prototype.indexOf)_.indexOf=function(x,b){return x.indexOf(b)};else _.indexOf=function(x,b){if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1};
-				
-				// Initialize config
-				
+				// Init config
 					if (config)
 						window._skel_config = config;
 						
