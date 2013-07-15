@@ -1090,7 +1090,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					var diff = 12;
 					
 					p.children().each(function() {
-						var t = $(this), c = t.attr('class');
+						var t = jQuery(this), c = t.attr('class');
 						
 						if (c && c.match(/(\s+|^)([0-9]+)u(\s+|$)/))
 							diff -= parseInt(RegExp.$2);
