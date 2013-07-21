@@ -1314,7 +1314,7 @@ var skel = (function() { var _ = {
 						console.log('no configuration detected, waiting for manual init');
 					}
 			
-			},
+			}
 	}
 
 	// Pre-init
