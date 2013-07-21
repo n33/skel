@@ -1119,7 +1119,7 @@ var skel = (function() { var _ = {
 						// Preload stylesheet
 							if (_.config.preloadStyleSheets
 							&&	b.config.hasStyleSheet)
-								preloads.push(_.newStyleSheet(_.config.prefix + '-' + k + '.css'));
+								preloads.push(_.config.prefix + '-' + k + '.css');
 					
 						// Add to list
 							_.breakpointList.push(k);
@@ -1130,15 +1130,17 @@ var skel = (function() { var _ = {
 						_.bind(k, _.config.events[k]);
 					});
 					
-				// Handle stylesheet preloads (if any)
-					if (preloads.length > 0)
+				// Handle stylesheet preloads if we have them (and we're not working locally)
+					if (preloads.length > 0
+					&&	window.location.protocol != 'file:')
 					{
 						_.DOMReady(function() {
-							var k, h = document.getElementsByTagName('head')[0];
+							var k, h = document.getElementsByTagName('head')[0], x = new XMLHttpRequest();
 							
 							_.iterate(preloads, function(k) {
-								h.appendChild(preloads[k]);
-								h.removeChild(preloads[k]);
+								console.log('preloading ' + preloads[k]);
+								x.open('GET', preloads[k], false);
+								x.send('');
 							});
 						});
 					}
