@@ -28,9 +28,9 @@ var skel = (function() { var _ = {
 			normalizeCSS: false,			// If true, inlines normalize.css
 			boxModel: null,				// Sets the CSS box model (border, content, margin, padding)
 			useOrientation: false,			// If true, device orientation will be factored into viewport width calculations
+			useRTL: false,				// If true, make adjustments for right-to-left (RTL) languages
 			containers: 960,			// Width of container elements
 			containerUnits: false,			// (deprecated) Container units (px, pt, %, vw)
-			useRTL: false,				// If true, make adjustments for RTL
 			debug: false,				// If true, enable debug mode (still working on this)
 			grid: {					// Grid
 				collapse: false,		// If true, all grids will be collapsed
@@ -294,6 +294,7 @@ var skel = (function() { var _ = {
 			
 		/* Row Operations */
 
+			// Reverses the order of cells in each row
 			reverseRows: function() {
 			
 				var x = _.getElementsByClassName('row');
@@ -309,7 +310,8 @@ var skel = (function() { var _ = {
 			
 			},
 
-			doReverse: function() {
+			// Turns on row reversal
+			doReverseRows: function() {
 
 				if (_.isReversed === true)
 					return;
@@ -319,7 +321,8 @@ var skel = (function() { var _ = {
 
 			},
 			
-			undoReverse: function() {
+			// Turns off row reversal
+			undoReverseRows: function() {
 
 				if (_.isReversed === false)
 					return;
@@ -877,7 +880,7 @@ var skel = (function() { var _ = {
 					console.log('- applying state elements ... ');
 					_.attachElements(state.elements);
 					
-				// 4. Handle cell modifiers
+				// 4. DOMReady stuff
 					_.DOMReady(function() {
 						
 						var x, m, p;
@@ -886,9 +889,9 @@ var skel = (function() { var _ = {
 							if (_.config.useRTL)
 							{
 								if (state.config.grid.collapse)
-									_.doReverse();
+									_.doReverseRows();
 								else
-									_.undoReverse();
+									_.undoReverseRows();
 							}
 						
 						// mainContent
