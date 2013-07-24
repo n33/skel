@@ -907,6 +907,7 @@ var skel = (function() { var _ = {
 										p = document.createElement('div');
 											p.innerHTML = '';
 											p.id = m + '-placeholder';
+											p.style = 'display:none';
 											x.parentNode.insertBefore(p, x.nextSibling);
 								
 									// Move x to top
