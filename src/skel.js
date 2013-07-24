@@ -30,6 +30,7 @@ var skel = (function() { var _ = {
 			useOrientation: false,			// If true, device orientation will be factored into viewport width calculations
 			containers: 960,			// Width of container elements
 			containerUnits: false,			// (deprecated) Container units (px, pt, %, vw)
+			useRTL: false,				// If true, make adjustments for RTL
 			debug: false,				// If true, enable debug mode (still working on this)
 			grid: {					// Grid
 				collapse: false,		// If true, all grids will be collapsed
@@ -48,6 +49,7 @@ var skel = (function() { var _ = {
 		isConfigured: false,				// Are we configured?
 		isInit: false,					// Are we initialized?
 		isLegacyIE: false,				// Are we stuck in the past?
+		isReversed: false,				// Have our rows been reversed already (RTL)?
 		stateId: '',					// Current state ID
 		breakpoints: [],				// Breakpoints
 		breakpointList: [],				// List of breakpoint names
@@ -288,6 +290,43 @@ var skel = (function() { var _ = {
 			
 				return null;
 			
+			},
+			
+		/* Row Operations */
+
+			reverseRows: function() {
+			
+				var x = _.getElementsByClassName('row');
+				
+				_.iterate(x, function(i) {
+
+					var	row = x[i], children = row.children, j;
+				
+					for (j=1; j < children.length; j++)
+						row.insertBefore(children[j], children[0]);
+				
+				});
+			
+			},
+
+			doReverse: function() {
+
+				if (_.isReversed === true)
+					return;
+
+				_.reverseRows();
+				_.isReversed = true;
+
+			},
+			
+			undoReverse: function() {
+
+				if (_.isReversed === false)
+					return;
+
+				_.reverseRows();
+				_.isReversed = false;
+
 			},
 
 		/* Events */
@@ -843,6 +882,15 @@ var skel = (function() { var _ = {
 						
 						var x, m, p;
 						
+						// RTL
+							if (_.config.useRTL)
+							{
+								if (state.config.grid.collapse)
+									_.doReverse();
+								else
+									_.undoReverse();
+							}
+						
 						// mainContent
 							m = 'skel-cell-mainContent';
 							x = _.getElementsByClassName(m);
@@ -884,7 +932,10 @@ var skel = (function() { var _ = {
 							}
 					});
 					
-				// 5. Trigger stateChange event
+				// 5. Set state value
+					_.values['state'] = _.cache.states[_.stateId];
+					
+				// 6. Trigger stateChange event
 					_.trigger('stateChange');
 
 			},
