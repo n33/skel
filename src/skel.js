@@ -48,7 +48,6 @@ var skel = (function() { var _ = {
 		isConfigured: false,				// Are we configured?
 		isInit: false,					// Are we initialized?
 		isLegacyIE: false,				// Are we stuck in the past?
-		isReversed: false,				// Have our rows been reversed already (RTL)?
 		stateId: '',					// Current state ID
 		breakpoints: [],				// Breakpoints
 		breakpointList: [],				// List of breakpoint names
@@ -292,42 +291,58 @@ var skel = (function() { var _ = {
 			
 		/* Row Operations */
 
-			// Reverses the order of cells in each row
-			reverseRows: function() {
+			// Unreverses all reversed rows
+			unreverseRows: function() {
+
+				var x = _.getElementsByClassName('row');
+				
+				_.iterate(x, function(i) {
+
+					var	row = x[i];
+					
+					// If the row hasn't been reversed, bail
+						if (!row._skel_isReversed)
+							return;
+				
+					// Unreverse the row
+						var children = row.children, j;
+					
+						for (j=1; j < children.length; j++)
+							row.insertBefore(children[j], children[0]);
+
+					// Mark it as unreversed
+						row._skel_isReversed = false;
+				
+				});
+
+			},
+
+			// Reverses all rows
+			// Arg: integer collapseLevel (If specified, only reverse rows with a no-collapse level below this level)
+			reverseRows: function(collapseLevel) {
 			
 				var x = _.getElementsByClassName('row');
 				
 				_.iterate(x, function(i) {
 
-					var	row = x[i], children = row.children, j;
-				
-					for (j=1; j < children.length; j++)
-						row.insertBefore(children[j], children[0]);
+					var	row = x[i];
+
+					// If the row has already been reversed, or it falls below a given no-collapse level, bail
+						if (row._skel_isReversed
+						||	(collapseLevel && row.className.match(/\bno-collapse-([0-9])\b/) && parseInt(RegExp.$1) >= parseInt(collapseLevel)))
+							return;
+					
+					// Reverse the row
+						var children = row.children, j;
+					
+						for (j=1; j < children.length; j++)
+							row.insertBefore(children[j], children[0]);
+
+					// Mark it as reversed
+						row._skel_isReversed = true;
 				
 				});
 			
-			},
-
-			// Turns on row reversal
-			doReverseRows: function() {
-
-				if (_.isReversed === true)
-					return;
-
-				_.reverseRows();
-				_.isReversed = true;
-
-			},
-			
-			// Turns off row reversal
-			undoReverseRows: function() {
-
-				if (_.isReversed === false)
-					return;
-
-				_.reverseRows();
-				_.isReversed = false;
-
 			},
 
 		/* Events */
@@ -876,10 +891,10 @@ var skel = (function() { var _ = {
 						// RTL
 							if (_.config.useRTL)
 							{
+								_.unreverseRows();
+
 								if (state.config.grid.collapse)
-									_.doReverseRows();
-								else
-									_.undoReverseRows();
+									_.reverseRows(state.config.grid.collapse);
 							}
 						
 						// mainContent
