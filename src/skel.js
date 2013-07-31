@@ -298,6 +298,10 @@ var skel = (function() { var _ = {
 				
 				_.iterate(x, function(i) {
 
+					// Hack: Webkit seems to pass along an explicit 'length' property with getElementsByClassName. Screws stuff up.
+						if (i === 'length')
+							return;
+
 					var	row = x[i];
 					
 					// If the row hasn't been reversed, bail
@@ -324,6 +328,10 @@ var skel = (function() { var _ = {
 				var x = _.getElementsByClassName('row');
 				
 				_.iterate(x, function(i) {
+
+					// Hack: Webkit seems to pass along an explicit 'length' property with getElementsByClassName. Screws stuff up.
+						if (i === 'length')
+							return;
 
 					var	row = x[i];
 
