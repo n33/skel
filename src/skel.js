@@ -276,6 +276,15 @@ var skel = (function() { var _ = {
 
 			},
 			
+			// Determines if a given breakpoint was active before the last state change
+			// Args: string k (Breakpoint ID)
+			// Returns: bool (Breakpoint state)
+			wasActive: function(k) {
+
+				return (_.indexOf(_.values['lastStateId'], _.sd + k) !== -1);
+
+			},
+			
 			// Gets an internal state value
 			// Args: string k (Key)
 			// Returns: mixed (Value)
@@ -624,12 +633,16 @@ var skel = (function() { var _ = {
 				var a, i, k, x, w, aX, aY, tmp, d;
 				var g, gq, gh, goh, gd;
 				var location, state;
-				
-				_.stateId = newStateId;
 
-				console.log('new state detected (id: ' + _.stateId + ')');
+				// 1. Set last state value
+					_.values['lastStateId'] = _.stateId;
+
+				// 2. Change state ID
+					_.stateId = newStateId;
+
+					console.log('new state detected (id: ' + _.stateId + ')');
 				
-				// 1. Get State
+				// 3. Get State
 					if (!_.cache.states[_.stateId])
 					{
 						console.log('- not cached. building ...');
@@ -883,15 +896,15 @@ var skel = (function() { var _ = {
 						console.log('- found cached');
 					}
 
-				// 2. Detach all elements
+				// 4. Detach all elements
 					console.log('- detaching all attached elements ...');
 					_.detachAllElements();
 
-				// 3. Apply state
+				// 5. Apply state
 					console.log('- applying state elements ... ');
 					_.attachElements(state.elements);
 					
-				// 4. DOMReady stuff
+				// 6. DOMReady stuff
 					_.DOMReady(function() {
 						
 						var x, m, p;
@@ -947,10 +960,11 @@ var skel = (function() { var _ = {
 							}
 					});
 					
-				// 5. Set state value
+				// 7. Set state and stateId values
 					_.values['state'] = _.cache.states[_.stateId];
+					_.values['stateId'] = _.stateId;
 					
-				// 6. Trigger stateChange event
+				// 8. Trigger stateChange event
 					_.trigger('stateChange');
 
 			},
