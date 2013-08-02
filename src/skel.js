@@ -1300,7 +1300,7 @@ var skel = (function() { var _ = {
 								var i;
 								
 								for (i in a)
-									if (a.hasOwnProperty(i))
+									if (Object.prototype.hasOwnProperty.call(a, i))
 										(f)(i);
 
 							};
