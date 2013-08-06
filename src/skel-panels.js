@@ -139,8 +139,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				
 				var o = x.get(0);
 				
-				if (o.suspend_skel)
-					o.suspend_skel();
+				if (o._skel_panels_suspend)
+					o._skel_panels_suspend();
 
 			},
 
@@ -150,8 +150,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 				var o = x.get(0);
 				
-				if (o.resume_skel)
-					o.resume_skel();
+				if (o._skel_panels_resume)
+					o._skel_panels_resume();
 
 			},
 
@@ -186,16 +186,16 @@ skel.registerPlugin('panels', (function() { var _ = {
 						
 								if (_.cache.activePanel)
 								{
-									_.cache.activePanel.close_skel();
+									_.cache.activePanel._skel_panels_close();
 									return false;
 								}
 
 								var t = jQuery(this), panel = _.cache.panels[args[0]];
 								
 								if (panel.is(':visible'))
-									panel.close_skel();
+									panel._skel_panels_close();
 								else
-									panel.open_skel();
+									panel._skel_panels_open();
 							};
 
 							// Hack: Android doesn't seem to register touch events on fixed elements properly,
@@ -252,21 +252,21 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 							arg1 = jQuery('#' + args[0]);
 						
-							o.resume_skel = function() {
+							o._skel_panels_resume = function() {
 								console.log('moving element contents');
 								arg1.children().each(function() {
 									x.append(jQuery(this));
 								});
 							};
 							
-							o.suspend_skel = function() {
+							o._skel_panels_suspend = function() {
 								console.log('returning element contents');
 								x.children().each(function() {
 									arg1.append(jQuery(this));
 								});
 							};
 							
-							o.resume_skel();
+							o._skel_panels_resume();
 						
 							break;
 						
@@ -275,7 +275,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 						case 'moveElement':
 							arg1 = jQuery('#' + args[0]);
 						
-							o.resume_skel = function() {
+							o._skel_panels_resume = function() {
 								console.log('moving element');
 								
 								// Insert placeholder before arg1
@@ -285,14 +285,14 @@ skel.registerPlugin('panels', (function() { var _ = {
 									x.append(arg1);
 							};
 							
-							o.suspend_skel = function() {
+							o._skel_panels_suspend = function() {
 								console.log('returning element');
 								
 								// Replace placeholder with arg1
 									jQuery('#skel-panels-tmp-' + arg1.attr('id')).replaceWith(arg1);
 							};
 							
-							o.resume_skel();
+							o._skel_panels_resume();
 						
 							break;
 
@@ -303,7 +303,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							arg1 = jQuery('#' + args[0]);
 							arg2 = jQuery('#' + args[1]);
 							
-							o.resume_skel = function() {
+							o._skel_panels_resume = function() {
 								console.log('moving cell');
 
 								// Insert placeholder before arg1
@@ -317,10 +317,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 								// Override arg2 width
 									if (arg2)
-										arg2.expandCell_skel();
+										arg2._skel_panels_expandCell();
 							};
 							
-							o.suspend_skel = function() {
+							o._skel_panels_suspend = function() {
 								console.log('returning cell');
 								
 								// Replace placeholder with arg1
@@ -334,7 +334,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										arg2.css('width', '');
 							};
 							
-							o.resume_skel();
+							o._skel_panels_resume();
 						
 							break;
 
@@ -372,7 +372,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			// Args: string a (Orientation)
 			lockView: function(a) {
 
-				_.cache.window.scrollPos_skel = _.cache.window.scrollTop();
+				_.cache.window._skel_panels_scrollPos = _.cache.window.scrollTop();
 			
 				// Lock overflow
 					if (_.isTouch)
@@ -384,7 +384,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 						e.stopPropagation();
 						
 						if (_.cache.activePanel)
-							_.cache.activePanel.close_skel();
+							_.cache.activePanel._skel_panels_close();
 					});
 
 					_.cache.pageWrapper.bind('click.lock', function(e) {
@@ -392,7 +392,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 						e.stopPropagation();
 						
 						if (_.cache.activePanel)
-							_.cache.activePanel.close_skel();
+							_.cache.activePanel._skel_panels_close();
 					});
 
 					_.cache.pageWrapper.bind('scroll.lock', function(e) {
@@ -400,23 +400,23 @@ skel.registerPlugin('panels', (function() { var _ = {
 						e.stopPropagation();
 
 						if (_.cache.activePanel)
-							_.cache.activePanel.close_skel();
+							_.cache.activePanel._skel_panels_close();
 					});
 						
 					_.cache.window.bind('orientationchange.lock', function(e) {
 						if (_.cache.activePanel)
-							_.cache.activePanel.close_skel();
+							_.cache.activePanel._skel_panels_close();
 					});
 
 					if (!_.isTouch)
 					{
 						_.cache.window.bind('resize.lock', function(e) {
 							if (_.cache.activePanel)
-								_.cache.activePanel.close_skel();
+								_.cache.activePanel._skel_panels_close();
 						});
 						_.cache.window.bind('scroll.lock', function(e) {
 							if (_.cache.activePanel)
-								_.cache.activePanel.close_skel();
+								_.cache.activePanel._skel_panels_close();
 						});
 					}
 
@@ -488,8 +488,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 				
 				// Basic stuff
 					t
-						.applyTransition_skel()
-						.accelerate_skel();
+						._skel_panels_applyTransition()
+						._skel_panels_accelerate();
 						
 				// Parse (init)
 					t.find('*').each(function() { _.parseInit(jQuery(this)); });
@@ -519,7 +519,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 												
 												var href = jQuery(this).attr('href');
 												
-												_.cache.activePanel.close_skel();
+												_.cache.activePanel._skel_panels_close();
 												
 												window.setTimeout(function() {
 													window.location.href = href;
@@ -537,7 +537,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 											e.stopPropagation();
 											
 											window.setTimeout(function() {
-												var scrollPos = _.cache.window.scrollPos_skel;
+												var scrollPos = _.cache.window._skel_panels_scrollPos;
 												var diff = _.cache.window.scrollTop() - scrollPos;
 												
 												// Reset window scroll to what it was when the view was locked
@@ -601,11 +601,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 												default:
 													
 													// Open
-														t.open_skel = function() {
+														t._skel_panels_open = function() {
 															
 															// Place panel
 																t
-																	.promote_skel()
+																	._skel_panels_promote()
 																	.scrollTop(0)
 																	.css('left', '0px')
 																	.css(config.position, '-' + _.recalcH(config.size) + 'px')
@@ -619,7 +619,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 															
 															// Reset fields
 																if (config.resetForms)
-																	t.resetForms_skel();
+																	t._skel_panels_resetForms();
 															
 															// Lock view
 																_.lockView('y');
@@ -639,7 +639,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 														};
 													
 													// Close
-														t.close_skel = function() {
+														t._skel_panels_close = function() {
 														
 															// Defocus panel
 																t.find('*').blur();
@@ -658,7 +658,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																		
 																	// Hide and demote panel
 																		t
-																			.demote_skel()
+																			._skel_panels_demote()
 																			.hide();
 																			
 																	// Clear active
@@ -705,7 +705,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 															&&	((config.position == 'left' && diffX > 50)
 															||	(config.position == 'right' && diffX < -50)))
 															{
-																t.close_skel();
+																t._skel_panels_close();
 																return false;
 															}
 														
@@ -727,11 +727,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 												default:
 													
 													// Open
-														t.open_skel = function() {
+														t._skel_panels_open = function() {
 															
 															// Place panel
 																t
-																	.promote_skel()
+																	._skel_panels_promote()
 																	.scrollTop(0)
 																	.css('top', '0px')
 																	.css(config.position, '-' + _.recalcW(config.size) + 'px')
@@ -745,7 +745,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 															
 															// Reset fields
 																if (config.resetForms)
-																	t.resetForms_skel();
+																	t._skel_panels_resetForms();
 															
 															// Lock view
 																_.lockView('x');
@@ -765,7 +765,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 														};
 													
 													// Close
-														t.close_skel = function() {
+														t._skel_panels_close = function() {
 														
 															// Defocus panel
 																t.find('*').blur();
@@ -784,7 +784,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																		
 																	// Hide and demote panel
 																		t
-																			.demote_skel()
+																			._skel_panels_demote()
 																			.hide();
 																			
 																	// Clear active
@@ -798,11 +798,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 												case 'reveal':
 													
 													// Open
-														t.open_skel = function() {
+														t._skel_panels_open = function() {
 															
 															// Promote page and fixedWrapper
-																_.cache.fixedWrapper.promote_skel(2);
-																_.cache.pageWrapper.promote_skel(1);
+																_.cache.fixedWrapper._skel_panels_promote(2);
+																_.cache.pageWrapper._skel_panels_promote(1);
 															
 															// Place panel
 																t
@@ -819,7 +819,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 															// Reset fields
 																if (config.resetForms)
-																	t.resetForms_skel();
+																	t._skel_panels_resetForms();
 
 															// Lock view
 																_.lockView('x');
@@ -838,7 +838,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 														};
 													
 													// Close
-														t.close_skel = function() {
+														t._skel_panels_close = function() {
 														
 															// Defocus panel
 																t.find('*').blur();
@@ -858,8 +858,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 																		t.hide();
 																		
 																	// Demote page
-																		_.cache.pageWrapper.demote_skel();
-																		_.cache.pageWrapper.demote_skel();
+																		_.cache.pageWrapper._skel_panels_demote();
+																		_.cache.pageWrapper._skel_panels_demote();
 
 																	// Clear active
 																		_.cache.activePanel = null;
@@ -1011,13 +1011,13 @@ skel.registerPlugin('panels', (function() { var _ = {
 			// Initializes jQuery utility functions
 			initJQueryUtilityFuncs: function() {
 				
-				jQuery.fn.promote_skel = function(n) {
+				jQuery.fn._skel_panels_promote = function(n) {
 					this._zIndex = this.css('z-index');
 					this.css('z-index', _.config.baseZIndex + (n ? n : 1));
 					return this;
 				};
 				
-				jQuery.fn.demote_skel = function() {
+				jQuery.fn._skel_panels_demote = function() {
 					if (this._zIndex)
 					{
 						this.css('z-index', this._zIndex);
@@ -1026,13 +1026,13 @@ skel.registerPlugin('panels', (function() { var _ = {
 					return this;
 				};
 
-				jQuery.fn.accelerate_skel = function() {
+				jQuery.fn._skel_panels_accelerate = function() {
 					return jQuery(this)
 							.css('backface-visibility', 'hidden')
 							.css('perspective', '500'); 
 				};
 
-				jQuery.fn.xcssValue_skel = function(p, v) {
+				jQuery.fn._skel_panels_xcssValue = function(p, v) {
 					return jQuery(this)
 							.css(p, '-moz-' + v)
 							.css(p, '-webkit-' + v)
@@ -1041,7 +1041,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css(p, v);
 				};
 
-				jQuery.fn.xcssProperty_skel = function(p, v) {
+				jQuery.fn._skel_panels_xcssProperty = function(p, v) {
 					return jQuery(this)
 							.css('-moz-' + p, v)
 							.css('-webkit-' + p, v)
@@ -1050,7 +1050,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css(p, v);
 				};
 
-				jQuery.fn.xcss_skel = function(p, v) {
+				jQuery.fn._skel_panels_xcss = function(p, v) {
 					return jQuery(this)
 							.css('-moz-' + p, '-moz-' + v)
 							.css('-webkit-' + p, '-webkit-' + v)
@@ -1059,15 +1059,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css(p, v);
 				};
 
-				jQuery.fn.applyTransition_skel = function() {
-					return jQuery(this).xcss_skel('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
+				jQuery.fn._skel_panels_applyTransition = function() {
+					return jQuery(this)._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 				};
 
-				jQuery.fn.clearTransition_skel = function() {
-					return jQuery(this).xcss_skel('transition', 'none');
-				};
-				
-				jQuery.fn.resetForms_skel = function() {
+				jQuery.fn._skel_panels_resetForms = function() {
 					var t = jQuery(this);
 					
 					jQuery(this).find('form').each(function() {
@@ -1077,14 +1073,14 @@ skel.registerPlugin('panels', (function() { var _ = {
 					return t;
 				};
 				
-				jQuery.fn.initialize_skel = function() {
+				jQuery.fn._skel_panels_initializeCell = function() {
 					var t = jQuery(this);
 					
 					if (t.attr('class').match(/(\s+|^)([0-9]+)u(\s+|$)/))
 						t.data('cell-size', parseInt(RegExp.$2));
 				};
 
-				jQuery.fn.expandCell_skel = function() {
+				jQuery.fn._skel_panels_expandCell = function() {
 					var t = jQuery(this);
 					var p = t.parent();
 					var diff = 12;
@@ -1098,7 +1094,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					
 					if (diff > 0)
 					{
-						t.initialize_skel();
+						t._skel_panels_initializeCell();
 						
 						t.css(
 							'width',
@@ -1134,8 +1130,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 						.css('right', '0')
 						.css('top', '0')
 						.css('bottom', '0')
-						.applyTransition_skel()
-						.accelerate_skel();
+						._skel_panels_applyTransition()
+						._skel_panels_accelerate();
 						
 				// defaultWrapper
 					_.cache.defaultWrapper = jQuery('<div id="skel-panels-defaultWrapper" />').appendTo(_.cache.body);
