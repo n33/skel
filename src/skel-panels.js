@@ -468,7 +468,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					var t = _.cache[o.type + 's'][o.id];
 
 				// Reset translate
-					t.css('transform', 'translate(0,0)');
+					t._skel_panels_translateOrigin();
 
 				// Parse (suspend)
 					t.find('*').each(function() { _.parseSuspend(jQuery(this)); });				
@@ -487,9 +487,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					_.cache[o.type + 's'][o.id] = t;
 				
 				// Basic stuff
-					t
-						._skel_panels_applyTransition()
-						._skel_panels_accelerate();
+					t._skel_panels_init();
 						
 				// Parse (init)
 					t.find('*').each(function() { _.parseInit(jQuery(this)); });
@@ -630,7 +628,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																	t
 																		.add(_.cache.fixedWrapper.children())
 																		.add(_.cache.pageWrapper)
-																		.css('transform', 'translate(0px,' + sign + _.recalcH(config.size) + 'px)');
+																		._skel_panels_translate(0, sign + _.recalcH(config.size));
 																	
 																	// Set active
 																		_.cache.activePanel = t;
@@ -648,7 +646,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																t
 																	.add(_.cache.pageWrapper)
 																	.add(_.cache.fixedWrapper.children())
-																	.css('transform', 'translate(0px,0px)');
+																	._skel_panels_translateOrigin();
 
 															// Cleanup
 																window.setTimeout(function() { 
@@ -756,7 +754,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																	t
 																		.add(_.cache.fixedWrapper.children())
 																		.add(_.cache.pageWrapper)
-																		.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
+																		._skel_panels_translate(sign + _.recalcW(config.size), 0);
 															
 																	// Set active
 																		_.cache.activePanel = t;
@@ -774,7 +772,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																t
 																	.add(_.cache.fixedWrapper.children())
 																	.add(_.cache.pageWrapper)
-																	.css('transform', 'translate(0px,0px)');
+																	._skel_panels_translateOrigin();
 																
 															// Cleanup
 																window.setTimeout(function() { 
@@ -829,7 +827,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 																
 																	_.cache.pageWrapper
 																		.add(_.cache.fixedWrapper.children())
-																		.css('transform', 'translate(' + sign + _.recalcW(config.size) + 'px,0px)');
+																		._skel_panels_translate(sign + _.recalcW(config.size), 0);
 																	
 																	// Set active
 																		_.cache.activePanel = t;
@@ -846,7 +844,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 															// Move stuff back
 																_.cache.pageWrapper
 																	.add(_.cache.fixedWrapper.children())
-																	.css('transform', 'translate(0px,0px)');
+																	._skel_panels_translateOrigin();
 
 															// Cleanup
 																window.setTimeout(function() { 
@@ -1026,12 +1024,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 					return this;
 				};
 
-				jQuery.fn._skel_panels_accelerate = function() {
-					return jQuery(this)
-							.css('backface-visibility', 'hidden')
-							.css('perspective', '500'); 
-				};
-
 				jQuery.fn._skel_panels_xcssValue = function(p, v) {
 					return jQuery(this)
 							.css(p, '-moz-' + v)
@@ -1057,10 +1049,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 							.css('-o-' + p, '-o-' + v)
 							.css('-ms-' + p, '-ms-' + v)
 							.css(p, v);
-				};
-
-				jQuery.fn._skel_panels_applyTransition = function() {
-					return jQuery(this)._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 				};
 
 				jQuery.fn._skel_panels_resetForms = function() {
@@ -1103,6 +1091,103 @@ skel.registerPlugin('panels', (function() { var _ = {
 					}
 				};
 
+				jQuery.fn._skel_panels_translateOrigin = function() {
+					return jQuery(this)._skel_panels_translate(0, 0);
+				};				
+
+				if (true)
+				{
+					jQuery.fn._skel_panels_translate = function(x, y) {
+						return jQuery(this).css('transform', 'translate(' + x + 'px, ' + y + 'px)');
+					};
+
+					jQuery.fn._skel_panels_init = function() {
+						return jQuery(this)
+								._skel_panels_xcss('backface-visibility', 'hidden')
+								._skel_panels_xcss('perspective', '500')
+								._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
+					};
+
+				}
+				else
+				{
+					var origins = [];
+					
+					jQuery.fn._skel_panels_translate = function(x, y) {
+						
+						x = parseInt(x);
+						y = parseInt(y);
+						var f = null;
+
+						// If we're changing X, change some stuff
+							if (x != 0)
+							{
+								_.cache.body
+									.css('overflow-x', 'hidden');
+								_.cache.pageWrapper
+									.css('width', _.cache.window.width());
+							}
+						// If we're not changing X, set things back to normal
+							else
+							{
+								f = function() {
+									_.cache.body
+										.css('overflow-x', 'visible');
+									_.cache.pageWrapper
+										.css('width', 'auto');
+								};
+							}
+						
+						// If we're moving everything *up*, temporarily pad the bottom of the page wrapper
+							if (y < 0)
+							{
+								_.cache.pageWrapper
+									.css('padding-bottom', Math.abs(y));
+							}
+						// Otherwise, lose the page wrapper's bottom padding
+							else
+							{
+								f = function() {
+									_.cache.pageWrapper
+										.css('padding-bottom', 0);
+								};
+							}
+
+						// Loop through elements in this selector
+							for (var i=0; i < this.length; i++)
+							{
+								var e = this[i], t = jQuery(e);
+								
+								console.log(e.id + ': ' + x + ', ' + y);
+								
+								// Cache this element's origin (if it doesn't exist)
+									if (!origins[e.id])
+									{
+										origins[e.id] = t.position();
+
+										// Move back to origin (just to be sure)
+											t
+												.css('top', origins[e.id].top)
+												.css('left', origins[e.id].left);
+									}
+							
+								// Move this element
+									t
+										.animate({
+											top: origins[e.id].top + y,
+											left: origins[e.id].left + x
+										}, _.config.speed, 'swing', f);
+							}
+						
+						return jQuery(this);
+					};
+
+					jQuery.fn._skel_panels_init = function() {
+						return jQuery(this)
+							.css('position', 'absolute');
+					};
+				}
+
 			},
 
 			// Initializes objects
@@ -1129,9 +1214,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 						.css('left', '0')
 						.css('right', '0')
 						.css('top', '0')
-						.css('bottom', '0')
-						._skel_panels_applyTransition()
-						._skel_panels_accelerate();
+						//.css('bottom', '0')
+						._skel_panels_init();
 						
 				// defaultWrapper
 					_.cache.defaultWrapper = jQuery('<div id="skel-panels-defaultWrapper" />').appendTo(_.cache.body);
@@ -1191,11 +1275,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 				// Device Type
 					_.initDeviceType();
 
-				// jQuery Utility functions
-					_.initJQueryUtilityFuncs();
-
 				// Objects
 					_.initObjects();
+
+				// jQuery Utility functions
+					_.initJQueryUtilityFuncs();
 
 				// Elements
 					_.initElements('overlay');
