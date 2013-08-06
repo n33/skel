@@ -47,7 +47,7 @@ var skel = (function() { var _ = {
 		
 		isConfigured: false,				// Are we configured?
 		isInit: false,					// Are we initialized?
-		isLegacyIE: false,				// Are we stuck in the past?
+		IEVersion: 99,				// Current IE version
 		stateId: '',					// Current state ID
 		breakpoints: [],				// Breakpoints
 		breakpointList: [],				// List of breakpoint names
@@ -1005,7 +1005,7 @@ var skel = (function() { var _ = {
 
 				var o;
 
-				if (_.isLegacyIE)
+				if (_.IEVersion <= 8)
 				{
 					o = document.createElement('span');
 						o.innerHTML = '&nbsp;<style type="text/css">' + s + '</style>';
@@ -1312,7 +1312,7 @@ var skel = (function() { var _ = {
 
 				console.log('starting init');
 
-				_.isLegacyIE = (navigator.userAgent.match(/MSIE ([0-9]+)\./) && RegExp.$1 <= 8 ? true : false);
+				_.IEVersion = (navigator.userAgent.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
 
 				// Init utility methods
 					_.initUtilityMethods();
