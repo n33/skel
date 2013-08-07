@@ -49,6 +49,7 @@ var skel = (function() { var _ = {
 		isInit: false,					// Are we initialized?
 		IEVersion: 99,					// Current IE version
 		stateId: '',					// Current state ID
+		me: null,					// My <script> element
 		breakpoints: [],				// Breakpoints
 		breakpointList: [],				// List of breakpoint names
 		events: [],					// Bound events
@@ -407,7 +408,16 @@ var skel = (function() { var _ = {
 			// Registers a location element
 			// Args: string id (Location ID), DOMHTMLElement object (Location element)
 			registerLocation: function(id, object) {
-				
+
+				if (id == 'head')
+					object._skel_attach = function(x) {
+						this.insertBefore( x, _.me );
+					};
+				else
+					object._skel_attach = function(x) {
+						this.appendChild( x );
+					};
+
 				_.locations[id] = object;
 			
 			},
@@ -518,7 +528,8 @@ var skel = (function() { var _ = {
 									if (l)
 									{
 										console.log('-- attached (' + k + ') ' + a[k][x].id);
-										l.appendChild( a[k][x].object );
+
+										l._skel_attach( a[k][x].object );
 
 										// Trigger onAttach
 											if (a[k][x].onAttach)
@@ -550,7 +561,7 @@ var skel = (function() { var _ = {
 								// If the location exists (which by now it should), attach the element.
 									if (l)
 									{
-										l.appendChild(w[k].object);
+										l._skel_attach(w[k].object);
 										
 										// Trigger onAttach
 											if (w[k].onAttach)
@@ -1133,8 +1144,7 @@ var skel = (function() { var _ = {
 						s = window._skel_config;
 					else
 					{
-						s = document.getElementsByTagName('script');
-						s = s[s.length - 1].innerHTML.replace(/^\s+|\s+$/g, '');
+						s = _.me.innerHTML.replace(/^\s+|\s+$/g, '');
 						if (s)
 							s = eval('(' + s + ')');
 					}
@@ -1366,6 +1376,10 @@ var skel = (function() { var _ = {
 			preInit: function() {
 
 				console.log("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
+				// Initialize 'me'
+					var x = document.getElementsByTagName('script');
+					_.me = x[x.length - 1];
 
 				// Are we preconfigured?
 					if (window._skel_config)
