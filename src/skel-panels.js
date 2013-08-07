@@ -42,6 +42,28 @@ skel.registerPlugin('panels', (function() { var _ = {
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+		positions: {
+			panels: {
+				'top': [ 'top', 'left' ],
+				'right': [ 'top', 'right' ],
+				'bottom': [ 'bottom', 'left' ],
+				'left': [ 'top', 'left' ]
+			},
+			overlays: {
+				'top-left':	{ 'top': 0, 'left': 0 },
+				'top-right': { 'top': 0, 'right': 0 },
+				'top': { 'top': 0, 'left': '50%' },
+				'top-center': { 'top': 0, 'left': '50%' },
+				'bottom-left':	{ 'bottom': 0, 'left': 0 },
+				'bottom-right': { 'bottom': 0, 'right': 0 },
+				'bottom': { 'bottom': 0, 'left': '50%' },
+				'bottom-center': { 'bottom': 0, 'left': '50%' },
+				'left': { 'top': '50%', 'left': 0 },
+				'middle-left': { 'top': '50%', 'left': 0 },
+				'right': { 'top': '50%', 'right': 0 },
+				'middle-right': { 'top': '50%', 'right': 0 }
+			}
+		},
 		presets: {					// Presets
 			'standard': {				// Standard (usually used in conjunction with skelJS's "standard" preset)
 				panels: {
@@ -482,7 +504,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			// Args: jQuery o (Element)
 			initElement: function(o) {
 
-				var	config = o.config, t = jQuery(o.object);
+				var	config = o.config, t = jQuery(o.object), x;
 
 				// Cache object
 					_.cache[o.type + 's'][o.id] = t;
@@ -563,6 +585,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										// Basic stuff
 											t
 												.addClass('skel-panels-panel-' + config.position)
+												.data('skel-panels-panel-position', config.position)
 												.css('height', _.recalcH(config.size))
 												.scrollTop(0);
 												
@@ -679,6 +702,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										// Basic stuff
 											t
 												.addClass('skel-panels-panel-' + config.position)
+												.data('skel-panels-panel-position', config.position)
 												.css('width', _.recalcW(config.size))
 												.scrollTop(0);
 												
@@ -890,47 +914,30 @@ skel.registerPlugin('panels', (function() { var _ = {
 									.css('width', config.width)
 									.css('height', config.height);
 							
-							// Position
-								switch (config.position)
+							// Get position
+								if (!(x = _.positions.overlays[config.position]))
 								{
-									case 'top-left':
-									default:
-										t.addClass('skel-panels-overlay-top-left').css('top', 0).css('left', 0);
-										break;
-
-									case 'top-right':
-										t.addClass('skel-panels-overlay-top-right').css('top', 0).css('right', 0);
-										break;
-
-									case 'top':
-									case 'top-center':
-										t.addClass('skel-panels-overlay-top-center').css('top', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
-										break;
-
-									case 'bottom-left':
-										t.addClass('skel-panels-overlay-bottom-left').css('bottom', 0).css('left', 0);
-										break;
-
-									case 'bottom':
-									case 'bottom-center':
-										t.addClass('skel-panels-overlay-bottom-center').css('bottom', 0).css('left', '50%').css('margin-left', '-' + _.getHalf(config.width));
-										break;
-
-									case 'bottom-right':
-										t.addClass('skel-panels-overlay-bottom-right').css('bottom', 0).css('right', 0);
-										break;
-
-									case 'left':
-									case 'middle-left':
-										t.addClass('skel-panels-overlay-middle-left').css('top', '50%').css('left', 0).css('margin-top', '-' + _.getHalf(config.height));
-										break;
-
-									case 'right':
-									case 'middle-right':
-										t.addClass('skel-panels-overlay-middle-left').css('top', '50%').css('right', 0).css('margin-top', '-' + _.getHalf(config.height));
-										break;
+									config.position = 'top-left';
+									x = _.positions.overlays[config.position];
 								}
-							
+								
+							// Apply position
+								t
+									.addClass('skel-panels-overlay-' + config.position)
+									.data('skel-panels-overlay-position', config.position);
+								
+								_._.iterate(x, function(i) {
+									t.css(i, x[i]);
+
+									if (x[i] == '50%')
+									{
+										if (i == 'top')
+											t.css('margin-top', '-' + _.getHalf(config.height));
+										else if (i == 'left')
+											t.css('margin-left', '-' + _.getHalf(config.width));
+									}
+								});
+
 							break;
 							
 						default:
@@ -1092,101 +1099,198 @@ skel.registerPlugin('panels', (function() { var _ = {
 					}
 				};
 
-				jQuery.fn._skel_panels_translateOrigin = function() {
-					return jQuery(this)._skel_panels_translate(0, 0);
-				};				
+				// If useTranslate is enabled (and if IE is in play, it's >= 10), use spiffy translate animation
+					if (_.config.useTranslate && _._.IEVersion >= 10)
+					{
+						// Translate an element back to its point of origin
+							jQuery.fn._skel_panels_translateOrigin = function() {
+								return jQuery(this)._skel_panels_translate(0, 0);
+							};				
 
-				if (_.config.useTranslate && _._.IEVersion >= 10)
-				{
-					jQuery.fn._skel_panels_translate = function(x, y) {
-						return jQuery(this).css('transform', 'translate(' + x + 'px, ' + y + 'px)');
-					};
+						// Translate an element to specific coordinates
+							jQuery.fn._skel_panels_translate = function(x, y) {
+								return jQuery(this).css('transform', 'translate(' + x + 'px, ' + y + 'px)');
+							};
 
-					jQuery.fn._skel_panels_init = function() {
-						return jQuery(this)
-								._skel_panels_xcss('backface-visibility', 'hidden')
-								._skel_panels_xcss('perspective', '500')
-								._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
-					};
-				}
-				else
-				{
-					var origins = [];
-					
-					jQuery.fn._skel_panels_translate = function(x, y) {
-						
-						x = parseInt(x);
-						y = parseInt(y);
-						var f = null;
+						// Initialize an element for animation
+							jQuery.fn._skel_panels_init = function() {
+								return jQuery(this)
+										._skel_panels_xcss('backface-visibility', 'hidden')
+										._skel_panels_xcss('perspective', '500')
+										._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
+							};
+					}
+				// Otherwise, revert to the slower (but still functional) CSS animation
+					else
+					{
+						var f, origins = [];
 
-						// If we're changing X, change some stuff
-							if (x != 0)
-							{
-								_.cache.body
-									.css('overflow-x', 'hidden');
-								_.cache.pageWrapper
-									.css('width', _.cache.window.width());
-							}
-						// If we're not changing X, set things back to normal
-							else
-							{
-								f = function() {
-									_.cache.body
-										.css('overflow-x', 'visible');
-									_.cache.pageWrapper
-										.css('width', 'auto');
-								};
-							}
-						
-						// If we're moving everything *up*, temporarily pad the bottom of the page wrapper
-							if (y < 0)
-							{
-								_.cache.pageWrapper
-									.css('padding-bottom', Math.abs(y));
-							}
-						// Otherwise, lose the page wrapper's bottom padding
-							else
-							{
-								f = function() {
-									_.cache.pageWrapper
-										.css('padding-bottom', 0);
-								};
-							}
+						// Forced resets
+							_.cache.window
+								.resize(function() {
 
-						// Loop through elements in this selector
-							for (var i=0; i < this.length; i++)
-							{
-								var e = this[i], t = jQuery(e);
-								
-								console.log(e.id + ': ' + x + ', ' + y);
-								
-								// Cache this element's origin (if it doesn't exist)
-									if (!origins[e.id])
+									if (_.config.speed != 0)
 									{
-										origins[e.id] = t.position();
-
-										// Move back to origin (just to be sure)
-											t
-												.css('top', origins[e.id].top)
-												.css('left', origins[e.id].left);
+										var t = _.config.speed;
+										
+										_.config.speed = 0;
+										
+										window.setTimeout(function() {
+											
+											// Restore animation speed
+												_.config.speed = t;
+											
+											// Wipe origins
+												origins = [];
+										
+										}, t);
 									}
-							
-								// Move this element
-									t
-										.animate({
-											top: origins[e.id].top + y,
-											left: origins[e.id].left + x
-										}, _.config.speed, 'swing', f);
-							}
-						
-						return jQuery(this);
-					};
+								});
 
-					jQuery.fn._skel_panels_init = function() {
-						return jQuery(this)
-							.css('position', 'absolute');
-					};
-				}
+						// Translate an element back to its point of origin
+							jQuery.fn._skel_panels_translateOrigin = function() {
+
+								for (var i=0; i < this.length; i++)
+								{
+									var	e = this[i], t = jQuery(e);
+									
+									if (origins[e.id])
+										t.animate(origins[e.id], _.config.speed, 'swing', function() {
+										
+											// Make sure everything is back to their "true" origins
+												_._.iterate(origins[e.id], function(i) {
+													t.css(i, origins[e.id][i]);
+												});
+
+											// Reset stuff
+												_.cache.body
+													.css('overflow-x', 'visible');
+												_.cache.pageWrapper
+													.css('width', 'auto')
+													.css('padding-bottom', 0);
+										});
+								}
+								
+								return jQuery(this);
+							};
+						
+						// Translate an element to specific coordinates
+							jQuery.fn._skel_panels_translate = function(x, y) {
+
+								var i, j, fx, fy;
+								
+								x = parseInt(x);
+								y = parseInt(y);
+
+								// If we're changing X, change some stuff
+									if (x != 0)
+									{
+										_.cache.body
+											.css('overflow-x', 'hidden');
+										_.cache.pageWrapper
+											.css('width', _.cache.window.width());
+									}
+								// If we're not changing X, set things back to normal
+									else
+									{
+										fx = function() {
+											_.cache.body
+												.css('overflow-x', 'visible');
+											_.cache.pageWrapper
+												.css('width', 'auto');
+										};
+									}
+								
+								// If we're moving everything *up*, temporarily pad the bottom of the page wrapper
+									if (y < 0)
+									{
+										_.cache.pageWrapper
+											.css('padding-bottom', Math.abs(y));
+									}
+								// Otherwise, lose the page wrapper's bottom padding
+									else
+									{
+										fy = function() {
+											_.cache.pageWrapper
+												.css('padding-bottom', 0);
+										};
+									}
+
+								// Step through selector's elements
+									for (i=0; i < this.length; i++)
+									{
+										var	e = this[i],
+											t = jQuery(e),
+											p,
+											xA,
+											yA;
+										
+										// Cache origin
+											if (!origins[e.id])
+											{
+												if ((p = _.positions.overlays[t.data('skel-panels-overlay-position')]))
+													origins[e.id] = p;
+												else if ((p = _.positions.panels[t.data('skel-panels-panel-position')]))
+												{
+													origins[e.id] = {};
+													
+													for (j=0; p[j]; j++)
+														origins[e.id][p[j]] = parseInt(t.css(p[j]));
+												}
+												else
+												{
+													p = t.position();
+													origins[e.id] = { top: p.top, left: p.left };
+												}
+											}
+
+										// Calculate new position
+											a = {};
+											
+											_._.iterate(origins[e.id], function(i) {
+												var v;
+												
+												switch (i)
+												{
+													case 'top':
+														v = _.recalcH(origins[e.id][i]) + y;
+														break;
+
+													case 'bottom':
+														v = _.recalcH(origins[e.id][i]) - y;
+														break;
+
+													case 'left':
+														v = _.recalcW(origins[e.id][i]) + x;
+														break;
+
+													case 'right':
+														v = _.recalcW(origins[e.id][i]) - x;
+														break;
+												}
+												
+												a[i] = v;
+											});
+										
+										// Move
+											t.animate(a, _.config.speed, 'swing', function() {
+												if (fx)
+													(fx)();
+													
+												if (fy)
+													(fy)();
+											});
+									}
+								
+								return jQuery(this);
+							};
+
+						// Initialize an element for animation
+							jQuery.fn._skel_panels_init = function() {
+								return jQuery(this)
+									.css('position', 'absolute');
+							};
+					}
 
 			},
 
