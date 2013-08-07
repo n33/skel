@@ -47,7 +47,7 @@ var skel = (function() { var _ = {
 		
 		isConfigured: false,				// Are we configured?
 		isInit: false,					// Are we initialized?
-		IEVersion: 99,				// Current IE version
+		IEVersion: 99,					// Current IE version
 		stateId: '',					// Current state ID
 		breakpoints: [],				// Breakpoints
 		breakpointList: [],				// List of breakpoint names
@@ -1312,7 +1312,8 @@ var skel = (function() { var _ = {
 
 				console.log('starting init');
 
-				_.IEVersion = (navigator.userAgent.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
+				// Determine IE version (defaults to 99 if we're not using IE)
+					_.IEVersion = (navigator.userAgent.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
 
 				// Init utility methods
 					_.initUtilityMethods();

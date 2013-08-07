@@ -17,7 +17,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 		config: {					// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
 			baseZIndex: 10000,			// Base z-index (should be well above anything else on the page)
-			useTranslate: true,		// Determines if we should use translate for animations (= much faster/smoother than CSS)
+			useTranslate: true,			// Determines if we should use translate for animations (= much faster/smoother than CSS)
 			speed: 250,				// Animation speed (in ms)
 			panels: {},				// Panels
 			overlays: {}				// Overlays
@@ -1157,17 +1157,18 @@ skel.registerPlugin('panels', (function() { var _ = {
 									if (origins[e.id])
 										t.animate(origins[e.id], _.config.speed, 'swing', function() {
 										
-											// Make sure everything is back to their "true" origins
+											// Make sure element is back to its true origin
 												_._.iterate(origins[e.id], function(i) {
 													t.css(i, origins[e.id][i]);
 												});
 
-											// Reset stuff
+											// Reset stuff an animation might've changed
 												_.cache.body
 													.css('overflow-x', 'visible');
 												_.cache.pageWrapper
 													.css('width', 'auto')
 													.css('padding-bottom', 0);
+										
 										});
 								}
 								
@@ -1179,8 +1180,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 								var i, j, fx, fy;
 								
-								x = parseInt(x);
-								y = parseInt(y);
+								// Fix x, y
+									x = parseInt(x);
+									y = parseInt(y);
 
 								// If we're changing X, change some stuff
 									if (x != 0)
@@ -1190,7 +1192,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										_.cache.pageWrapper
 											.css('width', _.cache.window.width());
 									}
-								// If we're not changing X, set things back to normal
+								// Otherwise, set things back to normal (once we're done moving)
 									else
 									{
 										fx = function() {
@@ -1207,7 +1209,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										_.cache.pageWrapper
 											.css('padding-bottom', Math.abs(y));
 									}
-								// Otherwise, lose the page wrapper's bottom padding
+								// Otherwise, lose the page wrapper's bottom padding (once we're done moving)
 									else
 									{
 										fy = function() {
@@ -1221,27 +1223,28 @@ skel.registerPlugin('panels', (function() { var _ = {
 									{
 										var	e = this[i],
 											t = jQuery(e),
-											p,
-											xA,
-											yA;
+											p;
 										
-										// Cache origin
+										// Calculate and cache origin (if it hasn't been set yet)
 											if (!origins[e.id])
 											{
-												if ((p = _.positions.overlays[t.data('skel-panels-overlay-position')]))
-													origins[e.id] = p;
-												else if ((p = _.positions.panels[t.data('skel-panels-panel-position')]))
-												{
-													origins[e.id] = {};
-													
-													for (j=0; p[j]; j++)
-														origins[e.id][p[j]] = parseInt(t.css(p[j]));
-												}
-												else
-												{
-													p = t.position();
-													origins[e.id] = { top: p.top, left: p.left };
-												}
+												// If an overlay position was set on the element, use that
+													if ((p = _.positions.overlays[t.data('skel-panels-overlay-position')]))
+														origins[e.id] = p;
+												// If a panel position was set on the element, use that to determine its correct anchors (t/r/b/l)
+													else if ((p = _.positions.panels[t.data('skel-panels-panel-position')]))
+													{
+														origins[e.id] = {};
+														
+														for (j=0; p[j]; j++)
+															origins[e.id][p[j]] = parseInt(t.css(p[j]));
+													}
+												// Otherwise, calculate it based on the element's current position
+													else
+													{
+														p = t.position();
+														origins[e.id] = { top: p.top, left: p.left };
+													}
 											}
 
 										// Calculate new position
@@ -1274,11 +1277,14 @@ skel.registerPlugin('panels', (function() { var _ = {
 										
 										// Move
 											t.animate(a, _.config.speed, 'swing', function() {
-												if (fx)
-													(fx)();
-													
-												if (fy)
-													(fy)();
+												
+												// Run functions (if they're set)
+													if (fx)
+														(fx)();
+														
+													if (fy)
+														(fy)();
+
 											});
 									}
 								
