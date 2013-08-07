@@ -1115,8 +1115,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 						// Initialize an element for animation
 							jQuery.fn._skel_panels_init = function() {
 								return jQuery(this)
-										._skel_panels_xcss('backface-visibility', 'hidden')
-										._skel_panels_xcss('perspective', '500')
+										.css('backface-visibility', 'hidden')
+										.css('perspective', '500')
 										._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 							};
 					}
