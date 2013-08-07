@@ -1,4 +1,4 @@
-/* skelJS v0.3.8-dev | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.3.8 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -17,7 +17,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 		config: {					// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
 			baseZIndex: 10000,			// Base z-index (should be well above anything else on the page)
-			useTranslate: true,			// Determines if we should use translate for animations (= much faster/smoother than CSS)
+			useTransform: true,			// Determines if we should use CSS transforms for animations (= much faster/smoother than CSS)
 			speed: 250,				// Animation speed (in ms)
 			panels: {},				// Panels
 			overlays: {}				// Overlays
@@ -1099,8 +1099,8 @@ skel.registerPlugin('panels', (function() { var _ = {
 					}
 				};
 
-				// If useTranslate is enabled (and if IE is in play, it's >= 10), use spiffy translate animation
-					if (_.config.useTranslate && _._.IEVersion >= 10)
+				// If useTransform is enabled (and if IE is in play, it's >= 10), use spiffy CSS transforms for animations
+					if (_.config.useTransform && _._.IEVersion >= 10)
 					{
 						// Translate an element back to its point of origin
 							jQuery.fn._skel_panels_translateOrigin = function() {
@@ -1120,7 +1120,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 							};
 					}
-				// Otherwise, revert to the slower (but still functional) CSS animation
+				// Otherwise, revert to the slower (but still functional) CSS positioning for animations
 					else
 					{
 						var f, origins = [];
