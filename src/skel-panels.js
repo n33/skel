@@ -17,6 +17,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 		config: {					// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
 			baseZIndex: 10000,			// Base z-index (should be well above anything else on the page)
+			useTranslate: true,		// Determines if we should use translate for animations (= much faster/smoother than CSS)
 			speed: 250,				// Animation speed (in ms)
 			panels: {},				// Panels
 			overlays: {}				// Overlays
@@ -1095,7 +1096,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					return jQuery(this)._skel_panels_translate(0, 0);
 				};				
 
-				if (true)
+				if (_.config.useTranslate && _._.IEVersion >= 10)
 				{
 					jQuery.fn._skel_panels_translate = function(x, y) {
 						return jQuery(this).css('transform', 'translate(' + x + 'px, ' + y + 'px)');
@@ -1107,7 +1108,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 								._skel_panels_xcss('perspective', '500')
 								._skel_panels_xcss('transition', 'transform ' + (_.config.speed / 1000.00) + 's ease-in-out');
 					};
-
 				}
 				else
 				{
