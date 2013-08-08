@@ -1,4 +1,4 @@
-/* skelJS v0.3.9-dev | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.3.9 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
