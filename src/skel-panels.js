@@ -18,6 +18,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 		config: {					// Config (don't edit this directly; override it per skeljs.org/panels/docs#setup)
 			baseZIndex: 10000,			// Base z-index (should be well above anything else on the page)
 			useTransform: true,			// Determines if we should use CSS transforms for animations (= much faster/smoother than CSS)
+			transformBreakpoints: null,		// If defined, a list of breakpoints at which CSS transforms are allowed
 			speed: 250,				// Animation speed (in ms)
 			panels: {},				// Panels
 			overlays: {}				// Overlays
@@ -1099,8 +1100,13 @@ skel.registerPlugin('panels', (function() { var _ = {
 					}
 				};
 
-				// If useTransform is enabled (and if IE is in play, it's >= 10), use spiffy CSS transforms for animations
-					if (_.config.useTransform && _._.IEVersion >= 10)
+				// If useTransform is enabled ...
+					if (_.config.useTransform
+				// and if we're using IE, it's >= 10 ...
+					&&	_._.IEVersion >= 10
+				// and no transformBreakpoints were specified *or* if they were, one of them is active ...
+					&&	(!_.config.transformBreakpoints || _._.hasActive(_.config.transformBreakpoints.split(',')) ))
+				// ... use CSS transforms for animations
 					{
 						// Translate an element back to its point of origin
 							jQuery.fn._skel_panels_translateOrigin = function() {

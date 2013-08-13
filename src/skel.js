@@ -318,6 +318,21 @@ var skel = (function() { var _ = {
 				return !!(_.lockState);
 
 			},
+
+			// Determines if an array contains an active breakpoint ID
+			// Args: array a (Array of breakpoint IDs)
+			// Returns: bool (Breakpoint state)
+			hasActive: function(a) {
+			
+				var result = false;
+			
+				_.iterate(a, function(i) {
+					result = result || _.isActive(a[i]);
+				});
+				
+				return result;
+			
+			},
 			
 			// Determines if a given breakpoint is active
 			// Args: string k (Breakpoint ID)
