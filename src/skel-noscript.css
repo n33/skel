@@ -107,9 +107,9 @@
 
 	/* Modifiers */
 
-		/* Persistent */
+		/* No Collapse */
 
-			.persistent { }
+			.no-collapse { }
 
 		/* Flush */
 
@@ -191,13 +191,13 @@
 
 	/* Collapsed */
 	/*
-		.row:not(.persistent)
+		.row:not(.no-collapse)
 		{
 			overflow-x: hidden;
 			margin-left: 0;
 		}
 
-		.row:not(.persistent) > * {
+		.row:not(.no-collapse) > * {
 			float: none !important;
 			width: 100% !important;
 			padding: 10px 0 10px 0 !important;
