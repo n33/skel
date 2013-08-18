@@ -232,7 +232,7 @@ var skel = (function() { var _ = {
 				var w, o, r;
 				
 				w = document.documentElement.clientWidth;
-				o = (window.orientation ? Math.abs(window.orientation) : false);
+				o = (window.orientation !== undefined ? Math.abs(window.orientation) : false);
 				r = _.getDevicePixelRatio();
 			
 				// Screen width smaller than viewport width? Use screen width instead.
@@ -253,7 +253,7 @@ var skel = (function() { var _ = {
 						// Otherwise, default to the longest side
 							else
 							{
-								if (screen.width > screen.height)
+								if (screen.height > screen.width)
 									w = screen.height;
 								else
 									w = screen.width;
