@@ -539,13 +539,15 @@ skel.registerPlugin('panels', (function() { var _ = {
 												e.preventDefault();
 												e.stopPropagation();
 												
-												var href = jQuery(this).attr('href');
+												var	t = jQuery(this),
+													href = t.attr('href');
 												
 												_.cache.activePanel._skel_panels_close();
 												
-												window.setTimeout(function() {
-													window.location.href = href;
-												}, _.config.speed + 10);
+												if (!t.hasClass('skel-panels-ignoreHref'))
+													window.setTimeout(function() {
+														window.location.href = href;
+													}, _.config.speed + 10);
 											}
 										});
 
