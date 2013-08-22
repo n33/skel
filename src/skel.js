@@ -724,10 +724,8 @@ var skel = (function() { var _ = {
 			// Args: string newStateId (New state ID)
 			changeState: function(newStateId) {
 
-				var a, i, k, x, w, aX, aY, tmp, d;
-				var g, gq, gh, goh, gd;
-				var c, cs, csp, cb;
-				var location, state;
+				var	breakpointIds, location, state,
+					a, x, id, s1, s2;
 
 				// 1. Set last state value
 					_.values['lastStateId'] = _.stateId;
@@ -737,169 +735,265 @@ var skel = (function() { var _ = {
 
 					console.log('new state detected (id: ' + _.stateId + ')');
 				
-				// 3. Get State
+				// 3. Get state
 					if (!_.cache.states[_.stateId])
 					{
 						console.log('- not cached. building ...');
 
-						// Build state
+						// 3.1. Build state
 							_.cache.states[_.stateId] = { config: {}, elements: [], values: {} };
 							state = _.cache.states[_.stateId];
 
-						// Build composite configuration
+						// 3.2. Build composite configuration
 							if (_.stateId === _.sd)
-								a = [];
+								breakpointIds = [];
 							else
-								a = _.stateId.substring(1).split(_.sd);
+								breakpointIds = _.stateId.substring(1).split(_.sd);
 
-							_.extend(state.config, _.defaults.config_breakpoint);
+							// Extend config by basic breakpoint config
+								_.extend(state.config, _.defaults.config_breakpoint);
 							
-							_.iterate(a, function(k) {
-								_.extend(state.config, _.breakpoints[a[k]].config);
-							});
+							// Then layer on each active breakpoint's config
+								_.iterate(breakpointIds, function(k) {
+									_.extend(state.config, _.breakpoints[breakpointIds[k]].config);
+								});
+							
+						// 3.3. Add state elements
 
-							// inlineBoxModel
+							// ELEMENT: Box Model
+
 								if (_.config.boxModel)
 								{
-									if (!(x = _.getCachedElement('iBM')))
-										x = _.cacheElement('iBM', _.newInline(('*,*:before,*:after{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')), 'head', 3);
-									console.log('- added inlineBoxModel');
-									state.elements.push(x);
+									id = 'iBM';
+									
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newInline(('*,*:before,*:after{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')),
+												'head',
+												3
+											);
+
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
 
-							// inlineReset
+							// ELEMENT: Reset -or- Normalize
+
 								if (_.config.resetCSS)
 								{
-									if (!(x = _.getCachedElement('iR')))
-										x = _.cacheElement('iR', _.newInline(_.css.r), 'head', 2);
+									id = 'iR';
 									
-									console.log('- added inlineReset');
-									state.elements.push(x);
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newInline(_.css.r), 
+												'head', 
+												2
+											);
+									
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
-							// inlineNormalize
 								else if (_.config.normalizeCSS)
 								{
-									if (!(x = _.getCachedElement('iN')))
-										x = _.cacheElement('iN', _.newInline(_.css.n), 'head', 2);
+									id = 'iN';
 									
-									console.log('- added inlineNormalize');
-									state.elements.push(x);
-								}
-							
-							// styleSheetBase
-								if (_.config.prefix)
-								{
-									if (!(x = _.getCachedElement('ssB')))
-										x = _.cacheElement( 'ssB', _.newStyleSheet(_.config.prefix + '.css'), 'head', 4);
-									
-									console.log('- added styleSheetBase');
-									state.elements.push(x);
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newInline(_.css.n), 
+												'head', 
+												2
+											);
+
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
 								
-							// metaViewport
+							// ELEMENT: Base Stylesheet
+
+								if (_.config.prefix)
+								{
+									id = 'ssB';
+
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newStyleSheet(_.config.prefix + '.css'), 
+												'head', 
+												4
+											);
+									
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
+								}
+								
+							// ELEMENT: Viewport <meta> tag
+
 								if (state.config.lockViewport)
 								{
-									if (!(x = _.getCachedElement('mVL' + _.stateId)))
-										x = _.cacheElement('mVL' + _.stateId, _.newMeta('viewport', 'width=' + (state.config.viewportWidth ? state.config.viewportWidth : 'device-width') + ',initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no'), 'head', 1);
+									id = 'mVL' + _.stateId;
 									
-									console.log('- added metaViewportLock' + _.stateId);
-									state.elements.push(x);
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newMeta(
+													'viewport',
+													'width=' + (state.config.viewportWidth ? state.config.viewportWidth : 'device-width') + ',' +
+													'initial-scale=1.0,' +
+													'minimum-scale=1.0,' + 
+													'maximum-scale=1.0,' + 
+													'user-scalable=no'
+												),
+												'head',
+												1
+											);
+									
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
 								else if (state.config.viewportWidth)
 								{
-									if (!(x = _.getCachedElement('mV' + _.stateId)))
-										x = _.cacheElement('mV' + _.stateId, _.newMeta('viewport', 'width=' + state.config.viewportWidth), 'head', 1);
+									id = 'mV' + _.stateId;
+
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newMeta(
+													'viewport', 
+													'width=' + state.config.viewportWidth
+												), 
+												'head', 
+												1
+											);
 									
-									console.log('- added metaViewport' + _.stateId);
-									state.elements.push(x);
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
-									
-							// inlineContainer*
 								
-								// Determine width and units
+							// ELEMENT: Containers
+								
+								var containerWidth, containerUnits;
+									
+								// Determine width, units, and id
+									
 									// If explicit container units were provided, use legacy method
 										if (state.config.containerUnits)
 										{
-											w = parseInt(state.config.containers);
-											u = state.config.containerUnits;
+											containerWidth = parseInt(state.config.containers);
+											containerUnits = state.config.containerUnits;
 										}
 									// Otherwise, use new method (parseMeasurement)
 										else
 										{
-											tmp = _.parseMeasurement(state.config.containers);
-											w = tmp[0];
-											u = tmp[1];
+											a = _.parseMeasurement(state.config.containers);
+											containerWidth = a[0];
+											containerUnits = a[1];
 										}
 
-								// Set element key
-									k = 'iC' + w + u;
-									
-								// Set "containers" state value
-									state.values.containers = w + u;
+									// Set "containers" state value (needed for later)
+										state.values.containers = containerWidth + containerUnits;
 								
-								// Build element
-									if (!(x = _.getCachedElement(k)))
+									// Set id
+										id = 'iC' + containerWidth + containerUnits;
+										
+								// Get element
+									if (!(x = _.getCachedElement(id)))
 									{
-										// Build styles
+										var	cs, csp, cn, cb;
 
-											// Small
-												cs = (w * 0.75) + u;
-												csp = (w * 0.125) + u;
-											
-											// Normal
-												c = w + u;
-											
-											// Big
-												cb = (w * 1.25) + u;
+										// Set up values
+											cs = (containerWidth * 0.75) + containerUnits;
+											csp = (containerWidth * 0.125) + containerUnits;
+											cn = containerWidth + containerUnits;
+											cb = (containerWidth * 1.25) + containerUnits;
 
 										// Build element
-											x = _.cacheElement('iC' + k, _.newInline('.container{margin:0 auto;width:' + c + '}.container.small{width:' + cs + ';padding:0 ' + csp + ' 0 ' + csp + '}.container.big{width:100%;max-width:' + cb + ';min-width:' + c + '}'), 'head', 3);
+											x = _.cacheElement(
+												id,
+												_.newInline(
+													'.container{margin:0 auto;width:' + cn + '}' +
+													'.container.small{width:' + cs + ';padding:0 ' + csp + ' 0 ' + csp + '}' + 
+													'.container.big{width:100%;max-width:' + cb + ';min-width:' + cn + '}'
+												),
+												'head',
+												3
+											);
 									}
 
-								console.log('- added inlineContainer' + k);
-								state.elements.push(x);						
+								// Push to state
+									console.log('- added ' + id);
+									state.elements.push(x);						
 
-							// inlineGrid*
-								if (!(x = _.getCachedElement('iG')))
-									x = _.cacheElement( 'iG', _.newInline(_.css.g + _.css.gF), 'head', 3); 
+							// ELEMENT: Grid
+
+								id = 'iG';
+
+								// Get element
+									if (!(x = _.getCachedElement(id)))
+										x = _.cacheElement(
+											id, 
+											_.newInline(
+												_.css.g + 
+												_.css.gF
+											),
+											'head', 
+											3
+										); 
 								
-								console.log('- added inlineGrid');
-								state.elements.push(x);
+								// Push to state
+									console.log('- added ' + id);
+									state.elements.push(x);
 
-								// Gutters
-									// If explicit container units were provided, use legacy method
-										if (state.config.grid.gutterUnits)
-										{
-											g = state.config.grid.gutters;
-											u = state.config.grid.gutterUnits;
-										}
-									// Otheriwse, use new method (parseMeasurement)
-										else
-										{
-											tmp = _.parseMeasurement(state.config.grid.gutters);
-											g = tmp[0];
-											u = tmp[1];
-										}
-									
-									// Calculate additional gutter sizes
-										gh = g / 2;
-										gq = g / 4;
-										goh = g * 1.5;
-										gd = g * 2;
+							// ELEMENT: Gutters
+								
+								id = 'iGG' + state.config.grid.gutters;
 
-									// Append units
-										g = g + u;
-										gh = gh + u;
-										gq = gq + u;
-										goh = goh + u;
-										gd = gd + u;
+								// Get element
+									if (!(x = _.getCachedElement(id)))
+									{
+										var gutterSize, gutterUnits,
+											gn, gh, gq, goh, gd;
 
-									// Cache element
-										if (!(x = _.getCachedElement('iGG' + state.config.grid.gutters)))
+										// If explicit gutter units were provided, use legacy method
+											if (state.config.grid.gutterUnits)
+											{
+												gutterSize = state.config.grid.gutters;
+												gutterUnits = state.config.grid.gutterUnits;
+											}
+										// Otherwise, use new method (parseMeasurement)
+											else
+											{
+												a = _.parseMeasurement(state.config.grid.gutters);
+												gutterSize = a[0];
+												gutterUnits = a[1];
+											}
+										
+										// Set up values
+											gn = (gutterSize) + gutterUnits;
+											gh = (gutterSize / 2) + gutterUnits;
+											gq = (gutterSize / 4) + gutterUnits;
+											goh = (gutterSize * 1.5) + gutterUnits;
+											gd = (gutterSize * 2) + gutterUnits;
+
+										// Build element
 											x = _.cacheElement(
 												'iGG' + state.config.grid.gutters, 
 												_.newInline(
-													'.row>*{padding:' + g + ' 0 0 '+ g + '}.row+.row>*{padding-top:' + g + '}.row{margin-left:-' + g + '}' +
+													'.row>*{padding:' + gn + ' 0 0 '+ gn + '}.row+.row>*{padding-top:' + gn + '}.row{margin-left:-' + gn + '}' +
 													'.row.half>*{padding:' + gh + ' 0 0 '+ gh + '}.row.half+.row.half>*{padding-top:' + gh + '}.row.half{margin-left:-' + gh + '}' +
 													'.row.quarter>*{padding:' + gq + ' 0 0 '+ gq + '}.row.quarter+.row.quarter>*{padding-top:' + gq + '}.row.quarter{margin-left:-' + gq + '}' +
 													'.row.oneandhalf>*{padding:' + goh + ' 0 0 '+ goh + '}.row.oneandhalf+.row.oneandhalf>*{padding-top:' + goh + '}.row.oneandhalf{margin-left:-' + goh + '}' +
@@ -908,101 +1002,142 @@ var skel = (function() { var _ = {
 												'head', 
 												3
 											); 
+									}
 
-									console.log('- added inlineGrid' + state.config.grid.gutters);
+								// Push to state
+									console.log('- added ' + id);
 									state.elements.push(x);
 
-							// inlineGridCollapse
+							// ELEMENT: Collapse
+
 								if (state.config.grid.collapse)
 								{
-									d = parseInt(state.config.grid.collapse);
+									var	collapseLevel = parseInt(state.config.grid.collapse);
 									
-									if (isNaN(d))
-										d = 1;
+									if (isNaN(collapseLevel))
+										collapseLevel = 1;
 								
-									if (!(x = _.getCachedElement('iGC' + d)))
-									{
-										g = _.css.gR + _.css.gC;
-										tmp = ':not(.persistent):not(.no-collapse)';
-										
-										switch (d)
+									id = 'iGC' + collapseLevel;
+								
+									// Get element
+										if (!(x = _.getCachedElement(id)))
 										{
-											case 4:
-												break;
+											s1 = _.css.gR + _.css.gC;
+											s2 = ':not(.persistent):not(.no-collapse)';
+											
+											switch (collapseLevel)
+											{
+												case 4:
+													break;
 
-											case 3:
-												tmp += ':not(.no-collapse-3)';
-												break;
+												case 3:
+													s2 += ':not(.no-collapse-3)';
+													break;
 
-											case 2:
-												tmp += ':not(.no-collapse-2):not(.no-collapse-3)';
-												break;
+												case 2:
+													s2 += ':not(.no-collapse-2):not(.no-collapse-3)';
+													break;
 
-											case 1:
-											default:
-												tmp += ':not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3)';
-												break;
+												case 1:
+												default:
+													s2 += ':not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3)';
+													break;
+											}
+
+											s1 = s1.replace(/@/g, s2);
+											
+											x = _.cacheElement(
+												id,
+												_.newInline(s1 + '.container{padding:0!important;max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'),
+												'head', 
+												3
+											);
 										}
-
-										g = g.replace(/@/g, tmp);
-										
-										x = _.cacheElement('iGC' + d, _.newInline(g + '.container{padding:0!important;max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'), 'head', 3);
-									}
 									
-									console.log('- added inlineGridCollapse' + d);
-									state.elements.push(x);						
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);						
 								}
 								else
 								{
-									if (!(x = _.getCachedElement('iGNoCo')))
-										x = _.cacheElement('iGNoCo', _.newInline(_.css.gR), 'head', 3); 
-									
-									console.log('- added inlineGridNoCollapse');
-									state.elements.push(x);
+									id = 'iGNoCo';
+								
+									// Get element
+										if (!(x = _.getCachedElement(id)))
+											x = _.cacheElement(
+												id, 
+												_.newInline(_.css.gR), 
+												'head', 
+												3
+											); 
+
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
 								
-							// Conditionals
-								if (!(x = _.getCachedElement('iCd' + _.stateId)))
+							// ELEMENT: Conditionals
+
+								id = 'iCd' + _.stateId;
+
+								if (!(x = _.getCachedElement(id)))
 								{
-									aX = [];
-									aY = [];
+									s1 = [];
+									s2 = [];
+
+									// Get element										
+										_.iterate(_.breakpoints, function(k) {
+											if (_.indexOf(breakpointIds, k) !== -1)
+												s1.push('.not-' + k);
+											else
+												s2.push('.only-' + k);
+										});
+										
+										var s = (s1.length > 0 ? s1.join(',') + '{display:none!important}' : '') + (s2.length > 0 ? s2.join(',') + '{display:none!important}' : '');
 									
-									_.iterate(_.breakpoints, function(k) {
-										if (_.indexOf(a,k) !== -1)
-											aX.push('.not-' + k);
-										else
-											aY.push('.only-' + k);
-									});
+										x = _.cacheElement(id,
+											_.newInline(
+												s.replace(/\.([0-9])/, '.\\3$1 ')
+											),
+											'head',
+											3
+										);
 									
-									var s = (aX.length > 0 ? aX.join(',') + '{display:none!important}' : '') + (aY.length > 0 ? aY.join(',') + '{display:none!important}' : '');
-									
-									x = _.cacheElement('icD' + _.stateId, _.newInline(
-										s.replace(/\.([0-9])/, '.\\3$1 ')
-									), 'head', 3);
-									
-									console.log('- added inlineConditionals' + _.stateId);
-									state.elements.push(x);
+									// Push to state
+										console.log('- added ' + id);
+										state.elements.push(x);
 								}
 
-							// Breakpoint-specific stuff
-								_.iterate(a, function(k) {
+							// ELEMENT: Breakpoint-specific
+
+								_.iterate(breakpointIds, function(k) {
 									// styleSheet*
-										if (_.breakpoints[a[k]].config.hasStyleSheet && _.config.prefix)
+										if (_.breakpoints[breakpointIds[k]].config.hasStyleSheet && _.config.prefix)
 										{
-											if (!(x = _.getCachedElement('ss' + a[k])))
-												x = _.cacheElement('ss' + a[k], _.newStyleSheet(_.config.prefix + '-' + a[k] + '.css'), 'head', 5);
+											id = 'ss' + breakpointIds[k];
+
+											// Get element
+												if (!(x = _.getCachedElement(id)))
+													x = _.cacheElement(
+														id, 
+														_.newStyleSheet(_.config.prefix + '-' + breakpointIds[k] + '.css'), 
+														'head', 
+														5
+													);
 											
-											console.log('- added styleSheet' + a[k]);
-											state.elements.push(x);
+											// Push to state
+												console.log('- added ' + id);
+												state.elements.push(x);
 										}
 									
 									// Elements
-										if (_.breakpoints[a[k]].elements.length > 0)
+										if (_.breakpoints[breakpointIds[k]].elements.length > 0)
 										{
-											_.iterate(_.breakpoints[a[k]].elements, function(x) {
-												console.log('- added breakpoint element ' + _.breakpoints[a[k]].elements[x].id);
-												state.elements.push(_.breakpoints[a[k]].elements[x]);
-											});
+											// Push elements to state
+												_.iterate(_.breakpoints[breakpointIds[k]].elements, function(x) {
+													console.log('- added breakpoint element ' + _.breakpoints[breakpointIds[k]].elements[x].id);
+													state.elements.push(_.breakpoints[breakpointIds[k]].elements[x]);
+												});
 										}
 								});
 					}
