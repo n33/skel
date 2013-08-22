@@ -726,6 +726,7 @@ var skel = (function() { var _ = {
 
 				var a, i, k, x, w, aX, aY, tmp, d;
 				var g, gq, gh, goh, gd;
+				var c, cs, csp, cb;
 				var location, state;
 
 				// 1. Set last state value
@@ -742,7 +743,7 @@ var skel = (function() { var _ = {
 						console.log('- not cached. building ...');
 
 						// Build state
-							_.cache.states[_.stateId] = { config: {}, elements: [] };
+							_.cache.states[_.stateId] = { config: {}, elements: [], values: {} };
 							state = _.cache.states[_.stateId];
 
 						// Build composite configuration
@@ -814,13 +815,12 @@ var skel = (function() { var _ = {
 								}
 									
 							// inlineContainer*
-								w = parseInt(state.config.containers);
 								
-								// Figure out units
+								// Determine width and units
 									// If explicit container units were provided, use legacy method
 										if (state.config.containerUnits)
 										{
-											w = state.config.containers;
+											w = parseInt(state.config.containers);
 											u = state.config.containerUnits;
 										}
 									// Otherwise, use new method (parseMeasurement)
@@ -831,10 +831,32 @@ var skel = (function() { var _ = {
 											u = tmp[1];
 										}
 
-								if (!(x = _.getCachedElement('iC' + w + u)))
-									x = _.cacheElement('iC' + w + u, _.newInline('.container{width:' + w + u + ' !important;margin: 0 auto}'), 'head', 3);
+								// Set element key
+									k = 'iC' + w + u;
+									
+								// Set "containers" state value
+									state.values.containers = w + u;
 								
-								console.log('- added inlineContainer' + w + u);
+								// Build element
+									if (!(x = _.getCachedElement(k)))
+									{
+										// Build styles
+
+											// Small
+												cs = (w * 0.75) + u;
+												csp = (w * 0.125) + u;
+											
+											// Normal
+												c = w + u;
+											
+											// Big
+												cb = (w * 1.25) + u;
+
+										// Build element
+											x = _.cacheElement('iC' + k, _.newInline('.container{margin:0 auto;width:' + c + '}.container.small{width:' + cs + ';padding:0 ' + csp + ' 0 ' + csp + '}.container.big{width:100%;max-width:' + cb + ';min-width:' + c + '}'), 'head', 3);
+									}
+
+								console.log('- added inlineContainer' + k);
 								state.elements.push(x);						
 
 							// inlineGrid*
@@ -924,7 +946,7 @@ var skel = (function() { var _ = {
 
 										g = g.replace(/@/g, tmp);
 										
-										x = _.cacheElement('iGC' + d, _.newInline(g), 'head', 3);
+										x = _.cacheElement('iGC' + d, _.newInline(g + '.container{padding:0!important;max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'), 'head', 3);
 									}
 									
 									console.log('- added inlineGridCollapse' + d);

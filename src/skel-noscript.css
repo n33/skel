@@ -34,10 +34,31 @@
 /* Container */
 
 	.container {
+		margin: 0 auto;
+		
 		/* width: (containers) */
 		width: 960px;
-		margin: 0 auto;
 	}
+
+	/* Modifiers */
+	
+		.container.small {
+			/* width: (containers) * 0.75; */
+			width: 720px;
+		
+			/* padding: 0 (containers * 0.125) 0 (containers * 0.125); */
+			padding: 0 120px 0 120px;
+		}
+
+		.container.big {
+			width: 100%;
+
+			/* max-width: (containers) * 1.25; */
+			max-width: 1200px;
+
+			/* min-width: (containers); */
+			min-width: 960px;
+		}
 
 /* Grid */
 
@@ -67,15 +88,18 @@
 		.\-2u { margin-left: 16.6666666667% }
 		.\-1u { margin-left: 8.3333333333% }
 
+	/* Rows */
+
 		.row > * {
-			/* padding: (gutters) 0 0 (gutters); */
-			padding: 40px 0 0 40px;
 			float: left;
 			-moz-box-sizing: border-box;
 			-webkit-box-sizing: border-box;
 			-o-box-sizing: border-box;
 			-ms-box-sizing: border-box;
 			box-sizing: border-box;
+
+			/* padding: (gutters) 0 0 (gutters); */
+			padding: 40px 0 0 40px;
 		}
 
 		.row + .row > * {
@@ -87,8 +111,6 @@
 			/* margin-left: (gutters) */
 			margin-left: -40px;
 		}
-
-	/* Rows */
 
 		.row:after {
 			content: '';
@@ -124,34 +146,34 @@
 		/* Quarter */
 
 			.row.quarter > * {
-				/* padding: (gutters / 4) 0 0 (gutters / 4) */
+				/* padding: (gutters * 0.25) 0 0 (gutters * 0.25) */
 				padding: 10px 0 0 10px;
 			}
 
 			.row.quarter + .row.quarter > * {
-				/* padding-top: (gutters / 4) */
+				/* padding-top: (gutters * 0.25) */
 				padding-top: 10px;
 			}
 
 			.row.quarter {
-				/* margin-left: -(gutters / 4) */
+				/* margin-left: -(gutters * 0.25) */
 				margin-left: -10px;
 			}
 
 		/* Half */
 
 			.row.half > * {
-				/* padding: (gutters / 2) 0 0 (gutters / 2) */
+				/* padding: (gutters * 0.5) 0 0 (gutters * 0.5) */
 				padding: 20px 0 0 20px;
 			}
 
 			.row.half + .row.half > * {
-				/* padding-top: (gutters / 2) */
+				/* padding-top: (gutters * 0.5) */
 				padding-top: 20px;
 			}
 
 			.row.half {
-				/* margin-left: -(gutters / 2) */
+				/* margin-left: -(gutters * 0.5) */
 				margin-left: -20px;
 			}
 
@@ -202,5 +224,14 @@
 			width: 100% !important;
 			padding: 10px 0 10px 0 !important;
 			margin-left: 0 !important;
+		}
+	
+		.container {
+			padding: 0 !important;
+			max-width: none !important;
+			min-width: 0 !important;
+		
+			// width: (containers) //
+			width: 960px !important;
 		}
 	*/
