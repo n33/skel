@@ -31,11 +31,9 @@ var skel = (function() { var _ = {
 			useRTL: false,				// If true, make adjustments for right-to-left (RTL) languages
 			pollOnLock: false,			// If true, poll after locking instead of refreshing (= good for testing locally)
 			containers: 960,			// Width of container elements
-			containerUnits: false,			// (deprecated) Container units (px, pt, %, vw)
 			grid: {					// Grid
 				collapse: false,		// If true, all grids will be collapsed
 				gutters: 40,			// Size of gutters
-				gutterUnits: false		// (deprecated) Gutter units (px, pt, %, vw)
 			},
 			breakpoints: {				// Breakpoints
 				'all': {			// Breakpoint name
@@ -113,7 +111,6 @@ var skel = (function() { var _ = {
 			config_breakpoint: {			// Breakpoint *config* defaults
 				range: '',
 				containers: 960,
-				containerUnits: false,
 				lockViewport: false,
 				viewportWidth: false,
 				hasStyleSheet: true,
@@ -876,19 +873,10 @@ var skel = (function() { var _ = {
 									
 								// Determine width, units, and id
 									
-									// If explicit container units were provided, use legacy method
-										if (state.config.containerUnits)
-										{
-											containerWidth = parseInt(state.config.containers);
-											containerUnits = state.config.containerUnits;
-										}
-									// Otherwise, use new method (parseMeasurement)
-										else
-										{
-											a = _.parseMeasurement(state.config.containers);
-											containerWidth = a[0];
-											containerUnits = a[1];
-										}
+									// Split "containers" into width and units
+										a = _.parseMeasurement(state.config.containers);
+										containerWidth = a[0];
+										containerUnits = a[1];
 
 									// Set "containers" state value (needed for later)
 										state.values.containers = containerWidth + containerUnits;
@@ -960,19 +948,10 @@ var skel = (function() { var _ = {
 										var gutterSize, gutterUnits,
 											gn, gh, gq, goh, gd;
 
-										// If explicit gutter units were provided, use legacy method
-											if (state.config.grid.gutterUnits)
-											{
-												gutterSize = state.config.grid.gutters;
-												gutterUnits = state.config.grid.gutterUnits;
-											}
-										// Otherwise, use new method (parseMeasurement)
-											else
-											{
-												a = _.parseMeasurement(state.config.grid.gutters);
-												gutterSize = a[0];
-												gutterUnits = a[1];
-											}
+										// Split "gutters" into size and units
+											a = _.parseMeasurement(state.config.grid.gutters);
+											gutterSize = a[0];
+											gutterUnits = a[1];
 										
 										// Set up values
 											gn = (gutterSize) + gutterUnits;
