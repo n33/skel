@@ -994,7 +994,7 @@ var skel = (function() { var _ = {
 										if (!(x = _.getCachedElement(id)))
 										{
 											s1 = _.css.gR + _.css.gC;
-											s2 = ':not(.persistent):not(.no-collapse)';
+											s2 = ':not(.no-collapse)';
 											
 											switch (collapseLevel)
 											{
