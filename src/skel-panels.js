@@ -35,9 +35,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			activePanel: null			// Active Panel
 		},
 
-		deviceType: null,				// Client's device type (android, ios)
 		eventType: 'click',				// Interaction event type
-		isTouch: false,					// Is this a touch-enabled device?
 		
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
@@ -224,7 +222,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 							// Hack: Android doesn't seem to register touch events on fixed elements properly,
 							// so if this panelToggle is on an overlay it needs to be a click.
-								if (_.deviceType == 'android')
+								if (_._.vars.deviceType == 'android')
 									x.bind('click', a);
 								else
 									x.bind(_.eventType, a);
@@ -399,7 +397,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 				_.cache.window._skel_panels_scrollPos = _.cache.window.scrollTop();
 			
 				// Lock overflow
-					if (_.isTouch)
+					if (_._.vars.isTouch)
 						_.cache.body.css('overflow-' + a, 'hidden');
 				
 				// Lock events
@@ -432,7 +430,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 							_.cache.activePanel._skel_panels_close();
 					});
 
-					if (!_.isTouch)
+					if (!_._.vars.isTouch)
 					{
 						_.cache.window.bind('resize.lock', function(e) {
 							if (_.cache.activePanel)
@@ -451,7 +449,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			unlockView: function(a) {
 				
 				// Unlock overflow
-					if (_.isTouch)
+					if (_._.vars.isTouch)
 						_.cache.body.css('overflow-' + a, 'visible');
 				
 				// Unlock events
@@ -460,7 +458,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 					_.cache.pageWrapper.unbind('scroll.lock');
 					_.cache.window.unbind('orientationchange.lock');
 					
-					if (!_.isTouch)
+					if (!_._.vars.isTouch)
 					{
 						_.cache.window.unbind('resize.lock');
 						_.cache.window.unbind('scroll.lock');
@@ -552,7 +550,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 										});
 
 								// Hack: iOS zooms + scrolls on input focus. Messes up panel stuff. This fix isn't perfect but it works.
-									if (_.deviceType == 'ios')
+									if (_._.vars.deviceType == 'ios')
 									{
 										t.find('input,select,textarea').focus(function(e) {
 											var i = jQuery(this);
@@ -592,7 +590,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 												.css('height', _.recalcH(config.size))
 												.scrollTop(0);
 												
-											if (_.isTouch)
+											if (_._.vars.isTouch)
 											{
 												t
 													.css('overflow-y', 'scroll')
@@ -709,7 +707,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 												.css('width', _.recalcW(config.size))
 												.scrollTop(0);
 												
-											if (_.isTouch)
+											if (_._.vars.isTouch)
 											{
 												t
 													.css('overflow-y', 'scroll')
@@ -1105,7 +1103,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 				// If useTransform is enabled ...
 					if (_.config.useTransform
 				// and if we're using IE, it's >= 10 ...
-					&&	_._.IEVersion >= 10
+					&&	_._.vars.IEVersion >= 10
 				// and no transformBreakpoints were specified *or* if they were, one of them is active ...
 					&&	(!_.config.transformBreakpoints || _._.hasActive(_.config.transformBreakpoints.split(',')) ))
 				// ... use CSS transforms for animations
@@ -1357,27 +1355,6 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 			},
 		
-			// Initializes the device type
-			initDeviceType: function() {
-				
-				var k, a = {
-					ios: '(iPad|iPhone|iPod)',
-					android: 'Android'
-				};
-				
-				_._.iterate(a, function(k) {
-					if (navigator.userAgent.match(new RegExp(a[k], 'g')))
-						_.deviceType = k;
-				});
-				
-				if (!_.deviceType)
-					_.deviceType = 'other';
-
-				_.isTouch = !!('ontouchstart' in window);
-				_.eventType = (_.isTouch ? 'touchend' : 'click');
-
-			},
-			
 			// Initializes includes
 			initIncludes: function() {
 			
@@ -1390,8 +1367,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 			// Initializes Panels
 			init: function() {
 
-				// Device Type
-					_.initDeviceType();
+				_.eventType = (_._.vars.isTouch ? 'touchend' : 'click');
 
 				// Objects
 					_.initObjects();

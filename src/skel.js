@@ -48,7 +48,6 @@ var skel = (function() { var _ = {
 		
 		isConfigured: false,				// Are we configured?
 		isInit: false,					// Are we initialized?
-		IEVersion: 99,					// Current IE version
 		lockState: null,				// Current lock state
 		stateId: '',					// Current state ID
 		me: null,					// My <script> element
@@ -205,10 +204,11 @@ var skel = (function() { var _ = {
 			getDevicePixelRatio: function() {
 
 				var ua = navigator.userAgent;
-				
-				// Hack: iOS/OSX and Chrome/Blink factor the DPR into screen measurements
-					if (ua.match(/(iPod|iPhone|iPad|Macintosh)/)
-					||	(ua.match(/Android.+Safari\/([0-9]+)/) && parseInt(RegExp.$1) >= 537))
+
+				// Hack: iOS, OS X (retina), and Chrome/Blink factor the DPR into screen measurements
+					if (_.vars.deviceType == 'ios'
+					||	_.vars.deviceType == 'mac'
+					||	(_.vars.deviceType == 'android' && ua.match(/Safari\/([0-9]+)/) && parseInt(RegExp.$1) >= 537))
 						return 1;
 						
 				// If DPR is available, use it (Hack: But only if we're not using Firefox mobile, which appears to always report 1)
@@ -1242,7 +1242,7 @@ var skel = (function() { var _ = {
 
 				var o;
 
-				if (_.IEVersion <= 8)
+				if (_.vars.IEVersion <= 8)
 				{
 					o = document.createElement('span');
 						o.innerHTML = '&nbsp;<style type="text/css">' + s + '</style>';
@@ -1546,8 +1546,30 @@ var skel = (function() { var _ = {
 			// Initializes the API
 			initAPI: function() {
 				
-				var x;
+				var x, a, ua = navigator.userAgent;
 			
+				// Vars
+					
+					// IE version
+						_.vars.IEVersion = (ua.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
+					
+					// isTouch
+						_.vars.isTouch = !!('ontouchstart' in window);
+
+					// Device type
+						_.vars.deviceType = 'other';
+
+						a = {
+							ios: '(iPad|iPhone|iPod)',
+							android: 'Android',
+							mac: 'Macintosh'
+						};
+				
+						_.iterate(a, function(k) {
+							if (ua.match(new RegExp(a[k], 'g')))
+								_.vars.deviceType = k;
+						});
+						
 				// Init lock state
 					x = document.cookie.split(';');
 					
@@ -1569,9 +1591,6 @@ var skel = (function() { var _ = {
 			init: function(config, pluginConfig) {
 
 				console.log('starting init');
-
-				// Determine IE version (defaults to 99 if we're not using IE)
-					_.IEVersion = (navigator.userAgent.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
 
 				// Init utility methods
 					_.initUtilityMethods();
