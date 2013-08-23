@@ -65,7 +65,7 @@ var skel = (function() { var _ = {
 			head: null,				// <head>
 			body: null				// <body>
 		},
-		values: [],					// Internal state values (read with skel.getValue())
+		vars: {},					// Internal vars
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Data
@@ -347,7 +347,7 @@ var skel = (function() { var _ = {
 			// Returns: bool (Breakpoint state)
 			wasActive: function(k) {
 
-				return (_.indexOf(_.values['lastStateId'], _.sd + k) !== -1);
+				return (_.indexOf(_.vars.lastStateId, _.sd + k) !== -1);
 
 			},
 			
@@ -357,19 +357,6 @@ var skel = (function() { var _ = {
 			canUse: function(k) {
 
 				return (_.breakpoints[k] && (_.breakpoints[k].test)(_.getViewportWidth()));
-			
-			},
-			
-			// Gets an internal state value
-			// Args: string k (Key)
-			// Returns: mixed (Value)
-			// Returns: null (Key doesn't exist)
-			getValue: function(k) {
-			
-				if (k in _.values)
-					return _.values[k];
-			
-				return null;
 			
 			},
 			
@@ -661,9 +648,9 @@ var skel = (function() { var _ = {
 					else
 						w = _.getViewportWidth();
 
-				// Set values
-					_.values['viewportWidth'] = w;
-					_.values['devicePixelRatio'] = _.getDevicePixelRatio();
+				// Set vars
+					_.vars.viewportWidth = w;
+					_.vars.devicePixelRatio = _.getDevicePixelRatio();
 				
 				// Determine new state
 					_.iterate(_.breakpoints, function(k) {
@@ -726,8 +713,8 @@ var skel = (function() { var _ = {
 				var	breakpointIds, location, state,
 					a, x, id, s1, s2;
 
-				// 1. Set last state value
-					_.values['lastStateId'] = _.stateId;
+				// 1. Set last state var
+					_.vars.lastStateId = _.stateId;
 
 				// 2. Change state ID
 					_.stateId = newStateId;
@@ -1210,9 +1197,9 @@ var skel = (function() { var _ = {
 							}
 					});
 					
-				// 7. Set state and stateId values
-					_.values['state'] = _.cache.states[_.stateId];
-					_.values['stateId'] = _.stateId;
+				// 7. Set state and stateId vars
+					_.vars.state = _.cache.states[_.stateId];
+					_.vars.stateId = _.stateId;
 					
 				// 8. Trigger stateChange event
 					_.trigger('stateChange');
