@@ -899,20 +899,26 @@ var skel = (function() { var _ = {
 								// Get element
 									if (!(x = _.getCachedElement(id)))
 									{
-										var	cs, csp, cn, cb;
+										var	cs, cn, cb;
 
 										// Set up values
-											cs = (containerWidth * 0.75) + containerUnits;
-											csp = (containerWidth * 0.125) + containerUnits;
-											cn = containerWidth + containerUnits;
-											cb = (containerWidth * 1.25) + containerUnits;
+											
+											// Small
+												cs = (containerWidth * 0.75) + containerUnits;
+											
+											// Normal
+												cn = containerWidth + containerUnits;
+											
+											// Big
+												cb = (containerWidth * 1.25) + containerUnits;
 
 										// Build element
 											x = _.cacheElement(
 												id,
 												_.newInline(
+													'body{min-width:' + cn +'}' +
 													'.container{margin:0 auto;width:' + cn + '}' +
-													'.container.small{width:' + cs + ';padding:0 ' + csp + ' 0 ' + csp + '}' + 
+													'.container.small{width:' + cs + '}' + 
 													'.container.big{width:100%;max-width:' + cb + ';min-width:' + cn + '}'
 												),
 												'head',
@@ -1034,7 +1040,7 @@ var skel = (function() { var _ = {
 											
 											x = _.cacheElement(
 												id,
-												_.newInline(s1 + '.container{padding:0!important;max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'),
+												_.newInline(s1 + '.container{max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'),
 												'head', 
 												3
 											);

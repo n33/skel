@@ -33,6 +33,11 @@
 
 /* Container */
 
+	body {
+		/* min-width: (containers) */
+		min-width: 960px;
+	}
+
 	.container {
 		margin: 0 auto;
 		
@@ -45,9 +50,6 @@
 		.container.small {
 			/* width: (containers) * 0.75; */
 			width: 720px;
-		
-			/* padding: 0 (containers * 0.125) 0 (containers * 0.125); */
-			padding: 0 120px 0 120px;
 		}
 
 		.container.big {
@@ -227,7 +229,6 @@
 		}
 	
 		.container {
-			padding: 0 !important;
 			max-width: none !important;
 			min-width: 0 !important;
 		
