@@ -203,14 +203,16 @@ var skel = (function() { var _ = {
 			// Figures out the client's device pixel ratio.
 			// Returns: float (Device pixel ratio)
 			getDevicePixelRatio: function() {
-				
-				// Hack: iOS and OS X both support devicePixelRatio but they appear to factor it into stuff ahead of time.
-				// Nice I guess, but as this isn't consistent with other platforms we need to force a 1 here.
-					if (navigator.userAgent.match(/(iPod|iPhone|iPad|Macintosh)/))
-						return 1;
 
+				var ua = navigator.userAgent;
+				
+				// Hack: iOS/OSX and Chrome/Blink factor the DPR into screen measurements
+					if (ua.match(/(iPod|iPhone|iPad|Macintosh)/)
+					||	(ua.match(/Android.+Safari\/([0-9]+)/) && parseInt(RegExp.$1) >= 537))
+						return 1;
+						
 				// If DPR is available, use it (Hack: But only if we're not using Firefox mobile, which appears to always report 1)
-					if (window.devicePixelRatio !== undefined && !navigator.userAgent.match(/(Firefox)/))
+					if (window.devicePixelRatio !== undefined && !ua.match(/(Firefox; Mobile)/))
 						return window.devicePixelRatio;
 
 				// If matchMedia is available, attempt to use that instead
@@ -242,22 +244,19 @@ var skel = (function() { var _ = {
 				// Device has orientation?
 					if (o !== false)
 					{
-						// Orientation detection enabled? If yes, figure out which side we want to measure
+						// If orientation detection is enabled, figure out the side we want to use as our "width"
 							if (_.config.useOrientation)
 							{
-								if (o === 90)
-									w = screen.height;
-								else
-									w = screen.width;
+								// If we're in landscape, use longest side
+									if (o === 90)
+										w = Math.max(screen.width, screen.height);
+								// Otherwise we're in portrait, so use the shortest side
+									else
+										w = Math.min(screen.width, screen.height);
 							}
-						// Otherwise, default to the longest side
+						// Otherwise, always default to the *shortest* side
 							else
-							{
-								if (screen.height > screen.width)
-									w = screen.height;
-								else
-									w = screen.width;
-							}
+								w = Math.min(screen.width, screen.height);
 					}
 				
 				// Divide by pixel ratio
