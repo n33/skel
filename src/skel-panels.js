@@ -1,4 +1,4 @@
-/* skelJS v0.4.1-dev | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.1 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -1368,6 +1368,11 @@ skel.registerPlugin('panels', (function() { var _ = {
 			init: function() {
 
 				_.eventType = (_._.vars.isTouch ? 'touchend' : 'click');
+
+				// Hack: Old versions of Android don't do so well with transforms
+					if (_._.vars.deviceType == 'android'
+					&&	_._.vars.deviceVersion < 4)
+						_.config.useTransform = false;
 
 				// Objects
 					_.initObjects();
