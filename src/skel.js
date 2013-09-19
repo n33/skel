@@ -1554,7 +1554,38 @@ var skel = (function() { var _ = {
 							if (ua.match(new RegExp(a[k], 'g')))
 								_.vars.deviceType = k;
 						});
+					
+					// Device version
+						switch (_.vars.deviceType)
+						{
+							case 'ios':
+								
+								ua.match(/([0-9_]+) like Mac OS X/);
+								x = parseFloat(RegExp.$1.replace('_', '.').replace('_', ''));
+								
+								break;
+								
+							case 'android':
+							
+								ua.match(/Android ([0-9\.]+)/);
+								x = parseFloat(RegExp.$1);
+							
+								break;
+								
+							case 'mac':
+							
+								ua.match(/Mac OS X ([0-9_]+)/);
+								x = parseFloat(RegExp.$1.replace('_', '.').replace('_', ''));
+							
+								break;
+								
+							default:
+								x = 99;
+								break;
+						}
 						
+						_.vars.deviceVersion = x;
+					
 				// Init lock state
 					x = document.cookie.split(';');
 					
