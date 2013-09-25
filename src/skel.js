@@ -905,7 +905,7 @@ var skel = (function() { var _ = {
 												id,
 												_.newInline(
 													'body{min-width:' + cn +'}' +
-													'.container{margin:0 auto;width:' + cn + '}' +
+													'.container{margin-left:auto;margin-right:auto;width:' + cn + '}' +
 													'.container.small{width:' + cs + '}' + 
 													'.container.big{width:100%;max-width:' + cb + ';min-width:' + cn + '}'
 												),

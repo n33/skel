@@ -39,7 +39,8 @@
 	}
 
 	.container {
-		margin: 0 auto;
+		margin-left: auto;
+		margin-right: auto;
 		
 		/* width: (containers) */
 		width: 960px;
