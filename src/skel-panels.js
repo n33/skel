@@ -532,13 +532,15 @@ skel.registerPlugin('panels', (function() { var _ = {
 									t.find('a')
 										.css('-webkit-tap-highlight-color', 'rgba(0,0,0,0)')
 										.bind('click.skel-panels', function(e) {
-											if (_.cache.activePanel)
+											var	t = jQuery(this);
+
+											if (_.cache.activePanel
+											&&	!t.hasClass('skel-panels-ignore'))
 											{
 												e.preventDefault();
 												e.stopPropagation();
 												
-												var	t = jQuery(this),
-													href = t.attr('href');
+												var href = t.attr('href');
 												
 												_.cache.activePanel._skel_panels_close();
 												
