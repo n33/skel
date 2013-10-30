@@ -30,6 +30,8 @@ var skel = (function() { var _ = {
 			useOrientation: false,			// If true, device orientation will be factored into viewport width calculations
 			useRTL: false,				// If true, make adjustments for right-to-left (RTL) languages
 			pollOnLock: false,			// If true, poll after locking instead of refreshing (= good for testing locally)
+			usePerpetualLock: true,			// If true, locking will last until the user says otherwise (not just this session)
+			useDomainLock: true,			// If true, locking will apply to the whole domain (not just the current path)
 			containers: 960,			// Width of container elements
 			grid: {					// Grid
 				collapse: false,		// If true, all grids will be collapsed
@@ -68,7 +70,7 @@ var skel = (function() { var _ = {
 	// Data
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		lsc: '_skel_lock',			// Lock state cookie name (don't change this)
+		lsc: '_skel_lock',				// Lock state cookie name (don't change this)
 		sd: ' ',					// State ID delimiter (don't change this)
 		css: {						// CSS code blocks (reset, normalize, various parts of the grid system)
 			r: 'html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:\'\';content:none}table{border-collapse:collapse;border-spacing:0}body{-webkit-text-size-adjust:none}',
@@ -270,7 +272,7 @@ var skel = (function() { var _ = {
 				
 				// Clear the lock state
 					_.lockState = null;
-					document.cookie = _.lsc + '=;expires=Thu, 1 Jan 1970 12:00:00 UTC; path=' + window.location.pathname;
+					document.cookie = _.lsc + '=;expires=Thu, 1 Jan 1970 12:00:00 UTC; path=' + (_.config.useDomainLock ? '/' : window.location.pathname);
 					console.log('api: unlocking width');
 				
 				// Poll or reload
@@ -287,7 +289,7 @@ var skel = (function() { var _ = {
 
 				// Set the lock state
 					_.lockState = w;
-					document.cookie = _.lsc + '=' + w + ';expires=Thu, 1 Jan 2077 12:00:00 UTC; path='  + window.location.pathname;
+					document.cookie = _.lsc + '=' + w + ';expires=' + (_.config.usePerpetualLock ? 'Thu, 1 Jan 2077 12:00:00 UTC' : 0) + '; path='  + (_.config.useDomainLock ? '/' : window.location.pathname);
 					console.log('api: locking width to ' + w);
 				
 				// Poll or reload
@@ -1592,7 +1594,7 @@ var skel = (function() { var _ = {
 					_.iterate(x, function(i) {
 						var y = x[i].split('=');
 						
-						if (y[0] == _.lsc)
+						if (y[0].replace(/^\s+|\s+$/g, '') == _.lsc)
 						{
 							_.lockState = y[1];
 							return;
