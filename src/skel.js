@@ -471,7 +471,14 @@ var skel = (function() { var _ = {
 
 				if (id == 'head')
 					object._skel_attach = function(x) {
-						this.insertBefore( x, _.me );
+						
+						// If "me" is in <head>, insert x before "me"
+							if (this === _.me.parentNode)
+								this.insertBefore( x, _.me );
+						// Otherwise, just append it
+							else
+								this.appendChild( x );
+					
 					};
 				else
 					object._skel_attach = function(x) {
