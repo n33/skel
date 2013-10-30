@@ -1353,6 +1353,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 					_._.registerLocation('skel_panels_fixedWrapper', _.cache.fixedWrapper[0]);
 					_._.registerLocation('skel_panels_pageWrapper', _.cache.pageWrapper[0]);
 
+				// Hack: "autofocus" attribute stops working on webkit when we wrap stuff, so go ahead and force focus here.
+					$('[autofocus]').focus();
+
 				});
 
 			},
