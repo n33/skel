@@ -204,9 +204,10 @@ var skel = (function() { var _ = {
 
 				var ua = navigator.userAgent;
 
-				// Hack: iOS, OS X (retina), and Chrome/Blink factor the DPR into screen measurements
+				// Hack: iOS, OS X (retina), Chrome/Blink, and Windows automatically factor the DPR into screen measurements
 					if (_.vars.deviceType == 'ios'
 					||	_.vars.deviceType == 'mac'
+					||	_.vars.deviceType == 'windows'
 					||	(_.vars.deviceType == 'android' && ua.match(/Safari\/([0-9]+)/) && parseInt(RegExp.$1) >= 537))
 						return 1;
 						
@@ -1556,7 +1557,8 @@ var skel = (function() { var _ = {
 						a = {
 							ios: '(iPad|iPhone|iPod)',
 							android: 'Android',
-							mac: 'Macintosh'
+							mac: 'Macintosh',
+							windows: 'Windows NT'
 						};
 				
 						_.iterate(a, function(k) {
@@ -1585,6 +1587,13 @@ var skel = (function() { var _ = {
 							
 								ua.match(/Mac OS X ([0-9_]+)/);
 								x = parseFloat(RegExp.$1.replace('_', '.').replace('_', ''));
+							
+								break;
+								
+							case 'windows':
+							
+								ua.match(/Windows NT ([0-9\.]+)/);
+								x = parseFloat(RegExp.$1);
 							
 								break;
 								
