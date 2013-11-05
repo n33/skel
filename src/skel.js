@@ -1150,46 +1150,74 @@ var skel = (function() { var _ = {
 									_.reverseRows(state.config.grid.collapse);
 							}
 						
-						// mainContent
-							m = 'skel-cell-mainContent';
-							x = _.getElementsByClassName(m);
+						// important
+							m = '_skel_cell_important_placeholder';
+							x = _.getElementsByClassName('skel-cell-important');
 
 							if (x && x.length > 0)
 							{
-								x = x[0];
-							
 								if (state.config.grid.collapse)
 								{
-									console.log('mainContent: moving to top');
+									_.iterate(x, function(i) {
 
-									// Create placeholder
-										p = document.createElement('div');
-											p.innerHTML = '';
-											p.id = m + '-placeholder';
-											p.style = 'display:none';
-											x.parentNode.insertBefore(p, x.nextSibling);
-								
-									// Move x to top
-										x.parentNode.insertBefore(x, x.parentNode.firstChild);
+										if (i === 'length')
+											return;
+										
+										e = x[i];
+										
+										if (e.hasOwnProperty(m) && e[m] !== false)
+											return;
+										
+										console.log('important: moving to top of row (' + i + ')');
+
+										// Create placeholder
+											p = document.createElement('div');
+												p.innerHTML = '';
+												p.style.display = 'none';
+												e.parentNode.insertBefore(p, e.nextSibling);
+									
+										// Move e to top
+											e.parentNode.insertBefore(e, e.parentNode.firstChild);
+											
+										// Attach placeholder to e
+											e[m] = p;
+
+									});
 								}
 								else
 								{
-									// Find placeholder
-										p = document.getElementById(m + '-placeholder');
+									_.iterate(x, function(i) {
+
+										e = x[i];
+
+										if (i === 'length')
+											return;
 										
-									// If it exists, move x back
-										if (p)
-										{
-											console.log('mainContent: moving back to origin');
+										if (!e.hasOwnProperty(m))
+											e[m] = false;
+
+										// Get placeholder
+											p = e[m];
 										
-											// Move x above placeholder
-												x.parentNode.insertBefore(x, p);
-												
-											// Delete placeholder
-												x.parentNode.removeChild(p);
-										}
+										// If it's not false, move e back
+											if (p !== false)
+											{
+												console.log('important: moving back (' + i + ')');
+
+												// Move e above placeholder
+													e.parentNode.insertBefore(e, p);
+													
+												// Delete placeholder
+													e.parentNode.removeChild(p);
+
+												// Clear property
+													e[m] = false;
+											}
+									
+									});
 								}
 							}
+
 					});
 					
 				// 7. Set state and stateId vars
