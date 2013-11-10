@@ -1532,7 +1532,7 @@ var skel = (function() { var _ = {
 							_.indexOf = function(x,b) { return x.indexOf(b) };
 					// Otherwise, polyfill
 						else
-							_.indexOf = function(x,b) { if (typeof x=='string')x=x.split('');var a=x.length>>>0;var c=Number(arguments[1])||0;c=(c<0)?Math.ceil(c):Math.floor(c);if(c<0){c+=a}for(;c<a;c++){if(x instanceof Array&&c in x&&x[c]===b){return c}}return -1 };
+							_.indexOf = function(x,b){if (typeof x=='string') return x.indexOf(b);var c,a=(b)?b:0,e;if(!this){throw new TypeError()}e=this.length;if(e===0||a>=e){return -1}if(a<0){a=e-Math.abs(a)}for(c=a;c<e;c++){if(this[c]===x){return c}}return -1};
 
 				// _.iterate
 
