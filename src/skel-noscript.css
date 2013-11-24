@@ -123,7 +123,7 @@
 		}
 
 		.row:first-child > * {
-			padding-top: 0;
+			padding-top: 0 !important;
 		}
 
 		.row > * {
