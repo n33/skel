@@ -78,7 +78,7 @@ var skel = (function() { var _ = {
 			g: '.\\31 2u{width:100%}.\\31 1u{width:91.6666666667%}.\\31 0u{width:83.3333333333%}.\\39 u{width:75%}.\\38 u{width:66.6666666667%}.\\37 u{width:58.3333333333%}.\\36 u{width:50%}.\\35 u{width:41.6666666667%}.\\34 u{width:33.3333333333%}.\\33 u{width:25%}.\\32 u{width:16.6666666667%}.\\31 u{width:8.3333333333%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}.\\-11u{margin-left:91.6666666667%}.\\-10u{margin-left:83.3333333333%}.\\-9u{margin-left:75%}.\\-8u{margin-left:66.6666666667%}.\\-7u{margin-left:58.3333333333%}.\\-6u{margin-left:50%}.\\-5u{margin-left:41.6666666667%}.\\-4u{margin-left:33.3333333333%}.\\-3u{margin-left:25%}.\\-2u{margin-left:16.6666666667%}.\\-1u{margin-left:8.3333333333%}',
 			gF: '.row.flush{margin-left:0}.row.flush>*{padding:0!important}',
 			gR: '.row:after{content:\'\';display:block;clear:both;height:0}.row:first-child>*{padding-top:0!important}.row>*{padding-top:0}',
-			gC: '.row@{margin-left:0}.row@>*{float:none!important;width:100%!important;margin-left:0!important}.row:not(.no-collapse):not(.flush)>*{padding:10px 0 10px 0!important;}'
+			gC: '.row@{margin-left:0}.row@>*{float:none!important;width:100%!important;margin-left:0!important}.row:not(.no-collapse):not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3):not(.flush)>*{padding:10px 0 10px 0!important;}'
 		},
 		presets: {					// Presets
 			'default': {				// Default (placeholder)
