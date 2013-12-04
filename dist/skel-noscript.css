@@ -1,4 +1,4 @@
-/* skelJS v0.4.4 | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.5 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -123,7 +123,7 @@
 		}
 
 		.row:first-child > * {
-			padding-top: 0;
+			padding-top: 0 !important;
 		}
 
 		.row > * {
@@ -223,7 +223,7 @@
 		margin-left: 0 !important;
 	}
 
-	.row:not(.no-collapse):not(.flush) > * {
+	.row:not(.no-collapse):not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3):not(.flush) > * {
 		padding: 10px 0 10px 0 !important;
 	}
 
