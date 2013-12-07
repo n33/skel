@@ -1,4 +1,6 @@
-/* skelJS v0.4.5 | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.5-dev | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.5-dev | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.5-dev | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -541,12 +543,21 @@ skel.registerPlugin('panels', (function() { var _ = {
 												e.stopPropagation();
 												
 												var href = t.attr('href');
+												var target = t.attr('target');
 												
 												_.cache.activePanel._skel_panels_close();
 												
 												if (!t.hasClass('skel-panels-ignoreHref'))
 													window.setTimeout(function() {
-														window.location.href = href;
+														if (target === "_blank" || target === "_new")
+														{
+															window.open(href);
+														}
+														
+														else
+														{
+															window.location.href = href;
+														}
 													}, _.config.speed + 10);
 											}
 										});
