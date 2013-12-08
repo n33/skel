@@ -1374,9 +1374,9 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 				_.eventType = (_._.vars.isTouch ? 'touchend' : 'click');
 
-				// Hack: Old versions of Android don't do so well with transforms
-					if (_._.vars.deviceType == 'android'
-					&&	_._.vars.deviceVersion < 4)
+				// Hack: Disable transforms on devices that lack proper support for them
+					if ((_._.vars.deviceType == 'android' && _._.vars.deviceVersion < 4)
+					||	_._.vars.deviceType == 'wp')
 						_.config.useTransform = false;
 
 				// Objects

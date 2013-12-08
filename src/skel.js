@@ -877,6 +877,27 @@ var skel = (function() { var _ = {
 										state.elements.push(x);
 								}
 								
+								// Hack: IE10 needs -ms-viewport for "snap mode", and IE10/Mobile (pre-GDR3?) needs it to render stuff the right size.
+								// In true IE fashion though, IE10/Mobile doesn't work properly with "device-width", so it gets an (adjusted) hardcoded
+								// width instead (at least until GDR3 comes out).
+									if (_.vars.IEVersion >= 10)
+									{
+										id = 'mVIE' + _.stateId;
+
+										// Get element
+											if (!(x = _.getCachedElement(id)))
+												x = _.cacheElement(
+													id, 
+													_.newInline('@-ms-viewport{width:' + (_.vars.deviceType == 'wp' ? (_.vars.viewportWidth * 0.6666666666666667) + 'px' : 'device-width') + '}'), 
+													'head', 
+													2
+												);
+
+										// Push to state
+											console.log('- added ' + id);
+											state.elements.push(x);
+									}
+								
 							// ELEMENT: Containers
 								
 								var containerWidth, containerUnits;
@@ -1586,6 +1607,7 @@ var skel = (function() { var _ = {
 							ios: '(iPad|iPhone|iPod)',
 							android: 'Android',
 							mac: 'Macintosh',
+							wp: 'Windows Phone',
 							windows: 'Windows NT'
 						};
 				
@@ -1617,7 +1639,14 @@ var skel = (function() { var _ = {
 								x = parseFloat(RegExp.$1.replace('_', '.').replace('_', ''));
 							
 								break;
-								
+							
+							case 'wp':
+
+								ua.match(/IEMobile\/([0-9\.]+)/);
+								x = parseFloat(RegExp.$1);
+							
+								break;
+							
 							case 'windows':
 							
 								ua.match(/Windows NT ([0-9\.]+)/);
