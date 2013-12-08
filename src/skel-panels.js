@@ -541,13 +541,18 @@ skel.registerPlugin('panels', (function() { var _ = {
 												e.preventDefault();
 												e.stopPropagation();
 												
-												var href = t.attr('href');
+												var href = t.attr('href'),
+													target = t.attr('target');
 												
 												_.cache.activePanel._skel_panels_close();
 												
 												if (!t.hasClass('skel-panels-ignoreHref'))
 													window.setTimeout(function() {
-														window.location.href = href;
+														if (target == '_blank'
+														&&	_._.vars.deviceType != 'wp') // Hack: WP doesn't allow window.open()
+															window.open(href);
+														else
+															window.location.href = href;
 													}, _.config.speed + 10);
 											}
 										});
