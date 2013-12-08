@@ -1597,9 +1597,6 @@ var skel = (function() { var _ = {
 					// IE version
 						_.vars.IEVersion = (ua.match(/MSIE ([0-9]+)\./) ? RegExp.$1 : 99);
 					
-					// isTouch
-						_.vars.isTouch = !!('ontouchstart' in window);
-
 					// Device type
 						_.vars.deviceType = 'other';
 
@@ -1660,6 +1657,9 @@ var skel = (function() { var _ = {
 						}
 						
 						_.vars.deviceVersion = x;
+
+					// isTouch
+						_.vars.isTouch = (_.vars.deviceType == 'wp' ? (navigator.msMaxTouchPoints > 0) : !!('ontouchstart' in window));
 					
 				// Init lock state
 					x = document.cookie.split(';');
