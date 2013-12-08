@@ -220,9 +220,10 @@ skel.registerPlugin('panels', (function() { var _ = {
 									panel._skel_panels_open();
 							};
 
-							// Hack: Android doesn't seem to register touch events on fixed elements properly,
+							// Hack: Android and WP don't register touch events on fixed elements properly,
 							// so if this panelToggle is on an overlay it needs to be a click.
-								if (_._.vars.deviceType == 'android')
+								if (_._.vars.deviceType == 'android'
+								||	_._.vars.deviceType == 'wp')
 									x.bind('click', a);
 								else
 									x.bind(_.eventType, a);
@@ -596,6 +597,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 											{
 												t
 													.css('overflow-y', 'scroll')
+													.css('-ms-overflow-style', '-ms-autohiding-scrollbar')
 													.css('-webkit-overflow-scrolling', 'touch')
 													.bind('touchstart', function(e) {
 														t._posY = e.originalEvent.touches[0].pageY;
@@ -713,6 +715,7 @@ skel.registerPlugin('panels', (function() { var _ = {
 											{
 												t
 													.css('overflow-y', 'scroll')
+													.css('-ms-overflow-style', '-ms-autohiding-scrollbar')
 													.css('-webkit-overflow-scrolling', 'touch')
 													.bind('touchstart', function(e) {
 														t._posY = e.originalEvent.touches[0].pageY;
