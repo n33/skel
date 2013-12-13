@@ -72,13 +72,9 @@ var skel = (function() { var _ = {
 
 		lsc: '_skel_lock',				// Lock state cookie name (don't change this)
 		sd: ' ',					// State ID delimiter (don't change this)
-		css: {						// CSS code blocks (reset, normalize, various parts of the grid system)
+		css: {						// CSS code blocks (reset, normalize)
 			r: 'html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:\'\';content:none}table{border-collapse:collapse;border-spacing:0}body{-webkit-text-size-adjust:none}',
 			n: 'article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,summary{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none;height:0}[hidden]{display:none}html{background:#fff;color:#000;font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}a:focus{outline:thin dotted}a:active,a:hover{outline:0}h1{font-size:2em;margin:.67em 0}abbr[title]{border-bottom:1px dotted}b,strong{font-weight:bold}dfn{font-style:italic}hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}mark{background:#ff0;color:#000}code,kbd,pre,samp{font-family:monospace,serif;font-size:1em}pre{white-space:pre-wrap}q{quotes:"\201C" "\201D" "\2018" "\2019"}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0}svg:not(:root){overflow:hidden}figure{margin:0}fieldset{border:1px solid #c0c0c0;margin:0 2px;padding:.35em .625em .75em}legend{border:0;padding:0}button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}button,input{line-height:normal}button,select{text-transform:none}button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}button[disabled],html input[disabled]{cursor:default}input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}input[type="search"]{-webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration{-webkit-appearance:none}button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}textarea{overflow:auto;vertical-align:top}table{border-collapse:collapse;border-spacing:0}',
-			g: '.\\31 2u{width:100%}.\\31 1u{width:91.6666666667%}.\\31 0u{width:83.3333333333%}.\\39 u{width:75%}.\\38 u{width:66.6666666667%}.\\37 u{width:58.3333333333%}.\\36 u{width:50%}.\\35 u{width:41.6666666667%}.\\34 u{width:33.3333333333%}.\\33 u{width:25%}.\\32 u{width:16.6666666667%}.\\31 u{width:8.3333333333%}.\\31 u,.\\32 u,.\\33 u,.\\34 u,.\\35 u,.\\36 u,.\\37 u,.\\38 u,.\\39 u,.\\31 0u,.\\31 1u,.\\31 2u{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}.\\-11u{margin-left:91.6666666667%}.\\-10u{margin-left:83.3333333333%}.\\-9u{margin-left:75%}.\\-8u{margin-left:66.6666666667%}.\\-7u{margin-left:58.3333333333%}.\\-6u{margin-left:50%}.\\-5u{margin-left:41.6666666667%}.\\-4u{margin-left:33.3333333333%}.\\-3u{margin-left:25%}.\\-2u{margin-left:16.6666666667%}.\\-1u{margin-left:8.3333333333%}',
-			gF: '.row.flush{margin-left:0}.row.flush>*{padding:0!important}',
-			gR: '.row:after{content:\'\';display:block;clear:both;height:0}.row:first-child>*{padding-top:0!important}.row>*{padding-top:0}',
-			gC: '.row@N{margin-left:0}.row@N>*{float:none!important;width:100%!important;margin-left:0!important}.row:not(.flush)@N>*{padding:@G 0 @G 0!important;}'
 		},
 		presets: {					// Presets
 			'default': {				// Default (placeholder)
@@ -899,7 +895,7 @@ var skel = (function() { var _ = {
 											state.elements.push(x);
 									}
 								
-							// ELEMENT: Containers
+							// ELEMENT: (CSS) Containers
 								
 								var containerWidth, containerUnits;
 									
@@ -950,7 +946,7 @@ var skel = (function() { var _ = {
 									console.log('- added ' + id);
 									state.elements.push(x);						
 
-							// ELEMENT: Grid
+							// ELEMENT: (CSS) Grid
 
 								id = 'iG';
 
@@ -959,8 +955,29 @@ var skel = (function() { var _ = {
 										x = _.cacheElement(
 											id, 
 											_.newInline(
-												_.css.g + 
-												_.css.gF
+												'.\\31 2u{width:100%}' +
+												'.\\31 1u{width:91.6666666667%}' +
+												'.\\31 0u{width:83.3333333333%}' +
+												'.\\39 u{width:75%}' +
+												'.\\38 u{width:66.6666666667%}' +
+												'.\\37 u{width:58.3333333333%}' +
+												'.\\36 u{width:50%}' +
+												'.\\35 u{width:41.6666666667%}' +
+												'.\\34 u{width:33.3333333333%}' +
+												'.\\33 u{width:25%}' +
+												'.\\32 u{width:16.6666666667%}' +
+												'.\\31 u{width:8.3333333333%}' +
+												'.\\-11u{margin-left:91.6666666667%}' +
+												'.\\-10u{margin-left:83.3333333333%}' +
+												'.\\-9u{margin-left:75%}' +
+												'.\\-8u{margin-left:66.6666666667%}' +
+												'.\\-7u{margin-left:58.3333333333%}' +
+												'.\\-6u{margin-left:50%}' +
+												'.\\-5u{margin-left:41.6666666667%}' +
+												'.\\-4u{margin-left:33.3333333333%}' +
+												'.\\-3u{margin-left:25%}' +
+												'.\\-2u{margin-left:16.6666666667%}' +
+												'.\\-1u{margin-left:8.3333333333%}'
 											),
 											'head', 
 											3
@@ -970,7 +987,28 @@ var skel = (function() { var _ = {
 									console.log('- added ' + id);
 									state.elements.push(x);
 
-							// ELEMENT: Gutters
+							// ELEMENT: (CSS) Grid / Rows
+
+								id = 'iGR';
+
+								// Get element
+									if (!(x = _.getCachedElement(id)))
+										x = _.cacheElement(
+											id, 
+											_.newInline(
+												'.row>*{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}' +
+												'.row:after{content:\'\';display:block;clear:both;height:0}' +
+												'.row:first-child>*{padding-top:0!important}'
+											),
+											'head', 
+											3
+										); 
+								
+								// Push to state
+									console.log('- added ' + id);
+									state.elements.push(x);
+
+							// ELEMENT: (CSS) Grid / Rows / Gutters
 								
 								id = 'iGG' + state.config.grid.gutters;
 
@@ -996,11 +1034,36 @@ var skel = (function() { var _ = {
 											x = _.cacheElement(
 												'iGG' + state.config.grid.gutters, 
 												_.newInline(
-													'.row>*{padding:' + gn + ' 0 0 '+ gn + '}.row+.row>*{padding-top:' + gn + '}.row{margin-left:-' + gn + '}' +
-													'.row.half>*{padding:' + gh + ' 0 0 '+ gh + '}.row.half+.row.half>*{padding-top:' + gh + '}.row.half{margin-left:-' + gh + '}' +
-													'.row.quarter>*{padding:' + gq + ' 0 0 '+ gq + '}.row.quarter+.row.quarter>*{padding-top:' + gq + '}.row.quarter{margin-left:-' + gq + '}' +
-													'.row.oneandhalf>*{padding:' + goh + ' 0 0 '+ goh + '}.row.oneandhalf+.row.oneandhalf>*{padding-top:' + goh + '}.row.oneandhalf{margin-left:-' + goh + '}' +
-													'.row.double>*{padding:' + gd + ' 0 0 '+ gd + '}.row.double+.row.double>*{padding-top:' + gd + '}.row.double{margin-left:-' + gd + '}'
+													
+													// Flush
+														'.row.flush{margin-left:0}' +
+														'.row.flush>*{padding:0!important}' +
+													
+													// Normal
+														'.row>*{padding-left:' + gn + '}' +
+														'.row+.row>*{padding:' + gn + ' 0 0 ' + gn + '}' +
+														'.row{margin-left:-' + gn + '}' +
+													
+													// Half
+														'.row.half>*{padding-left:' + gh + '}' +
+														'.row+.row.half>*{padding:' + gh + ' 0 0 ' + gh + '}' +
+														'.row.half{margin-left:-' + gh + '}' +
+													
+													// Quarter
+														'.row.quarter>*{padding-left:' + gq + '}' +
+														'.row+.row.quarter>*{padding:' + gq + ' 0 0 ' + gq + '}' +
+														'.row.quarter{margin-left:-' + gq + '}' +
+													
+													// One and (a) Half
+														'.row.oneandhalf>*{padding-left:' + goh + '}' +
+														'.row+.row.oneandhalf>*{padding:' + goh + ' 0 0 ' + goh + '}' +
+														'.row.oneandhalf{margin-left:-' + goh + '}' +
+													
+													// Double
+														'.row.double>*{padding-left:' + gd + '}' +
+														'.row+.row.double>*{padding:' + gd + ' 0 0 ' + gd + '}' +
+														'.row.double{margin-left:-' + gd + '}'
+												
 												), 
 												'head', 
 												3
@@ -1011,7 +1074,7 @@ var skel = (function() { var _ = {
 									console.log('- added ' + id);
 									state.elements.push(x);
 
-							// ELEMENT: Collapse
+							// ELEMENT: (CSS) Grid / Collapse
 
 								if (state.config.grid.collapse)
 								{
@@ -1025,10 +1088,9 @@ var skel = (function() { var _ = {
 									// Get element
 										if (!(x = _.getCachedElement(id)))
 										{
-											s1 = _.css.gR + _.css.gC;
-											
+
 											// Collapse
-												s2 = ':not(.no-collapse)';
+												s1 = ':not(.no-collapse)';
 												
 												switch (collapseLevel)
 												{
@@ -1036,29 +1098,32 @@ var skel = (function() { var _ = {
 														break;
 
 													case 3:
-														s2 += ':not(.no-collapse-3)';
+														s1 += ':not(.no-collapse-3)';
 														break;
 
 													case 2:
-														s2 += ':not(.no-collapse-2):not(.no-collapse-3)';
+														s1 += ':not(.no-collapse-2):not(.no-collapse-3)';
 														break;
 
 													case 1:
 													default:
-														s2 += ':not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3)';
+														s1 += ':not(.no-collapse-1):not(.no-collapse-2):not(.no-collapse-3)';
 														break;
 												}
 
-												s1 = s1.replace(/@N/g, s2);
-
 											// Gutters
 												a = _.parseMeasurement(state.config.grid.gutters);
-												s1 = s1.replace(/@G/g, a[0] + a[1]);
+												s2 = (a[0] / 2) + a[1];
 											
 											// Build Element
 												x = _.cacheElement(
 													id,
-													_.newInline(s1 + '.container{max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'),
+													_.newInline(
+														'.row' + s1 + '{margin-left:0}' + 
+														'.row' + s1 + '>*{float:none!important;width:100%!important;margin-left:0!important}' + 
+														'.row:not(.flush)' + s1 + '>*{padding:' + s2 + ' 0 ' + s2 + ' 0!important;}' +
+														'.container{max-width:none!important;min-width:0!important;width:' + state.values.containers + '!important}'
+													),
 													'head', 
 													3
 												);
@@ -1067,23 +1132,6 @@ var skel = (function() { var _ = {
 									// Push to state
 										console.log('- added ' + id);
 										state.elements.push(x);						
-								}
-								else
-								{
-									id = 'iGNoCo';
-								
-									// Get element
-										if (!(x = _.getCachedElement(id)))
-											x = _.cacheElement(
-												id, 
-												_.newInline(_.css.gR), 
-												'head', 
-												3
-											); 
-
-									// Push to state
-										console.log('- added ' + id);
-										state.elements.push(x);
 								}
 								
 							// ELEMENT: Conditionals
