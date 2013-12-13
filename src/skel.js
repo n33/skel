@@ -223,6 +223,17 @@ var skel = (function() { var _ = {
 				
 				return 1;
 			},
+			
+			// Converts a "level" setting (like collapse) to an integer.
+			// Returns: integer
+			getLevel: function(x) {
+				
+				if (typeof x == 'boolean')
+					return (x ? 1 : 0);
+					
+				return parseInt(x);
+
+			},
 
 			// Calculates the viewport width used for all breakpoint stuff.
 			// Returns: integer (Viewport width)
@@ -405,7 +416,7 @@ var skel = (function() { var _ = {
 
 					// If the row has already been reversed, or it falls below a given no-collapse level, bail
 						if (row._skel_isReversed
-						||	(collapseLevel && row.className.match(/\bno-collapse-([0-9])\b/) && parseInt(RegExp.$1) >= parseInt(collapseLevel)))
+						||	(collapseLevel > 0 && row.className.match(/\bno-collapse-([0-9])\b/) && parseInt(RegExp.$1) >= collapseLevel))
 							return;
 					
 					// Reverse the row
@@ -1078,11 +1089,8 @@ var skel = (function() { var _ = {
 
 								if (state.config.grid.collapse)
 								{
-									var	collapseLevel = parseInt(state.config.grid.collapse);
+									var	collapseLevel = _.getLevel(state.config.grid.collapse);
 									
-									if (isNaN(collapseLevel))
-										collapseLevel = 1;
-								
 									id = 'iGC' + collapseLevel;
 								
 									// Get element
@@ -1216,84 +1224,93 @@ var skel = (function() { var _ = {
 				// 6. DOMReady stuff
 					_.DOMReady(function() {
 						
-						var x, m, p;
+						var x, m, p,
+							collapseLevel = _.getLevel(state.config.grid.collapse);
 						
-						// RTL
+						// RTL: Performs a few adjustments to get things working nicely on RTL.
 							if (_.config.useRTL)
 							{
 								_.unreverseRows();
 
-								if (state.config.grid.collapse)
-									_.reverseRows(state.config.grid.collapse);
+								if (collapseLevel > 0)
+									_.reverseRows(collapseLevel);
 							}
 						
-						// important
+						// important: When collapsed, shifts cells marked as "important" to the top of their respective rows.
 							m = '_skel_cell_important_placeholder';
 							x = _.getElementsByClassName('skel-cell-important');
-
+							
 							if (x && x.length > 0)
-							{
-								if (state.config.grid.collapse)
-								{
-									_.iterate(x, function(i) {
+								_.iterate(x, function(i) {
 
-										if (i === 'length')
-											return;
-										
-										e = x[i];
-										
-										if (e.hasOwnProperty(m) && e[m] !== false)
-											return;
-										
-										console.log('important: moving to top of row (' + i + ')');
-
-										// Create placeholder
-											p = document.createElement('div');
-												p.innerHTML = '';
-												p.style.display = 'none';
-												e.parentNode.insertBefore(p, e.nextSibling);
+									if (i === 'length')
+										return;
 									
-										// Move e to top
-											e.parentNode.insertBefore(e, e.parentNode.firstChild);
-											
-										// Attach placeholder to e
-											e[m] = p;
-
-									});
-								}
-								else
-								{
-									_.iterate(x, function(i) {
-
-										e = x[i];
-
-										if (i === 'length')
+									var e = x[i],
+										p = e.parentNode,
+										pc;
+									
+									// No parent? Bail.
+										if (!p)
 											return;
+									
+									// Figure out the point at which this cell's row collapses.
+										if (!p.className.match(/no-collapse-([0-9])/))
+										{
+											if (p.className.match(/no-collapse/))
+												pc = 100;
+											else
+												pc = 0;
+										}
+										else
+											pc = parseInt(RegExp.$1);
+									
+									// Row's going to collapse? Proceed with moving cell.
+										if (pc < collapseLevel)
+										{
+											if (e.hasOwnProperty(m) && e[m] !== false)
+												return;
+
+											console.log('important: moving to top of row (' + i + ')');
+
+											// Create placeholder.
+												p = document.createElement('div');
+													p.innerHTML = '';
+													p.style.display = 'none';
+													e.parentNode.insertBefore(p, e.nextSibling);
 										
-										if (!e.hasOwnProperty(m))
-											e[m] = false;
-
-										// Get placeholder
-											p = e[m];
-										
-										// If it's not false, move e back
-											if (p !== false)
-											{
-												console.log('important: moving back (' + i + ')');
-
-												// Move e above placeholder
-													e.parentNode.insertBefore(e, p);
-													
-												// Delete placeholder
-													e.parentNode.removeChild(p);
-
-												// Clear property
+											// Move cell to top.
+												e.parentNode.insertBefore(e, e.parentNode.firstChild);
+												
+											// Attach placeholder to cell.
+												e[m] = p;
+										}
+									// Otherwise, undo the move (if one was performed previously).
+										else
+										{
+											// If the cell hasn't been moved before it won't have a placeholder, so just set it to false.
+												if (!e.hasOwnProperty(m))
 													e[m] = false;
-											}
-									
-									});
-								}
-							}
+
+											// Get placeholder.
+												p = e[m];
+											
+											// If it's not false, move cell back.
+												if (p !== false)
+												{
+													console.log('important: moving back (' + i + ')');
+
+													// Move e above placeholder.
+														e.parentNode.insertBefore(e, p);
+														
+													// Delete placeholder.
+														e.parentNode.removeChild(p);
+
+													// Clear property.
+														e[m] = false;
+												}
+										}
+								});
 
 					});
 					
