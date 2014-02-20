@@ -1,0 +1,28 @@
+{
+  "name": "skel",
+  "version": "0.4.7",
+  "description": "A www frontend framework",
+  "main": "dist/skel.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://jmmerino@github.com/jmmerino/skelJS.git"
+  },
+  "keywords": [
+    "framework",
+    "www",
+    "responsive"
+  ],
+  "author": "n33",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmmerino/skelJS/issues"
+  },
+  "homepage": "https://github.com/jmmerino/skelJS",
+  "dependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-uglify": "~0.3.2"
+  }
+}
