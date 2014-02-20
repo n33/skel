@@ -1,0 +1,23 @@
+{
+  "name": "skeljs",
+  "version": "0.4.7",
+  "homepage": "https://github.com/jmmerino/skelJS",
+  "authors": [
+    "n33 <aj@n33.com>"
+  ],
+  "description": "A www frontend framework. http://skeljs.org",
+  "main": "/dist/js/skel.min.js",
+  "keywords": [
+    "jquery",
+    "framework",
+    "responsive"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
