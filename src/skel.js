@@ -885,7 +885,7 @@ var skel = (function() { var _ = {
 										state.elements.push(x);
 								}
 								
-								// Hack: IE10 (desktop and WP) need -ms-viewport to work properly.
+								// Hack: IE10 (metro and WP) needs -ms-viewport to work properly.
 									if (_.vars.IEVersion >= 10)
 									{
 										id = 'mVIE' + _.stateId;
