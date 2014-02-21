@@ -10,7 +10,7 @@
 		
 		CSS Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain))
 		Normalize (normalize.css v2.1.1 | MIT License | git.io/normalize) 
-		DOMReady Method (adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani)
+		DOMReady method (based on github.com/ded/domready by @ded; domready (c) Dustin Diaz 2012 - License MIT)
 
 */
 
@@ -1605,10 +1605,8 @@ var skel = (function() { var _ = {
 			
 			initUtilityMethods: function() {
 
-				// _.DOMReady
-
-					// Code adapted from jQuery, courtesy: The jQuery Foundation, Diego Perini, Lucent M., Addy Osmani
-						(function(){'use strict';var c=window,h=function(j){d=false;h.isReady=false;if(typeof j==='function'){i.push(j)}b()},f=c.document,d=false,i=[],e=function(){if(f.addEventListener){f.removeEventListener('DOMContentLoaded',e,false)}else{f.detachEvent('onreadystatechange',e)}g()},g=function(){if(!h.isReady){if(!f.body){return setTimeout(g,1)}h.isReady=true;_.iterate(i, function(j) {(i[j])()});i=[];}},b=function(){var j=false;if(d){return}d=true;if(f.readyState!=='loading'){g()}if(f.addEventListener){f.addEventListener('DOMContentLoaded',e,false);c.addEventListener('load',e,false)}else{if(f.attachEvent){f.attachEvent('onreadystatechange',e);c.attachEvent('onload',e);try{j=c.frameElement==null}catch(k){}if(f.documentElement.doScroll&&j){a()}}}},a=function(){if(h.isReady){return}try{f.documentElement.doScroll('left')}catch(j){setTimeout(a,1);return}g()};h.isReady=false;_.DOMReady=h})();
+				// _.DOMReady (based on github.com/ded/domready by @ded; domready (c) Dustin Diaz 2012 - License MIT)
+						!function(e,t){_.DOMReady = t()}("domready",function(e){function p(e){h=1;while(e=t.shift())e()}var t=[],n,r=!1,i=document,s=i.documentElement,o=s.doScroll,u="DOMContentLoaded",a="addEventListener",f="onreadystatechange",l="readyState",c=o?/^loaded|^c/:/^loaded|c/,h=c.test(i[l]);return i[a]&&i[a](u,n=function(){i.removeEventListener(u,n,r),p()},r),o&&i.attachEvent(f,n=function(){/^c/.test(i[l])&&(i.detachEvent(f,n),p())}),e=o?function(n){self!=top?h?n():t.push(n):function(){try{s.doScroll("left")}catch(t){return setTimeout(function(){e(n)},50)}n()}()}:function(e){h?e():t.push(e)}});
 
 				// _.getElementsByClassName
 
