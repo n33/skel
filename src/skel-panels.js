@@ -1045,29 +1045,29 @@ skel.registerPlugin('panels', (function() { var _ = {
 
 				jQuery.fn._skel_panels_xcssValue = function(p, v) {
 					return jQuery(this)
+							.css(p, v)
 							.css(p, '-moz-' + v)
 							.css(p, '-webkit-' + v)
 							.css(p, '-o-' + v)
-							.css(p, '-ms-' + v)
-							.css(p, v);
+							.css(p, '-ms-' + v);
 				};
 
 				jQuery.fn._skel_panels_xcssProperty = function(p, v) {
 					return jQuery(this)
+							.css(p, v)
 							.css('-moz-' + p, v)
 							.css('-webkit-' + p, v)
 							.css('-o-' + p, v)
-							.css('-ms-' + p, v)
-							.css(p, v);
+							.css('-ms-' + p, v);
 				};
 
 				jQuery.fn._skel_panels_xcss = function(p, v) {
 					return jQuery(this)
+							.css(p, v)
 							.css('-moz-' + p, '-moz-' + v)
 							.css('-webkit-' + p, '-webkit-' + v)
 							.css('-o-' + p, '-o-' + v)
-							.css('-ms-' + p, '-ms-' + v)
-							.css(p, v);
+							.css('-ms-' + p, '-ms-' + v);
 				};
 
 				jQuery.fn._skel_panels_resetForms = function() {
