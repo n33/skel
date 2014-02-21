@@ -885,9 +885,7 @@ var skel = (function() { var _ = {
 										state.elements.push(x);
 								}
 								
-								// Hack: IE10 needs -ms-viewport for "snap mode", and IE10/Mobile (pre-GDR3?) needs it to render stuff the right size.
-								// In true IE fashion though, IE10/Mobile doesn't work properly with "device-width", so it gets an (adjusted) hardcoded
-								// width instead (at least until GDR3 comes out).
+								// Hack: IE10 (desktop and WP) need -ms-viewport to work properly.
 									if (_.vars.IEVersion >= 10)
 									{
 										id = 'mVIE' + _.stateId;
@@ -896,7 +894,7 @@ var skel = (function() { var _ = {
 											if (!(x = _.getCachedElement(id)))
 												x = _.cacheElement(
 													id, 
-													_.newInline('@-ms-viewport{width:' + (_.vars.deviceType == 'wp' ? (_.vars.viewportWidth * 0.6666666666666667) + 'px' : 'device-width') + '}'), 
+													_.newInline('@-ms-viewport{width: device-width}'),
 													'head', 
 													2
 												);
