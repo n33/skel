@@ -112,6 +112,7 @@ var skel = (function() { var _ = {
 				containers: 960,
 				lockViewport: false,
 				viewportWidth: false,
+				viewport: '',
 				hasStyleSheet: true,
 				grid: {}
 			}
@@ -840,51 +841,40 @@ var skel = (function() { var _ = {
 								
 							// ELEMENT: Viewport <meta> tag
 
-								if (state.config.lockViewport)
-								{
-									id = 'mVL' + _.stateId;
-									
-									// Get element
-										if (!(x = _.getCachedElement(id)))
-											x = _.cacheElement(
-												id, 
-												_.newMeta(
-													'viewport',
-													'width=' + (state.config.viewportWidth ? state.config.viewportWidth : 'device-width') + ',' +
-													'initial-scale=1.0,' +
-													'minimum-scale=1.0,' + 
-													'maximum-scale=1.0,' + 
-													'user-scalable=no'
-												),
-												'head',
-												1
-											);
-									
-									// Push to state
-										console.log('- added ' + id);
-										state.elements.push(x);
-								}
-								else if (state.config.viewportWidth)
-								{
-									id = 'mV' + _.stateId;
-
-									// Get element
-										if (!(x = _.getCachedElement(id)))
-											x = _.cacheElement(
-												id, 
-												_.newMeta(
-													'viewport', 
-													'width=' + state.config.viewportWidth
-												), 
-												'head', 
-												1
-											);
-									
-									// Push to state
-										console.log('- added ' + id);
-										state.elements.push(x);
-								}
+								s1 = state.config.viewport;
 								
+								// viewportWidth / lockViewport
+									if (state.config.viewportWidth)
+										s1 += (s1 != '' ? ',' : '') + 'width=' + state.config.viewportWidth;
+									else if (state.config.lockViewport)
+										s1 += (s1 != '' ? ',' : '') + 'width=device-width';
+										
+								// lockViewport
+									if (state.config.lockViewport)
+										s1 += (s1 != '' ? ',' : '') + 'initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0';
+								
+								// Have at least something for viewport? Set it up.
+									if (s1 != '')
+									{
+										id = 'mV' + _.stateId;
+										
+										// Get element
+											if (!(x = _.getCachedElement(id)))
+												x = _.cacheElement(
+													id, 
+													_.newMeta(
+														'viewport',
+														s1
+													),
+													'head',
+													1
+												);
+										
+										// Push to state
+											console.log('- added ' + id);
+											state.elements.push(x);
+									}
+
 								// Hack: IE10 (metro and WP) needs -ms-viewport to work properly.
 									if (_.vars.IEVersion >= 10)
 									{
