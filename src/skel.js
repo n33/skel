@@ -772,7 +772,7 @@ var skel = (function() { var _ = {
 										if (!(x = _.getCachedElement(id)))
 											x = _.cacheElement(
 												id, 
-												_.newInline(('*,*:before,*:after{-moz-@;-webkit-@;-o-@;-ms-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')),
+												_.newInline(('*,*:before,*:after{-moz-@;-webkit-@;@}').replace(/@/g,'box-sizing:' + _.config.boxModel + '-box')),
 												'head',
 												3
 											);
@@ -995,7 +995,7 @@ var skel = (function() { var _ = {
 										x = _.cacheElement(
 											id, 
 											_.newInline(
-												'.row>*{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}' +
+												'.row>*{float:left;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}' +
 												'.row:after{content:\'\';display:block;clear:both;height:0}' +
 												'.row:first-child>*{padding-top:0!important}'
 											),
