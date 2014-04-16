@@ -1225,80 +1225,83 @@ var skel = (function() { var _ = {
 							}
 						
 						// important: When collapsed, shifts cells marked as "important" to the top of their respective rows.
-							m = '_skel_cell_important_placeholder';
-							x = _.getElementsByClassName('skel-cell-important');
-							
-							if (x && x.length > 0)
-								_.iterate(x, function(i) {
+						// Not supported on IE<9.
+							if (_.vars.IEVersion > 8) {
+								m = '_skel_cell_important_placeholder';
+								x = _.getElementsByClassName('skel-cell-important');
+								
+								if (x && x.length > 0)
+									_.iterate(x, function(i) {
 
-									if (i === 'length')
-										return;
-									
-									var e = x[i],
-										p = e.parentNode,
-										pc;
-									
-									// No parent? Bail.
-										if (!p)
+										if (i === 'length')
 											return;
-									
-									// Figure out the point at which this cell's row collapses.
-										if (!p.className.match(/no-collapse-([0-9])/))
-										{
-											if (p.className.match(/no-collapse/))
-												pc = 100;
-											else
-												pc = 0;
-										}
-										else
-											pc = parseInt(RegExp.$1);
-									
-									// Row's going to collapse? Proceed with moving cell.
-										if (pc < collapseLevel)
-										{
-											if (e.hasOwnProperty(m) && e[m] !== false)
-												return;
-
-											console.log('important: moving to top of row (' + i + ')');
-
-											// Create placeholder.
-												p = document.createElement('div');
-													p.innerHTML = '';
-													p.style.display = 'none';
-													e.parentNode.insertBefore(p, e.nextSibling);
 										
-											// Move cell to top.
-												e.parentNode.insertBefore(e, e.parentNode.firstChild);
-												
-											// Attach placeholder to cell.
-												e[m] = p;
-										}
-									// Otherwise, undo the move (if one was performed previously).
-										else
-										{
-											// If the cell hasn't been moved before it won't have a placeholder, so just set it to false.
-												if (!e.hasOwnProperty(m))
-													e[m] = false;
+										var e = x[i],
+											p = e.parentNode,
+											pc;
+										
+										// No parent? Bail.
+											if (!p)
+												return;
+										
+										// Figure out the point at which this cell's row collapses.
+											if (!p.className.match(/no-collapse-([0-9])/))
+											{
+												if (p.className.match(/no-collapse/))
+													pc = 100;
+												else
+													pc = 0;
+											}
+											else
+												pc = parseInt(RegExp.$1);
+										
+										// Row's going to collapse? Proceed with moving cell.
+											if (pc < collapseLevel)
+											{
+												if (e.hasOwnProperty(m) && e[m] !== false)
+													return;
 
-											// Get placeholder.
-												p = e[m];
+												console.log('important: moving to top of row (' + i + ')');
+
+												// Create placeholder.
+													p = document.createElement('div');
+														p.innerHTML = '';
+														p.style.display = 'none';
+														e.parentNode.insertBefore(p, e.nextSibling);
 											
-											// If it's not false, move cell back.
-												if (p !== false)
-												{
-													console.log('important: moving back (' + i + ')');
-
-													// Move e above placeholder.
-														e.parentNode.insertBefore(e, p);
-														
-													// Delete placeholder.
-														e.parentNode.removeChild(p);
-
-													// Clear property.
+												// Move cell to top.
+													e.parentNode.insertBefore(e, e.parentNode.firstChild);
+													
+												// Attach placeholder to cell.
+													e[m] = p;
+											}
+										// Otherwise, undo the move (if one was performed previously).
+											else
+											{
+												// If the cell hasn't been moved before it won't have a placeholder, so just set it to false.
+													if (!e.hasOwnProperty(m))
 														e[m] = false;
-												}
-										}
-								});
+
+												// Get placeholder.
+													p = e[m];
+												
+												// If it's not false, move cell back.
+													if (p !== false)
+													{
+														console.log('important: moving back (' + i + ')');
+
+														// Move e above placeholder.
+															e.parentNode.insertBefore(e, p);
+															
+														// Delete placeholder.
+															e.parentNode.removeChild(p);
+
+														// Clear property.
+															e[m] = false;
+													}
+											}
+									});
+							}
 
 					});
 					
