@@ -1,4 +1,4 @@
-/* skelJS v0.4.8 | (c) n33 | skeljs.org | MIT licensed */
+/* skelJS v0.4.9 | (c) n33 | skeljs.org | MIT licensed */
 
 /*
 
@@ -25,8 +25,6 @@
 	*, *:before, *:after {
 		-moz-box-sizing: border-box;
 		-webkit-box-sizing: border-box;
-		-o-box-sizing: border-box;
-		-ms-box-sizing: border-box;
 		box-sizing: border-box;
 	}
 */
@@ -93,10 +91,8 @@
 
 		.row > * {
 			float: left;
-			-moz-box-sizing: border-box;
-			-webkit-box-sizing: border-box;
-			-o-box-sizing: border-box;
-			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box; /* Firefox <= 28 */
+ 			-webkit-box-sizing: border-box; /* Android <= 3, Safari <= 5, Blacberry 7 */
 			box-sizing: border-box;
 		}
 
