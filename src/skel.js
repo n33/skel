@@ -256,12 +256,30 @@ var skel = (function() { var _ = {
 						// If orientation detection is enabled, figure out the side we want to use as our "width"
 							if (_.config.useOrientation)
 							{
-								// If we're in landscape, use longest side
-									if (o === 90)
+								
+								//customization
+								if (navigator.userAgent.toLowerCase().indexOf("android") > -1) 
+								{
+
+                                    					if (window.orientation == 0 || window.orientation == 180) //Landscape Mode
+                                						w = Math.max(screen.width, screen.height);
+                                    					else if (window.orientation == 90 || window.orientation == -90) //Portrait Mode
+                                        					w = Math.min(screen.width, screen.height);
+
+                                				} else {
+
+                                					// If we're in landscape, use longest side
+									//if (o === 90)
+                                    					if (window.orientation == 90 || window.orientation == -90) //Landscape Mode
 										w = Math.max(screen.width, screen.height);
-								// Otherwise we're in portrait, so use the shortest side
-									else
+									// Otherwise we're in portrait, so use the shortest side
+									//else
+                                    					else if (window.orientation == 0 || window.orientation == 180) //Portrait Mode
 										w = Math.min(screen.width, screen.height);
+
+                                				}
+								
+								
 							}
 						// Otherwise, always default to the *shortest* side
 							else
