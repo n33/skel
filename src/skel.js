@@ -2440,3 +2440,23 @@ var skel = (function() {
 			return _;
 
 })();
+
+// UMD Wrapper
+// Based on https://github.com/umdjs/umd/blob/master/returnExports.js
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window) with the variable name `skel`
+        root.skel = factory();
+  }
+}(this, function () {
+	// factory function that just returns the skel object
+    return skel;
+}));
