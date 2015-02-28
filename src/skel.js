@@ -2077,7 +2077,8 @@ var skel = (function() {
 								android: 'Android',
 								mac: 'Macintosh',
 								wp: 'Windows Phone',
-								windows: 'Windows NT'
+								windows: 'Windows NT',
+								bb10: 'BB10.+Mobile'
 							};
 
 							_.iterate(a, function(k) {
@@ -2125,6 +2126,13 @@ var skel = (function() {
 
 									break;
 
+								case 'bb10':
+
+									ua.match(/Version\/([0-9\.]+)/);
+									x = parseFloat(RegExp.$1);
+
+									break;
+
 								default:
 
 									x = 99;
@@ -2139,7 +2147,7 @@ var skel = (function() {
 							_.vars.isTouch = (_.vars.deviceType == 'wp' ? (navigator.msMaxTouchPoints > 0) : !!('ontouchstart' in window));
 
 						// isMobile.
-							_.vars.isMobile = (_.vars.deviceType == 'wp' || _.vars.deviceType == 'android' || _.vars.deviceType == 'ios');
+							_.vars.isMobile = (_.vars.deviceType == 'wp' || _.vars.deviceType == 'android' || _.vars.deviceType == 'ios' || _.vars.deviceType == 'bb10');
 
 						// Lock.
 							x = document.cookie.split(';');
